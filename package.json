@@ -1,0 +1,25 @@
+{
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"express": "^4.17.3",
+		"express-session": "^1.17.2",
+		"socket.io": "^4.4.1"
+	},
+	"name": "comp4021-project",
+	"description": "UNO Game",
+	"version": "1.0.0",
+	"main": "app.js",
+	"scripts": {
+		"test": "node app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/calmChowder3/comp4021-project.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/calmChowder3/comp4021-project/issues"
+	},
+	"homepage": "https://github.com/calmChowder3/comp4021-project#readme"
+}

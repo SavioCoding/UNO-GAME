@@ -1,5 +1,7 @@
 # comp4021-project
 
+UNO game for two players
+
 ## Fontend Todo
 
 ## Backend Todo
