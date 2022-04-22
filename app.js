@@ -11,6 +11,7 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const httpServer = createServer(app);
 const io = new Server(httpServer);
+
 require("./middleware/server-socket")(io);
 
 const gameSession = session({
@@ -21,6 +22,7 @@ const gameSession = session({
 	cookie: { maxAge: 300000 },
 });
 app.use(gameSession);
+require("./middleware/server-authentication")(app);
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
