@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const session = require("express-session");
 
 const app = express();
 app.use(express.static("public"));
@@ -12,17 +11,8 @@ const { Server } = require("socket.io");
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-require("./middleware/server-socket")(io);
-
-const gameSession = session({
-	secret: "uno",
-	resave: false,
-	saveUninitialized: false,
-	rolling: true,
-	cookie: { maxAge: 300000 },
-});
-app.use(gameSession);
 require("./middleware/server-authentication")(app);
+require("./middleware/server-socket")(io);
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);

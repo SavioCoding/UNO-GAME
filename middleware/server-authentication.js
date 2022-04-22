@@ -1,6 +1,17 @@
 const fs = require("fs");
+const session = require("express-session");
+
 module.exports = function (app) {
-	console.log("export");
+	const gameSession = session({
+		secret: "uno",
+		resave: false,
+		saveUninitialized: false,
+		rolling: true,
+		cookie: { maxAge: 300000 },
+	});
+
+	app.use(gameSession);
+
 	app.post("/login", (req, res) => {
 		const { username } = req.body;
 		const jsonData = fs.readFileSync("./data/users.json");
