@@ -6,10 +6,20 @@ const Socket = (function () {
 
 	const connect = function () {
 		socket = io();
+
 		socket.on("connect", () => {
 			console.log("Connected");
 		});
+
+		socket.on("start game", () => {
+			// TODO: client-side start game things
+			console.log("game started");
+		});
 	};
 
-	return { getSocket, connect };
+	const queue = function () {
+		socket.emit("queue");
+	};
+
+	return { getSocket, connect, queue };
 })();

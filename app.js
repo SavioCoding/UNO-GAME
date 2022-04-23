@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const session = require("express-session");
 
 const app = express();
 app.use(express.static("public"));
@@ -20,6 +19,10 @@ const gameSession = session({
 	cookie: { maxAge: 300000 },
 });
 app.use(gameSession);
+
+// Global Variables
+onlineUsers = {}; // logged in users
+players = { player1: null, player2: null }; // players in game, can use to store the cards they have
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
