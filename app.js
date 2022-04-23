@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const session = require("express-session");
 
 const app = express();
 app.use(express.static("public"));
@@ -12,6 +11,7 @@ const { Server } = require("socket.io");
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+<<<<<<< HEAD
 const gameSession = session({
 	secret: "uno",
 	resave: false,
@@ -24,6 +24,10 @@ app.use(gameSession);
 // Global Variables
 onlineUsers = {}; // logged in users
 players = { player1: null, player2: null }; // players in game, can use to store the cards they have
+=======
+require("./middleware/server-authentication")(app);
+require("./middleware/server-socket")(io);
+>>>>>>> 8c8011bbea04fc9036330cc84d872cbb75cd4a6b
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
