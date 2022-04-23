@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const fs = require("fs");
-const session = require("express-session");
 
 const app = express();
 app.use(express.static("public"));
