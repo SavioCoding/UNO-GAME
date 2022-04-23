@@ -30,7 +30,7 @@ module.exports = function (app) {
 		console.log("AJAX: " + username + " request to match");
 
 		// cannot play if two players are already playing
-		if (players.player1 && players.player2) {
+		if (Object.keys(players).length == 2) {
 			res.json({
 				status: "error",
 				error: "there are already two players playing, please wait",
@@ -38,19 +38,8 @@ module.exports = function (app) {
 			return;
 		}
 
-		// if this is the first player, then simply add to player list
-		if (!players.player1 && !players.player2) {
-			res.json({
-				status: "success",
-				success: "queue",
-			});
-			return;
-		}
-
-		// this is the second player, start the game immediately
 		res.json({
 			status: "success",
-			success: "start",
 		});
 	});
 };
