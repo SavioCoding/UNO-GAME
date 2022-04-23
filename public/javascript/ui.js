@@ -18,15 +18,13 @@ const LogInForm = (function () {
 		$("#match-button").on("click", () => {
 			Matching.startMatch(
 				Authentication.getUser().username,
-				(successMsg) => {
-					if (successMsg == "queue") {
-						console.log("waiting for another player");
-						Socket.queue();
-					} else {
-						console.log("start game");
-					}
+				() => {
+					Socket.queue();
+					// TODO: client side show the waiting screen
+					$("#match-button").hide();
 				},
 				(error) => {
+					// TODO: client side display error message
 					console.log("matching error: " + error);
 				}
 			);

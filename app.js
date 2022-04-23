@@ -23,7 +23,7 @@ app.use(gameSession);
 
 // Global Variables
 onlineUsers = {}; // logged in users
-players = { player1: null, player2: null };
+players = { player1: null, player2: null }; // players in game, can use to store the cards they have
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
