@@ -7,9 +7,27 @@ const LogInForm = (function () {
 				username,
 				() => {
 					Socket.connect();
+					$("#match-button").show();
 				},
 				(error) => {
 					console.log(error);
+				}
+			);
+		});
+
+		$("#match-button").on("click", () => {
+			Matching.startMatch(
+				Authentication.getUser().username,
+				(successMsg) => {
+					if (successMsg == "queue") {
+						console.log("waiting for another player");
+						Socket.queue();
+					} else {
+						console.log("start game");
+					}
+				},
+				(error) => {
+					console.log("matching error: " + error);
 				}
 			);
 		});

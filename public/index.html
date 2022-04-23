@@ -3,6 +3,7 @@
 	<head>
 		<title>COMP4021 Project: UNO Game</title>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link rel="stylesheet" href="./styles/style.css">
 	</head>
 	<body>
         <h1>UNO Game</h1>
@@ -10,10 +11,12 @@
             <input id="login-username" placeholder="Enter your username"></input>
             <button type="submit">Login</button>
         </form>
+		<button id="match-button">Start Match</button>
 
 		<script src="/socket.io/socket.io.min.js"></script>
 		<script src="./javascript/client-socket.js"></script>
 		<script src="./javascript/authentication.js"></script>
+		<script src="./javascript/matching.js"></script>
         <script src="./javascript/ui.js"></script>
 		<script>
             UI.initialize();

@@ -21,6 +21,10 @@ const gameSession = session({
 });
 app.use(gameSession);
 
+// Global Variables
+onlineUsers = {}; // logged in users
+players = { player1: null, player2: null };
+
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
 });

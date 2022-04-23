@@ -6,10 +6,15 @@ const Socket = (function () {
 
 	const connect = function () {
 		socket = io();
+
 		socket.on("connect", () => {
 			console.log("Connected");
 		});
 	};
 
-	return { getSocket, connect };
+	const queue = function () {
+		socket.emit("queue");
+	};
+
+	return { getSocket, connect, queue };
 })();
