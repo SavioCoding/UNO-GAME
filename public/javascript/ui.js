@@ -8,6 +8,7 @@ const LogInForm = (function () {
 				() => {
 					Socket.connect();
 					$("#match-button").show();
+					$("#login-overlay").hide();
 				},
 				(error) => {
 					console.log(error);

@@ -3,15 +3,27 @@
 	<head>
 		<title>COMP4021 Project: UNO Game</title>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Noto+Sans" rel="stylesheet">
 		<link rel="stylesheet" href="./styles/style.css">
 	</head>
 	<body>
         <h1>UNO Game</h1>
-        <form id="login-form">
-            <input id="login-username" placeholder="Enter your username"></input>
-            <button type="submit">Login</button>
-        </form>
-		<button id="match-button">Start Match</button>
+		<div id="game-container">
+			<h1>This is where the game is played</h1>
+		</div>
+		<div id="wait-container">
+			<h1>Click this button to queue and wait for the game</h1>
+			<button id="match-button">Play</button>
+		</div>
+		<div id="login-overlay" class="overlay row">
+			<form id="login-form" class="col shadow">
+				<img src="./img/uno-logo.svg" alt="UNO logo" width="100">
+				<div class="caption">You can login</div>
+				<input id="login-username" placeholder="Your Username"></input>
+				<input id="login-password" type="password" placeholder="Your password"></input>
+				<button type="submit">Login</button>
+			</form>
+		</div>
 
 		<script src="/socket.io/socket.io.min.js"></script>
 		<script src="./javascript/client-socket.js"></script>
