@@ -1,3 +1,11 @@
+#wait-screen {
+	background-color: rgb(69, 156, 228);
+}
+
 #match-button {
 	display: none;
+	font-weight: bold;
+	height: 40px;
+	background-color: red;
+	cursor: pointer;
 }

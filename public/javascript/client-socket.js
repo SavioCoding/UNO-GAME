@@ -10,15 +10,16 @@ const Socket = (function () {
 		socket.on("connect", () => {
 			console.log("Connected");
 		});
-
-		socket.on("start game", () => {
-			// TODO: client-side start game things
-			console.log("game started");
-		});
 	};
 
 	const queue = function () {
 		socket.emit("queue");
+
+		socket.on("start game", () => {
+			// TODO: client-side start game things
+			WaitingScreen.hide();
+			console.log("game started");
+		});
 	};
 
 	return { getSocket, connect, queue };
