@@ -21,16 +21,17 @@ const gameSession = session({
 });
 app.use(gameSession);
 
-// Global Variables
+// Global Variables 
 onlineUsers = {}; // logged in users
 players = {}; // players in game, can use to store the cards they have
+deck = {};
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
 });
 
 require("./middleware/server-ajax")(app); // add post/get methods to add
-require("./middleware/server-socket")(io); // add listeners to io
+require("./middleware/server-socket")(app, io); // add listeners to io
 
 httpServer.listen(8000, () => {
 	console.log("Game server starting...");
