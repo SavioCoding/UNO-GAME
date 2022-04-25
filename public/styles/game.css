@@ -1,0 +1,10 @@
+canvas {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 854;
+	height: 480;
+	background: url("./img/game-background.png");
+	background-size: cover;
+	display: block;
+}

@@ -52,8 +52,25 @@ const WaitingScreen = (function () {
 	return { hide, initialize };
 })();
 
+const GameScreen = (function () {
+	let cv = null;
+	let context = null;
+	let card = null;
+	const initialize = function () {
+		cv = $("canvas").get(0);
+		context = cv.getContext("2d");
+		context.imageSmoothingEnabled = false;
+		$("#test-button").on("click", () => {
+			card = new Card(null, "green", "Add two");
+			card.draw(context);
+		});
+	};
+
+	return { initialize };
+})();
+
 const UI = (function () {
-	const components = [LogInForm, WaitingScreen];
+	const components = [LogInForm, WaitingScreen, GameScreen];
 
 	const initialize = function () {
 		for (const component of components) {
