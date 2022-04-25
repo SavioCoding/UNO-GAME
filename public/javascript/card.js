@@ -1,6 +1,8 @@
 class Card {
 	static cardWidth = 32;
 	static cardHeight = 48;
+	static cardRenderWidth = Card.cardWidth * 3;
+	static cardRenderHeight = Card.cardHeight * 3;
 	static row = {
 		red: 0,
 		blue: 1,
@@ -22,7 +24,7 @@ class Card {
 		this.special = special;
 	}
 
-	draw(context) {
+	draw(context, x, y) {
 		let sheet = new Image();
 		let sRow = this.color ? Card.row[this.color] : 4;
 		let sCol = this.number ? this.number : Card.col[this.special];
@@ -33,10 +35,10 @@ class Card {
 				sRow * Card.cardHeight,
 				Card.cardWidth,
 				Card.cardHeight,
-				50,
-				50,
-				96,
-				144
+				x,
+				y,
+				Card.cardRenderWidth,
+				Card.cardRenderHeight
 			);
 		};
 		sheet.src = "./img/card-sprite.png";

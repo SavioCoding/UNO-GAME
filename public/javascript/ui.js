@@ -61,8 +61,14 @@ const GameScreen = (function () {
 		context = cv.getContext("2d");
 		context.imageSmoothingEnabled = false;
 		$("#test-button").on("click", () => {
-			card = new Card(null, "green", "Add two");
-			card.draw(context);
+			let cards = [
+				{ id: 40, number: null, special: "Add two", color: "green" },
+				{ id: 14, number: 0, special: null, color: "yellow" },
+				{ id: 19, number: 5, special: null, color: "yellow" },
+				{ id: 7, number: 7, special: null, color: "red" },
+				{ id: 9, number: 9, special: null, color: "red" },
+			];
+			Game.initialize(cards);
 		});
 	};
 
