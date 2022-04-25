@@ -16,15 +16,25 @@ const Game = (function () {
 	};
 
 	const renderSelfDeck = function (selfDeck) {
-		let i = 0;
+		for (let j = 0; j < selfDeck.length; ++j) {
+			console.log(selfDeck[j]);
+		}
 		for (let i = 0; i < selfDeck.length; ++i) {
+			console.log(i);
 			let x = i * Card.cardRenderWidth;
-			let y = 200;
-			selfDeck[i].drawSelf(context, x, y);
+			let y = 400;
+			selfDeck[i].draw(context, x, y);
 		}
 	};
 
-	const renderOppeonetCard = function (numCards) {};
+	const renderOpponentCard = function (numCards) {
+		for (let i = numCards - 1; i >= 0; --i) {
+			let x = 800 - i * Card.cardRenderWidth;
+			let y = 100;
+			let card = new Card(null, null, null);
+			card.draw(context, x, y);
+		}
+	};
 
 	const initialize = function (cards) {
 		// assume the cards are sorted
@@ -37,5 +47,5 @@ const Game = (function () {
 		renderSelfDeck(deck);
 	};
 
-	return { initialize: initialize };
+	return { initialize: initialize, renderOpponentCard: renderOpponentCard };
 })();

@@ -69,6 +69,7 @@ const GameScreen = (function () {
 				{ id: 9, number: 9, special: null, color: "red" },
 			];
 			Game.initialize(cards);
+			Game.renderOpponentCard(cards.length);
 		});
 	};
 

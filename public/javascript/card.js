@@ -24,10 +24,17 @@ class Card {
 		this.special = special;
 	}
 
-	drawSelf(context, x, y) {
+	draw(context, x, y) {
 		let sheet = new Image();
-		let sRow = this.color ? Card.row[this.color] : 4;
-		let sCol = this.number ? this.number : Card.col[this.special];
+		let sRow;
+		let sCol;
+		if (!this.number && !this.color && !this.special) {
+			sRow = 4;
+			sCol = 10;
+		} else {
+			sRow = this.color ? Card.row[this.color] : 4;
+			sCol = this.special ? Card.col[this.special] : this.number;
+		}
 		sheet.onload = function () {
 			context.drawImage(
 				sheet,
