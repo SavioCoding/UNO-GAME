@@ -24,7 +24,7 @@ class Card {
 		this.special = special;
 	}
 
-	draw(context, x, y) {
+	drawSelf(context, x, y) {
 		let sheet = new Image();
 		let sRow = this.color ? Card.row[this.color] : 4;
 		let sCol = this.number ? this.number : Card.col[this.special];
