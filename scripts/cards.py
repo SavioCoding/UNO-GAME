@@ -7,7 +7,7 @@ for i in range(8):
     if i%4 == 0:
         color = "red"
     elif i%4 == 1:
-        color = "orange"
+        color = "yellow"
     elif i%4 == 2:
         color = "green"
     elif i%4 == 3:
@@ -43,5 +43,5 @@ for i in range(8):
         decks.append(card)
         id += 1
 
-with open("../data/cards.json", "w") as outfile:
+with open("./data/cards.json", "w") as outfile:
     json.dump(decks,outfile)

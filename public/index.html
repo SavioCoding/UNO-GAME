@@ -5,11 +5,18 @@
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<link href="https://fonts.googleapis.com/icon?family=Noto+Sans" rel="stylesheet">
 		<link rel="stylesheet" href="./styles/style.css">
+		<style>
+			canvas {
+				background-image: "./img/game-background.png";
+			}
+		</style>
 	</head>
 	<body>
         <h1>UNO Game</h1>
 		<div id="game-container">
 			<h1>This is where the game is played</h1>
+			<canvas width="1000px" height="600px"></canvas>
+			<button id="test-button">Draw Card</button>
 		</div>
 		<div id="wait-screen" class="overlay row">
 			<button id="match-button">Play</button>
@@ -28,9 +35,11 @@
 		<script src="./javascript/client-socket.js"></script>
 		<script src="./javascript/authentication.js"></script>
 		<script src="./javascript/matching.js"></script>
+		<script src="./javascript/card.js"></script>
+		<script src="./javascript/game.js"></script>
         <script src="./javascript/ui.js"></script>
 		<script>
-            UI.initialize();
+			$(document).ready(UI.initialize());
 		</script>
 	</body>
 </html>

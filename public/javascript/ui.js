@@ -52,8 +52,32 @@ const WaitingScreen = (function () {
 	return { hide, initialize };
 })();
 
+const GameScreen = (function () {
+	let cv = null;
+	let context = null;
+	let card = null;
+	const initialize = function () {
+		cv = $("canvas").get(0);
+		context = cv.getContext("2d");
+		context.imageSmoothingEnabled = false;
+		$("#test-button").on("click", () => {
+			let cards = [
+				{ id: 40, number: null, special: "Add two", color: "green" },
+				{ id: 14, number: 0, special: null, color: "yellow" },
+				{ id: 19, number: 5, special: null, color: "yellow" },
+				{ id: 7, number: 7, special: null, color: "red" },
+				{ id: 9, number: 9, special: null, color: "red" },
+			];
+			Game.initialize(cards);
+			Game.renderOpponentCard(cards.length);
+		});
+	};
+
+	return { initialize };
+})();
+
 const UI = (function () {
-	const components = [LogInForm, WaitingScreen];
+	const components = [LogInForm, WaitingScreen, GameScreen];
 
 	const initialize = function () {
 		for (const component of components) {

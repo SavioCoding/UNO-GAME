@@ -1,6 +1,5 @@
-const { range } = require("express/lib/request");
 const fs = require("fs");
-const util = require("./util")
+const util = require("./util");
 
 module.exports = function (app, io) {
 	io.on("connection", (socket) => {
@@ -22,13 +21,13 @@ module.exports = function (app, io) {
 					// import and create the deck, store in app.get("deck")
 					const jsonData = fs.readFileSync("./data/cards.json");
 					const cards = JSON.parse(jsonData);
-					deck = cards
+					deck = cards;
 
 					//draw five card for two players
-					for(let username in players){
+					for (let username in players) {
 						for (let i = 0; i < 5; i++) {
-							let card = util.drawCard(deck)
-							players[username].push(card)
+							let card = util.drawCard(deck);
+							players[username].push(card);
 						}
 					}
 					// TODO: server-side start the game
