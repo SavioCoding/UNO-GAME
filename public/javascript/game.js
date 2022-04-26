@@ -30,7 +30,6 @@ const Game = (function () {
 	};
 
 	const initialize = function (cards) {
-		console.log(cards);
 		// assume the cards are sorted
 		// cards is a list of {"id":102,"number":8,"special":null,"color":"blue"}
 		context = $("canvas").get(0).getContext("2d");

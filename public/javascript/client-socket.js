@@ -1,6 +1,7 @@
 const Socket = (function () {
 	let socket = null;
 	let firstDraw = true;
+	let myOpponentLength = 0;
 	const getSocket = function () {
 		return socket;
 	};
@@ -21,6 +22,7 @@ const Socket = (function () {
 			WaitingScreen.hide();
 			$("#waiting").hide();
 			$("#yourTurn").hide();
+			$("#selectCard").hide();
 			console.log("game started");
 		});
 	};
@@ -35,7 +37,6 @@ const Socket = (function () {
 			socket.emit("draw")
 		}
 		socket.on("firstdrawn", (cardsObject) => {
-			console.log(cardsObject)
 			let myCards = cardsObject.cards
 			let myOpponentLength  = cardsObject.opponentLength
 			Game.initialize(myCards);
@@ -47,21 +48,34 @@ const Socket = (function () {
 			Game.renderOpponentCard(myOpponentLength);
 		})
 
+		// response contains username, cards and opponentLength
+		socket.on("card drawn", (cards)=>{
+			Game.initialize(cards);
+		})
+
+		// opponent drawn
+		socket.on("opponent drawn", (opponentLength) => {
+			Game.renderOpponentCard(opponentLength);
+		})
+
 		socket.on("InitiateTurns",(usernameAndOppolength)=>{
+
+			//me
 			if(usernameAndOppolength.myName==Authentication.getUser().username){
-				Game.renderOpponentCard(usernameAndOppolength.opponentLength)
+				myOpponentLength = usernameAndOppolength.opponentLength;
+				Game.renderOpponentCard(usernameAndOppolength.opponentLength);
 				$("#test-button").show();
 				$("#yourTurn").show();
 				$("#waiting").hide();
 			}
 			// opponent
 			else{
-				Game.renderOpponentCard(usernameAndOppolength.opponentLength)
+				myOpponentLength = usernameAndOppolength.opponentLength;
+				Game.renderOpponentCard(usernameAndOppolength.opponentLength);
 				$("#test-button").hide();
 				$("#yourTurn").hide();
 				$("#waiting").show()
 			}
-
 		})
 	}
 

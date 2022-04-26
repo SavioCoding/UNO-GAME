@@ -33,7 +33,6 @@ module.exports = function (app, io) {
 		socket.on("firstDraw",()=>{
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
-				console.log(username+" is drawing card");
 				for (let i = 0; i < 5; i++) {
 					let card = util.drawCard(deck);
 					players[username].push(card);
@@ -45,6 +44,7 @@ module.exports = function (app, io) {
 			}
 		})
 
+		// draw after first time
 		socket.on("draw",()=>{
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
@@ -52,6 +52,9 @@ module.exports = function (app, io) {
 				let card = util.drawCard(deck);
 				players[username].push(card);
 				socket.emit("card drawn", players[username]);
+
+				// send to your opponent but not you
+				socket.broadcast.emit("opponent drawn", players[username].length)
 			}
 		})
 
@@ -64,4 +67,9 @@ module.exports = function (app, io) {
 			}
 		})
 	});
+
+	const getOpponentLength = (myUsername) => {
+		let opponent = Object.entries(players).filter(([key, value]) => key !== myUsername)
+		return opponent[0][1].length ? opponent[0][1].length : 0
+	}
 };
