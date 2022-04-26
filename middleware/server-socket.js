@@ -11,13 +11,13 @@ module.exports = function (app, io) {
 		}
 
 		socket.on("queue", () => {
+			console.log("Queuing")
 			if (socket.request.session.user) {
 				const { username } = socket.request.session.user;
 				console.log("Socket: added " + username + " to queue");
 				players[username] = [];
 				if (Object.keys(players).length == 2) {
 					io.emit("start game");
-
 					// import and create the deck, store in app.get("deck")
 					const jsonData = fs.readFileSync("./data/cards.json");
 					const cards = JSON.parse(jsonData);
@@ -27,7 +27,9 @@ module.exports = function (app, io) {
 				}
 			}
 		});
+		
 
+		//draw for first time
 		socket.on("firstDraw",()=>{
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
@@ -36,8 +38,10 @@ module.exports = function (app, io) {
 					let card = util.drawCard(deck);
 					players[username].push(card);
 				}
-				console.log(deck.length);
-				socket.emit("card drawn", players[username]);
+				let opponent = Object.entries(players).filter(([key, value]) => key !== username)
+				
+				cardsObject = {cards: players[username], opponentLength: opponent[0][1].length}
+				socket.emit("firstdrawn", cardsObject);
 			}
 		})
 
@@ -47,7 +51,16 @@ module.exports = function (app, io) {
 				console.log(username+" is drawing card");
 				let card = util.drawCard(deck);
 				players[username].push(card);
-				socket.emit("card drawn");
+				socket.emit("card drawn", players[username]);
+			}
+		})
+
+		// Finished drawing five cards
+		socket.on("Both drawn",()=>{
+			if(socket.request.session.user){
+				var keys = Object.keys(players);
+				let currentPlayerName = keys[ Math.floor(Math.random() * 2)];
+				io.emit("InitiateTurns", {myName: currentPlayerName, opponentLength: 5});
 			}
 		})
 	});
