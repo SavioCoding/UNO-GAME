@@ -20,9 +20,6 @@ const Socket = (function () {
 		socket.on("start game", () => {
 			// TODO: client-side start game things
 			WaitingScreen.hide();
-			$("#waiting").hide();
-			$("#yourTurn").hide();
-			$("#selectCard").hide();
 			console.log("game started");
 		});
 	};
@@ -48,9 +45,10 @@ const Socket = (function () {
 			Game.renderOpponentCard(myOpponentLength);
 		})
 
-		// response contains username, cards and opponentLength
+		// current User drawn
 		socket.on("card drawn", (cards)=>{
 			Game.initialize(cards);
+			$("#selectCard").show();
 		})
 
 		// opponent drawn

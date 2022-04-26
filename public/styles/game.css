@@ -1,4 +1,4 @@
-canvas {
+/* canvas {
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -7,4 +7,14 @@ canvas {
 	background: url("./img/game-background.png");
 	background-size: cover;
 	display: block;
+} */
+
+#waiting{
+	display: none;
+}
+#yourTurn{
+	display: none;
+}
+#selectCard{
+	display: none;
 }
