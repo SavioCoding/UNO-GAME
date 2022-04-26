@@ -20,9 +20,6 @@ const Socket = (function () {
 		socket.on("start game", () => {
 			// TODO: client-side start game things
 			WaitingScreen.hide();
-			$("#waiting").hide();
-			$("#yourTurn").hide();
-			$("#selectCard").hide();
 			console.log("game started");
 		});
 	};
