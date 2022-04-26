@@ -62,7 +62,6 @@ const GameScreen = (function () {
 		context.imageSmoothingEnabled = false;
 		$("#test-button").on("click", () => {
 			Socket.draw_card();
-			
 		});
 	};
 

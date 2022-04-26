@@ -45,9 +45,10 @@ const Socket = (function () {
 			Game.renderOpponentCard(myOpponentLength);
 		})
 
-		// response contains username, cards and opponentLength
+		// current User drawn
 		socket.on("card drawn", (cards)=>{
 			Game.initialize(cards);
+			$("#selectCard").show();
 		})
 
 		// opponent drawn

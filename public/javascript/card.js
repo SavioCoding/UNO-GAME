@@ -18,7 +18,8 @@ class Card {
 		"Add 4": 5,
 	};
 
-	constructor(number, color, special) {
+	constructor(id, number, color, special) {
+		this.id = id;
 		this.number = number;
 		this.color = color;
 		this.special = special;
