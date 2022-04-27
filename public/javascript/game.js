@@ -68,10 +68,8 @@ const Game = (function () {
 			const x = event.clientX - rect.left
 			const y = event.clientY - rect.top
 			let id = withinRect(x, y)
-			if(id == -1){
-				console.log("Not clicking any card")
-			}else{
-				console.log(id)
+			if(id != -1){
+				Socket.checkCard(id);
 			}
 		}
 

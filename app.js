@@ -25,6 +25,7 @@ app.use(gameSession);
 onlineUsers = {}; // logged in users
 players = {}; // players in game, can use to store the cards they have
 deck = {};
+lastCard = null;
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
