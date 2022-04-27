@@ -4,7 +4,6 @@
 		"bcryptjs": "^2.4.3",
 		"express": "^4.17.3",
 		"express-session": "^1.17.2",
-		"package.json": "^2.0.1",
 		"socket.io": "^4.4.1"
 	},
 	"name": "comp4021-project",

@@ -11,7 +11,7 @@ module.exports = function (app, io) {
 		}
 
 		socket.on("queue", () => {
-			console.log("Queuing");
+			console.log("Queuing")
 			if (socket.request.session.user) {
 				const { username } = socket.request.session.user;
 				console.log("Socket: added " + username + " to queue");
@@ -27,61 +27,49 @@ module.exports = function (app, io) {
 				}
 			}
 		});
+		
 
 		//draw for first time
-		socket.on("firstDraw", () => {
-			if (socket.request.session.user) {
-				const { username } = socket.request.session.user;
+		socket.on("firstDraw",()=>{
+			if(socket.request.session.user){
+				const {username} = socket.request.session.user;
 				for (let i = 0; i < 5; i++) {
 					let card = util.drawCard(deck);
 					players[username].push(card);
 				}
-				let opponent = Object.entries(players).filter(
-					([key, value]) => key !== username
-				);
-
-				cardsObject = {
-					cards: players[username],
-					opponentLength: opponent[0][1].length,
-				};
+				let opponent = Object.entries(players).filter(([key, value]) => key !== username)
+				
+				cardsObject = {cards: players[username], opponentLength: opponent[0][1].length}
 				socket.emit("firstdrawn", cardsObject);
 			}
-		});
+		})
 
 		// draw after first time
-		socket.on("draw", () => {
-			if (socket.request.session.user) {
-				const { username } = socket.request.session.user;
-				console.log(username + " is drawing card");
+		socket.on("draw",()=>{
+			if(socket.request.session.user){
+				const {username} = socket.request.session.user;
+				console.log(username+" is drawing card");
 				let card = util.drawCard(deck);
 				players[username].push(card);
 				socket.emit("card drawn", players[username]);
 
 				// send to your opponent but not you
-				socket.broadcast.emit(
-					"opponent drawn",
-					players[username].length
-				);
+				socket.broadcast.emit("opponent drawn", players[username].length)
 			}
-		});
+		})
 
 		// Finished drawing five cards
-		socket.on("Both drawn", () => {
-			if (socket.request.session.user) {
+		socket.on("Both drawn",()=>{
+			if(socket.request.session.user){
 				var keys = Object.keys(players);
-				let currentPlayerName = keys[Math.floor(Math.random() * 2)];
-				io.emit("InitiateTurns", {
-					myName: currentPlayerName,
-					opponentLength: 5,
-				});
+				let currentPlayerName = keys[ Math.floor(Math.random() * 2)];
+				io.emit("InitiateTurns", {myName: currentPlayerName, opponentLength: 5});
 			}
-		});
+		})
 	});
 
 	const getOpponentLength = (myUsername) => {
-		let opponent = Object.entries(players).filter(
-			([key, value]) => key !== myUsername
-		);
-		return opponent[0][1].length ? opponent[0][1].length : 0;
-	};
+		let opponent = Object.entries(players).filter(([key, value]) => key !== myUsername)
+		return opponent[0][1].length ? opponent[0][1].length : 0
+	}
 };
