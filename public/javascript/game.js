@@ -52,14 +52,14 @@ const Game = (function () {
 		return -1;
 	}
 
-	const initialize = function (cards) {
+	const initialize = function (ownDeck, opponentDeckLen) {
 		// assume the cards are sorted
 		// cards is a list of {"id":102,"number":8,"special":null,"color":"blue"}
 		context = $("canvas").get(0).getContext("2d");
 		context.imageSmoothingEnabled = false;
 
 		// *Global var
-		deck = parseCards(cards);
+		deck = parseCards(ownDeck);
 		renderSelfDeck(deck);
 
 		// Add clicking to canvas and check the card

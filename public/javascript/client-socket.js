@@ -17,10 +17,26 @@ const Socket = (function () {
 	const queue = function () {
 		socket.emit("queue");
 
-		socket.on("start game", () => {
-			// TODO: client-side start game things
+		socket.on("start game", (players) => {
 			WaitingScreen.hide();
+			players = JSON.parse(players);
+			console.log(Authentication.getUser().username);
+			Game.initialize(players[Authentication.getUser().username], 5);
 			console.log("game started");
+		});
+
+		socket.on("gameover", (gameOutcome) => {
+			// remove game related listeners
+			socket.off("start game");
+			// TODO: other listeners such as draw cards etc.
+
+			// display game result and player ranking
+			gameOutcome = JSON.parse(gameOutcome);
+			console.log(gameOutcome);
+			const result =
+				gameOutcome.result[Authentication.getUser().username]; //win or lose
+			console.log("Gameover " + result);
+			GameoverScreen.generateScreen(result, gameOutcome.players);
 		});
 	};
 	

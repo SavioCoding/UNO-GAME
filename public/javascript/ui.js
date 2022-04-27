@@ -48,8 +48,57 @@ const WaitingScreen = (function () {
 		// TODO: add countdown
 		waitingScreen.fadeOut(500);
 	};
+  
+  const show = function () {
+		waitingScreen.fadeIn(500);
+	};
 
-	return { hide, initialize };
+	return { hide, initialize, show };
+})();
+
+const GameoverScreen = (function () {
+	let leaderboard = null;
+
+	const initialize = function () {
+		leaderboard = $("#leaderboard-body");
+
+		$("#quit-button").on("click", () => {
+			hide();
+			WaitingScreen.show();
+			leaderboard.empty();
+		});
+	};
+
+	const generateScreen = function (result, playerData) {
+		// result: 'win or lose', players: list of {gamertag, high score}
+		$("#result-textbox").text("You " + result);
+
+		for (let i = 0; i < playerData.length; ++i) {
+			let tag = playerData[i].gamertag;
+			let score = playerData[i].score;
+			console.log("hi");
+			leaderboard.append(
+				$(
+					"<tr><td>" +
+						i +
+						"</td>" +
+						"<td>" +
+						tag +
+						"</td>" +
+						"<td>" +
+						score +
+						"</td></tr>"
+				)
+			);
+		}
+		$("#gameover-overlay").css("display", "flex");
+	};
+
+	const hide = function () {
+		$("#gameover-overlay").fadeOut(500);
+	};
+
+	return { initialize, generateScreen };
 })();
 
 const GameScreen = (function () {
@@ -69,7 +118,7 @@ const GameScreen = (function () {
 })();
 
 const UI = (function () {
-	const components = [LogInForm, WaitingScreen, GameScreen];
+	const components = [LogInForm, WaitingScreen, GameScreen, GameoverScreen];
 
 	const initialize = function () {
 		for (const component of components) {
