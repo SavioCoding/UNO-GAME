@@ -24,6 +24,23 @@
 		<div id="wait-screen" class="overlay row">
 			<button id="match-button">Play</button>
 		</div>
+		<div id="gameover-overlay" class="overlay row">
+			<div>
+				<div id="result-textbox"><!--Put "You WIN!" or "You LOSE" here--></div>
+				<table id="leaderboard">
+					<caption>High Scores</caption>
+					<thead>
+						<tr>
+							<th>Rank</th>
+							<th>Game Tag</th>
+							<th>High score</th>
+						</tr>
+					</thead>
+					<tbody id="leaderboard-body"></tbody>		
+				</table>
+				<button id="quit-button">Back To Lobby</button>
+			</div>
+		</div>
 		<div id="login-overlay" class="overlay row">
 			<form id="login-form" class="col shadow">
 				<img src="./img/uno-logo.svg" alt="UNO logo" width="100">

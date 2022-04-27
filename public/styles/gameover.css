@@ -1,0 +1,46 @@
+#gameover-overlay {
+	display: none;
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+#leaderboard {
+	border-collapse: collapse;
+	margin: 25px 0;
+	font-size: 0.9em;
+	font-family: sans-serif;
+	min-width: 400px;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+/* add space between table cells */
+#leaderboard thead tr {
+	background-color: #009879;
+	color: #ffffff;
+	text-align: left;
+}
+
+#leaderboard th,
+#leaderboard td {
+	padding: 12px 15px;
+}
+
+/* 	Add bottom border to each rom for separation
+	Add lighter background every second row
+	Add dark border to last row */
+#leaderboard tbody tr {
+	background-color: #dddddd;
+}
+
+#leaderboard tbody tr:nth-of-type(even) {
+	background-color: #f3f3f3;
+}
+
+#leaderboard tbody tr:last-of-type {
+	border-bottom: 2px solid #009879;
+}
+
+/* Make active row look different */
+#leaderboard tbody tr:hover {
+	font-weight: bold;
+	color: #009879;
+}
