@@ -9,6 +9,28 @@ const draw = (deck) => {
     return selectedCard
 }
 
+const filterById = (cards, id) => {
+    newCards = []
+    for (let i=0;i<cards.length;i++){
+        if(cards[i]["id"] !== id){
+            newCards.push(cards[i])
+        }
+    }
+    return newCards
+}
+
+const getCardById = (cards, id) => {
+    for (let i=0;i<cards.length;i++){
+        if(cards[i]["id"] === id){
+            return cards[i]
+        }
+    }
+    return null
+}
+
+
 module.exports = {
-    drawCard: draw
+    drawCard: draw,
+    filterById : filterById,
+    getCardById : getCardById
 }

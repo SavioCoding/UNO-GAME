@@ -18,3 +18,9 @@
 #selectCard{
 	display: none;
 }
+#validCard{
+	display: none;
+}
+#invalidCard{
+	display: none;
+}

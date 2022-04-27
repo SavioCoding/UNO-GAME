@@ -2,6 +2,7 @@ const Socket = (function () {
 	let socket = null;
 	let firstDraw = true;
 	let myOpponentLength = 0;
+
 	const getSocket = function () {
 		return socket;
 	};
@@ -43,7 +44,8 @@ const Socket = (function () {
 			socket.emit("firstDraw");
 			$("#test-button").hide();
 			firstDraw = false;
-		} else {
+		} 
+		else {
 			socket.emit("draw");
 		}
 		socket.on("firstdrawn", (cardsObject) => {
@@ -52,7 +54,8 @@ const Socket = (function () {
 			Game.initialize(myCards);
 			if (myOpponentLength == 0) {
 				$("#waiting").show();
-			} else {
+			} 
+			else {
 				socket.emit("Both drawn");
 			}
 			Game.renderOpponentCard(myOpponentLength);
@@ -61,6 +64,7 @@ const Socket = (function () {
 		// current User drawn
 		socket.on("card drawn", (cards) => {
 			Game.initialize(cards);
+			$("#yourTurn").hide();
 			$("#selectCard").show();
 		});
 
@@ -80,6 +84,7 @@ const Socket = (function () {
 				$("#test-button").show();
 				$("#yourTurn").show();
 				$("#waiting").hide();
+				Game.changeTurn();
 			}
 			// opponent
 			else {
@@ -92,5 +97,31 @@ const Socket = (function () {
 		});
 	};
 
-	return { getSocket, connect, queue, draw_card };
+	const checkCard = (id) => {
+		socket.emit("checkCard", id);
+		console.log(id)
+		socket.on("cardChecked", (res) => {
+			if(res["valid"]){
+				Game.changeCheckedCard(res["id"]); 
+				$("#selectCard").hide()
+				$("#validCard").show();
+			}else{
+				$("#selectCard").hide()
+				$("#invalidCard").show();
+				console.log("Hello")
+			}
+		});
+	}
+
+	const useCard = (id) => {
+		socket.emit("useCard", id);
+		socket.on("card used", (res)=>{
+			Game.useCardAndPut(res["id"], res["cards"]);
+			$("#validCard").hide();
+			$("#invalidCard").hide();
+			$("#waiting").show();
+			$("#test-button").hide();
+		})
+	}
+	return { getSocket, connect, queue, draw_card, checkCard, useCard };
 })();
