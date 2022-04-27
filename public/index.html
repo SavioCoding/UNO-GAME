@@ -19,26 +19,10 @@
 			<h1 id="yourTurn">Please draw a card</h1>
 			<h1 id="selectCard">Please select a card</h1>
 			<canvas width="1000px" height="600px"></canvas>
+			<button id="test-button">Draw Card</button>
 		</div>
 		<div id="wait-screen" class="overlay row">
 			<button id="match-button">Play</button>
-		</div>
-		<div id="gameover-overlay" class="overlay row">
-			<div>
-				<div id="result-textbox"><!--Put "You WIN!" or "You LOSE" here--></div>
-				<table id="leaderboard">
-					<caption>High Scores</caption>
-					<thead>
-						<tr>
-							<th>Rank</th>
-							<th>Game Tag</th>
-							<th>High score</th>
-						</tr>
-					</thead>
-					<tbody id="leaderboard-body"></tbody>		
-				</table>
-				<button id="quit-button">Back To Lobby</button>
-			</div>
 		</div>
 		<div id="login-overlay" class="overlay row">
 			<form id="login-form" class="col shadow">
@@ -51,8 +35,8 @@
 		</div>
 
 		<script src="/socket.io/socket.io.min.js"></script>
-		<script src="./javascript/authentication.js"></script>
 		<script src="./javascript/client-socket.js"></script>
+		<script src="./javascript/authentication.js"></script>
 		<script src="./javascript/matching.js"></script>
 		<script src="./javascript/card.js"></script>
 		<script src="./javascript/game.js"></script>
