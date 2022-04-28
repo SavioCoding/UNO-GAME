@@ -33,7 +33,7 @@ module.exports = function (app, io) {
 		socket.on("firstDraw",()=>{
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
-				for (let i = 0; i < 5; i++) {
+				for (let i = 0; i < 3; i++) {
 					let card = util.drawCard(deck);
 					players[username].push(card);
 				}
@@ -60,11 +60,12 @@ module.exports = function (app, io) {
 		// Finished drawing five cards, draw one card and put the card into the middle
 		socket.on("Both drawn",()=>{
 			if(socket.request.session.user){
+				const {username} = socket.request.session.user;
 				let card = util.drawCard(deck)
 				lastCard = card;
 				var keys = Object.keys(players);
 				let currentPlayerName = keys[ Math.floor(Math.random() * 2)];
-				io.emit("InitiateTurns", {myName: currentPlayerName, opponentLength: 5, lastCard: lastCard});
+				io.emit("InitiateTurns", {myName: currentPlayerName, opponentLength: players[username].length, lastCard: lastCard});
 			}
 		})
 
@@ -74,29 +75,36 @@ module.exports = function (app, io) {
 				const {username} = socket.request.session.user;
 				let valid = false
 				let currentCard = util.getCardById(players[username], id);
+				console.log(currentCard, lastCard)
 				// if current card is +4 or change color, can always use
-				if(currentCard['special'] && !currentCard['color']){
+				if(currentCard['special'] && currentCard['color']===null){
 					valid = true
+					console.log("1st")
 				}
 				// last Card is normal card
-				else if(!lastCard['special']){
+				else if(lastCard['special']===null){
+					console.log("2nd")
 					// other cards with same color
 					if(currentCard['color'] === lastCard['color']){
 						valid = true
 					}
 					// currentCard is swap, +2 and banned with not the same color
-					else if(!currentCard['number']){
+					else if(currentCard['number']===null){
 						valid = false
 					}
 					// normal card
-					else if(currentCard['number'] == lastCard['number']){
+					else if(currentCard['number'] === lastCard['number']){
 						valid = true
 					}
 					// currentCard are other cards, remains valid as false
 				}
-				// if last card is special, only valid if the color matches
+				// if last card is special, only valid if the color matches, or both have same special
 				else{
-					if(lastCard['color'] == currentCard['color']){
+					console.log("3rd")
+					if(lastCard['color'] === currentCard['color']){
+						valid = true
+					}
+					else if(lastCard['special'] === currentCard['special']){
 						valid = true
 					}	
 					// remains valid as false if not same color
