@@ -42,7 +42,6 @@ const Socket = (function () {
 		});
 		// opponent use the card
 		socket.on("opponent used", (lastCard)=>{
-			console.log(myOpponentLength)
 			Game.PutCard(lastCard);
 			myOpponentLength -= 1
 			Game.renderOpponentCard(myOpponentLength);
