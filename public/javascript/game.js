@@ -17,6 +17,9 @@ const Game = (function () {
 	// last Card
 	let lastCard = null;
 
+	// changedColor (+4 or change color)
+	let changedColor = null;
+
 	const changeTurn = (turn) => {
 		yourTurn = turn
 	}
@@ -139,5 +142,5 @@ const Game = (function () {
 		}
 	};
 
-	return { initialize: initialize, renderOpponentCard: renderOpponentCard, changeTurn, changeCheckedCard, useCardAndPut, PutCard };
+	return { initialize: initialize, renderOpponentCard: renderOpponentCard, changeTurn, changeCheckedCard, useCardAndPut, PutCard};
 })();

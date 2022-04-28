@@ -24,3 +24,47 @@
 #invalidCard{
 	display: none;
 }
+
+#changeColor{
+	display: none;
+}
+
+.btn-group button {
+	border: 1px solid green; /* Green border */
+	color: white; /* White text */
+	padding: 10px 24px; /* Some padding */
+	cursor: pointer; /* Pointer/hand icon */
+	float: left; /* Float the buttons side by side */
+  }
+  
+  .btn-group button:not(:last-child) {
+	border-right: none; /* Prevent double borders */
+  }
+  
+  /* Clear floats (clearfix hack) */
+  .btn-group:after {
+	content: "";
+	clear: both;
+	display: table;
+  }
+  
+  /* Add a background color on hover */
+  .btn-group button:hover {
+	background-color: #3e8e41;
+  }
+
+#red{
+	background-color: red; /* Green background */
+}
+
+#green{
+	background-color: green; /* Green background */
+}
+
+#blue{
+	background-color: blue; /* Green background */
+}
+
+#yellow{
+	background-color: yellow; /* Green background */
+}

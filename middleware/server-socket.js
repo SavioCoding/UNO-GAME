@@ -140,5 +140,10 @@ module.exports = function (app, io) {
 				socket.broadcast.emit("opponent drawn", number)
 			}
 		})
+
+		socket.on("selected color", (color)=>{
+			lastCard.color = color
+			socket.broadcast.emit("opponent changed color", color)
+		})
 	});
 };
