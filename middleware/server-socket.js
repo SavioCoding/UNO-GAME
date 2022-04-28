@@ -52,18 +52,19 @@ module.exports = function (app, io) {
 				let card = util.drawCard(deck);
 				players[username].push(card);
 				socket.emit("card drawn", players[username]);
-
 				// send to your opponent but not you
-				socket.broadcast.emit("opponent drawn", players[username].length)
+				socket.broadcast.emit("opponent drawn")
 			}
 		})
 
-		// Finished drawing five cards
+		// Finished drawing five cards, draw one card and put the card into the middle
 		socket.on("Both drawn",()=>{
 			if(socket.request.session.user){
+				let card = util.drawCard(deck)
+				lastCard = card;
 				var keys = Object.keys(players);
 				let currentPlayerName = keys[ Math.floor(Math.random() * 2)];
-				io.emit("InitiateTurns", {myName: currentPlayerName, opponentLength: 5});
+				io.emit("InitiateTurns", {myName: currentPlayerName, opponentLength: 5, lastCard: lastCard});
 			}
 		})
 
@@ -71,44 +72,39 @@ module.exports = function (app, io) {
 		socket.on("checkCard", (id) => {
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
-				if(lastCard==null){
-					socket.emit("cardChecked", {"valid":true, "id":id});
-				}else{
-					let valid = false
-					let currentCard = players[username].map((card)=>{ if(card['id'] == id){return card} });
-
-					// if current card is +4 or change color, can always use
-					if(currentCard['special'] && !currentCard['color']){
+				let valid = false
+				let currentCard = util.getCardById(players[username], id);
+				// if current card is +4 or change color, can always use
+				if(currentCard['special'] && !currentCard['color']){
+					valid = true
+				}
+				// last Card is normal card
+				else if(!lastCard['special']){
+					// other cards with same color
+					if(currentCard['color'] === lastCard['color']){
 						valid = true
 					}
-					// last Card is normal card
-					else if(!lastCard['special']){
-						// other cards with same color
-						if(currentCard['color'] === lastCard['color']){
-							valid = true
-						}
-						// currentCard is swap, +2 and banned with not the same color
-						else if(!currentCard['number']){
-							valid = false
-						}
-						// normal card
-						else if(currentCard['number'] == lastCard['number']){
-							valid = true
-						}
-						// currentCard are other cards, remains valid as false
+					// currentCard is swap, +2 and banned with not the same color
+					else if(!currentCard['number']){
+						valid = false
 					}
-					// if last card is special, only validn if the color matches
-					else{
-						if(lastCard['color'] == currentCard['color']){
-							valid = true
-						}	// remains valid as false if not same color
+					// normal card
+					else if(currentCard['number'] == lastCard['number']){
+						valid = true
 					}
-					socket.emit("cardChecked",{"valid":valid, "id":id});
+					// currentCard are other cards, remains valid as false
 				}
+				// if last card is special, only valid if the color matches
+				else{
+					if(lastCard['color'] == currentCard['color']){
+						valid = true
+					}	
+					// remains valid as false if not same color
+				}
+				socket.emit("cardChecked",{"valid":valid, "id":id});
 			}
 		})
 		socket.on("useCard", (id) => {
-			console.log("Using card: " + id)
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
 				
@@ -119,26 +115,12 @@ module.exports = function (app, io) {
 				players[username] = newCards
 
 				// cases for different cards effects
-	
-				// send the new deck to yourself
-				socket.emit("card used", {"id":id, "cards":players[username]});
-	
-				// send the lastCard to all the players
-				io.emit("update last card");
-	
-				// send to your opponent but not you
-				socket.broadcast.emit("opponent used card", ()=>{
-					// opponent received
-				})
 				
+				// send to your opponent about old card
+				socket.broadcast.emit("opponent used", lastCard)
+				// send the old card id and new deck to yourself
+				socket.emit("card used", {"id":id, "cards":players[username]});
 			}
 		})
 	});
-
-	
-
-	const getOpponentLength = (myUsername) => {
-		let opponent = Object.entries(players).filter(([key, value]) => key !== myUsername)
-		return opponent[0][1].length ? opponent[0][1].length : 0
-	}
 };

@@ -4,9 +4,6 @@ const Game = (function () {
 
 	// check if cards are initialized for first time
 	let first = true
-
-	// check if user can user the card
-	let canUse = false;
 	
 	// js object (coordinates to id)
 	let XYToid = {}
@@ -17,8 +14,11 @@ const Game = (function () {
 	// check if you are in current turn
 	let yourTurn = false;
 
-	const changeTurn = () => {
-		yourTurn = !yourTurn;
+	// last Card
+	let lastCard = null;
+
+	const changeTurn = (turn) => {
+		yourTurn = turn
 	}
 
 	const changeCheckedCard = (id) => {
@@ -47,6 +47,7 @@ const Game = (function () {
 	};
 
 	const renderOpponentCard = function (numCards) {
+		context.clearRect(0, 100, 1000, Card.cardRenderHeight);
 		for (let i = numCards - 1; i >= 0; --i) {
 			let x = 800 - i * Card.cardRenderWidth;
 			let y = 100;
@@ -63,13 +64,20 @@ const Game = (function () {
 			let cardId = deck[i].id;
 			if(cardId === id){
 				context.clearRect(0, y, 1000, Card.cardRenderHeight);
-				deck[i].draw(context, 400, 250);
+				lastCard = deck[i]
+				lastCard.draw(context, 400, 250);
 				deck = parseCards(cards);
 				renderSelfDeck(deck);
 				break;
 			}
 		}
 	}
+
+	const PutCard = function (card) {
+		lastCard = new Card(card.id, card.number, card.color, card.special);
+		lastCard.draw(context, 400, 250);
+	}
+
 	
 	// return the id of the card
 	// return -1 if not clicking on a card
@@ -83,16 +91,6 @@ const Game = (function () {
 			}
 		}
 		return -1;
-	}
-
-	const filterById = (cards, id) => {
-		newCards = []
-		for (let i=0;i<cards.length;i++){
-			if(cards[i]["id"] !== id){
-				newCards.push(cards[i])
-			}
-		}
-		return newCards
 	}
 
 	const initialize = function (cards) {
@@ -115,15 +113,16 @@ const Game = (function () {
 				if(yourTurn === true){
 					if(id !== -1){
 						// use already click the card once before
-						if(checkedCard!==null){
+						if(checkedCard!==null && checkedCard===id){
 							Socket.useCard(id)
-							checkedCard = null
+							$("#validCard").hide();
 						}
 						else{
 							Socket.checkCard(id);
 						}
 					}else{
-						checkCard = null;
+						checkedCard = null;
+						$("#inValidCard").hide()
 						$("#validCard").hide()
 						$("#selectCard").show()
 					}
@@ -140,5 +139,5 @@ const Game = (function () {
 		}
 	};
 
-	return { initialize: initialize, renderOpponentCard: renderOpponentCard, changeTurn, changeCheckedCard, useCardAndPut };
+	return { initialize: initialize, renderOpponentCard: renderOpponentCard, changeTurn, changeCheckedCard, useCardAndPut, PutCard };
 })();

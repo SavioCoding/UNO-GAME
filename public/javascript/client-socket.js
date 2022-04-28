@@ -13,6 +13,81 @@ const Socket = (function () {
 		socket.on("connect", () => {
 			console.log("Connected");
 		});
+
+		// opponent drawn
+		socket.on("opponent drawn", () => {
+			myOpponentLength += 1
+			Game.renderOpponentCard(myOpponentLength);
+			console.log(myOpponentLength)
+			changeToMyTurn();
+		});
+
+		socket.on("firstdrawn", (cardsObject) => {
+			let myCards = cardsObject.cards;
+			let myOpponentLength = cardsObject.opponentLength;
+			Game.initialize(myCards);
+			if (myOpponentLength == 0) {
+				$("#waiting").show();
+			} 
+			else {
+				socket.emit("Both drawn");
+			}
+			Game.renderOpponentCard(myOpponentLength);
+		});
+
+		// current User drawn
+		socket.on("card drawn", (cards) => {
+			Game.initialize(cards);
+			changeToOpponentTurn();
+		});
+		// opponent use the card
+		socket.on("opponent used", (lastCard)=>{
+			console.log(myOpponentLength)
+			Game.PutCard(lastCard);
+			myOpponentLength -= 1
+			Game.renderOpponentCard(myOpponentLength);
+			changeToMyTurn();
+		})
+		socket.on("InitiateTurns", (res) => {
+			//me
+			if (
+				res.myName ==
+				Authentication.getUser().username
+			) {
+				myOpponentLength = res.opponentLength;
+				Game.renderOpponentCard(res.opponentLength);
+				$("#test-button").show();
+				$("#yourTurn").show();
+				$("#waiting").hide();
+				Game.changeTurn(true);
+			}
+			// opponent
+			else {
+				myOpponentLength = res.opponentLength;
+				Game.renderOpponentCard(res.opponentLength);
+				$("#test-button").hide();
+				$("#yourTurn").hide();
+				$("#waiting").show();
+			}
+			Game.PutCard(res.lastCard);
+		});
+		socket.on("cardChecked", (res) => {
+			if(res["valid"]){
+				Game.changeCheckedCard(res["id"]); 
+				$("#invalidCard").hide()
+				$("#validCard").show();
+			}else{
+				$("#validCard").hide()
+				$("#invalidCard").show();
+			}
+		});
+
+		// I used the card
+		socket.on("card used", (res)=>{
+			Game.useCardAndPut(res["id"], res["cards"]);
+			changeToOpponentTurn();
+		})
+
 	};
 
 	const queue = function () {
@@ -48,80 +123,34 @@ const Socket = (function () {
 		else {
 			socket.emit("draw");
 		}
-		socket.on("firstdrawn", (cardsObject) => {
-			let myCards = cardsObject.cards;
-			let myOpponentLength = cardsObject.opponentLength;
-			Game.initialize(myCards);
-			if (myOpponentLength == 0) {
-				$("#waiting").show();
-			} 
-			else {
-				socket.emit("Both drawn");
-			}
-			Game.renderOpponentCard(myOpponentLength);
-		});
-
-		// current User drawn
-		socket.on("card drawn", (cards) => {
-			Game.initialize(cards);
-			$("#yourTurn").hide();
-			$("#selectCard").show();
-		});
-
-		// opponent drawn
-		socket.on("opponent drawn", (opponentLength) => {
-			Game.renderOpponentCard(opponentLength);
-		});
-
-		socket.on("InitiateTurns", (usernameAndOppolength) => {
-			//me
-			if (
-				usernameAndOppolength.myName ==
-				Authentication.getUser().username
-			) {
-				myOpponentLength = usernameAndOppolength.opponentLength;
-				Game.renderOpponentCard(usernameAndOppolength.opponentLength);
-				$("#test-button").show();
-				$("#yourTurn").show();
-				$("#waiting").hide();
-				Game.changeTurn();
-			}
-			// opponent
-			else {
-				myOpponentLength = usernameAndOppolength.opponentLength;
-				Game.renderOpponentCard(usernameAndOppolength.opponentLength);
-				$("#test-button").hide();
-				$("#yourTurn").hide();
-				$("#waiting").show();
-			}
-		});
 	};
 
-	const checkCard = (id) => {
+	const checkCard= function (id){
 		socket.emit("checkCard", id);
-		console.log(id)
-		socket.on("cardChecked", (res) => {
-			if(res["valid"]){
-				Game.changeCheckedCard(res["id"]); 
-				$("#selectCard").hide()
-				$("#validCard").show();
-			}else{
-				$("#selectCard").hide()
-				$("#invalidCard").show();
-				console.log("Hello")
-			}
-		});
 	}
 
-	const useCard = (id) => {
+	const useCard = function (id){
 		socket.emit("useCard", id);
-		socket.on("card used", (res)=>{
-			Game.useCardAndPut(res["id"], res["cards"]);
-			$("#validCard").hide();
-			$("#invalidCard").hide();
-			$("#waiting").show();
-			$("#test-button").hide();
-		})
 	}
+
+	const changeToMyTurn =  function() {
+		$("#yourTurn").show();
+		$("#waiting").hide();
+		$("#test-button").show();
+		Game.changeTurn(true);
+		Game.changeCheckedCard(null);
+	}
+
+	const changeToOpponentTurn = function(){
+		$("#yourTurn").hide();
+		$("#waiting").show();
+		$("#test-button").hide();
+		$("#validCard").hide();
+		$("#invalidCard").hide();
+		Game.changeTurn(false);
+		Game.changeCheckedCard(null);
+	}
+
+
 	return { getSocket, connect, queue, draw_card, checkCard, useCard };
 })();
