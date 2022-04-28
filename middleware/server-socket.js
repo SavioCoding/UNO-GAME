@@ -19,7 +19,7 @@ module.exports = function (app, io) {
 				if (Object.keys(players).length == 2) {
 					io.emit("start game");
 					// import and create the deck, store in app.get("deck")
-					const jsonData = fs.readFileSync("./data/cards.json");
+					const jsonData = fs.readFileSync("./data/only_special_cards.json");
 					const cards = JSON.parse(jsonData);
 					deck = cards;
 					// TODO: server-side start the game
@@ -27,7 +27,6 @@ module.exports = function (app, io) {
 				}
 			}
 		});
-		
 
 		//draw for first time
 		socket.on("firstDraw",()=>{
@@ -38,7 +37,6 @@ module.exports = function (app, io) {
 					players[username].push(card);
 				}
 				let opponent = Object.entries(players).filter(([key, value]) => key !== username)
-				
 				cardsObject = {cards: players[username], opponentLength: opponent[0][1].length}
 				socket.emit("firstdrawn", cardsObject);
 			}
@@ -51,9 +49,9 @@ module.exports = function (app, io) {
 				console.log(username+" is drawing card");
 				let card = util.drawCard(deck);
 				players[username].push(card);
-				socket.emit("card drawn", players[username]);
+				socket.emit("card drawn", {cards: players[username], number: 1});
 				// send to your opponent but not you
-				socket.broadcast.emit("opponent drawn")
+				socket.broadcast.emit("opponent drawn", 1)
 			}
 		})
 
@@ -122,12 +120,24 @@ module.exports = function (app, io) {
 				let newCards = util.filterById(players[username], id)
 				players[username] = newCards
 
-				// cases for different cards effects
-				
 				// send to your opponent about old card
-				socket.broadcast.emit("opponent used", lastCard)
+				socket.broadcast.emit("opponent used", {"lastCard":lastCard, "special":card["special"]})
 				// send the old card id and new deck to yourself
-				socket.emit("card used", {"id":id, "cards":players[username]});
+				socket.emit("card used", {"id":id, "cards":players[username], "special":card["special"]});
+			}
+		})
+
+		socket.on("Add cards", (number)=> {
+			if(socket.request.session.user){
+				const {username} = socket.request.session.user;
+				console.log(username+" is drawing card");
+				for (let i = 0; i < number; i++) {
+					let card = util.drawCard(deck);
+					players[username].push(card);
+				}
+				socket.emit("card drawn", {cards: players[username], number: number});
+				// send to your opponent but not you
+				socket.broadcast.emit("opponent drawn", number)
 			}
 		})
 	});
