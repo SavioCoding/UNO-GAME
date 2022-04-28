@@ -93,6 +93,10 @@ const Socket = (function () {
 			if(res["special"]==="Ban" || res["special"]==="Swap"){
 				changeToMyTurn();
 			}
+			else if(res["special"]==="Change color"){
+				GameScreen.hide();
+				SelectColorScreen.show();
+			}
 			else{
 				changeToOpponentTurn();
 			}
@@ -112,6 +116,12 @@ const Socket = (function () {
 			else{
 				changeToMyTurn();
 			}
+		})
+
+		// opponent changed color
+		socket.on("opponent changed color", (color) => {
+			$("#changeColor").text( "Your opponent changed the color to " + color);
+			$("#changeColor").show()
 		})
 	};
 
@@ -176,6 +186,14 @@ const Socket = (function () {
 		Game.changeCheckedCard(null);
 	}
 
+	// for case with change color or +4
+	const changeColor = (color) => {
+		SelectColorScreen.hide()
+		GameScreen.show()
+		socket.emit("selected color", color)
+		changeToOpponentTurn();
+	}
 
-	return { getSocket, connect, queue, draw_card, checkCard, useCard };
+
+	return { getSocket, connect, queue, draw_card, checkCard, useCard, changeColor };
 })();

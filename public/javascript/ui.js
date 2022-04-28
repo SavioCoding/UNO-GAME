@@ -56,11 +56,49 @@ const WaitingScreen = (function () {
 	return { hide, initialize, show };
 })();
 
+const SelectColorScreen = (function () {
+	let selectColorScreen = null;
+	let redHandler = null;
+	let greenHandler = null;
+	let blueHandler = null;
+	let yellowHandler = null;
+	const initialize = function () {
+		selectColorScreen = $("#select-color-screen");
+		selectColorScreen.hide()
+		redHandler = $("#red").on("click", () => {
+			Socket.changeColor("red");
+		});
+		greenHandler = $("#green").on("click", () => {
+			Socket.changeColor("green");
+		});
+		blueHandler = $("#blue").on("click", () => {
+			Socket.changeColor("blue");
+		});
+		yellowHandler = $("#yellow").on("click", () => {
+			Socket.changeColor("yellow");
+		});
+	};
+
+	const hide = function () {
+		// TODO: add countdown
+		selectColorScreen .fadeOut(500);
+	};
+
+	const show = function () {
+		selectColorScreen.fadeIn(500);
+		
+	};
+
+	return { hide, initialize, show };
+})();
+
 const GameScreen = (function () {
 	let cv = null;
 	let context = null;
 	let card = null;
+	let gameScreen = null;
 	const initialize = function () {
+		gameScreen = $("#game-container");
 		cv = $("canvas").get(0);
 		context = cv.getContext("2d");
 		context.imageSmoothingEnabled = false;
@@ -69,7 +107,19 @@ const GameScreen = (function () {
 		});
 	};
 
-	return { initialize };
+	const hide = function () {
+		// TODO: add countdown
+		gameScreen.fadeOut(500);
+	};
+
+	const show = function () {
+		gameScreen.fadeIn(500);
+	};
+
+
+
+
+	return { initialize, hide, show };
 })();
 
 const GameoverScreen = (function () {
@@ -118,7 +168,7 @@ const GameoverScreen = (function () {
 })();
 
 const UI = (function () {
-	const components = [LogInForm, WaitingScreen, GameScreen, GameoverScreen];
+	const components = [LogInForm, WaitingScreen, GameScreen, GameoverScreen, SelectColorScreen];
 
 	const initialize = function () {
 		for (const component of components) {
