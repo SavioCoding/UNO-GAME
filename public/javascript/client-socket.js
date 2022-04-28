@@ -15,11 +15,17 @@ const Socket = (function () {
 		});
 
 		// opponent drawn
-		socket.on("opponent drawn", () => {
-			myOpponentLength += 1
+		socket.on("opponent drawn", (number) => {
+			myOpponentLength += number
 			Game.renderOpponentCard(myOpponentLength);
 			console.log(myOpponentLength)
-			changeToMyTurn();
+			// normal draw
+			if(number===1){
+				changeToMyTurn();
+			// cases with +2 or +4
+			}else{
+				changeToOpponentTurn();
+			}
 		});
 
 		socket.on("firstdrawn", (cardsObject) => {
@@ -36,17 +42,17 @@ const Socket = (function () {
 		});
 
 		// current User drawn
-		socket.on("card drawn", (cards) => {
-			Game.initialize(cards);
-			changeToOpponentTurn();
+		socket.on("card drawn", (res) => {
+			Game.initialize(res["cards"]);
+			// normal draw
+			if(res.number==1){
+				changeToOpponentTurn();
+			// +2 or +4
+			}else{
+				changeToMyTurn();
+			}
 		});
-		// opponent use the card
-		socket.on("opponent used", (lastCard)=>{
-			Game.PutCard(lastCard);
-			myOpponentLength -= 1
-			Game.renderOpponentCard(myOpponentLength);
-			changeToMyTurn();
-		})
+		
 		socket.on("InitiateTurns", (res) => {
 			//me
 			if (
@@ -84,9 +90,29 @@ const Socket = (function () {
 		// I used the card
 		socket.on("card used", (res)=>{
 			Game.useCardAndPut(res["id"], res["cards"]);
-			changeToOpponentTurn();
+			if(res["special"]==="Ban" || res["special"]==="Swap"){
+				changeToMyTurn();
+			}
+			else{
+				changeToOpponentTurn();
+			}
 		})
 
+		// opponent use the card
+		socket.on("opponent used", (res)=>{
+			Game.PutCard(res["lastCard"]);
+			myOpponentLength -= 1
+			Game.renderOpponentCard(myOpponentLength);
+			if(res["special"]==="Add two"){
+				socket.emit("Add cards", 2)
+			}
+			if(res["special"]==="Ban" || res["special"]==="Swap"){
+				changeToOpponentTurn();
+			}
+			else{
+				changeToMyTurn();
+			}
+		})
 	};
 
 	const queue = function () {
