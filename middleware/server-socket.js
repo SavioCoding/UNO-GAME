@@ -134,12 +134,12 @@ module.exports = function (app, io) {
 					result[username] = "win"
 					result[opponentName] = "lose"
 					util.endGame(result, io)
+				}else{
+					// send to your opponent about old card
+					socket.broadcast.emit("opponent used", {"lastCard":lastCard, "special":card["special"]})
+					// send the old card id and new deck to yourself
+					socket.emit("card used", {"id":id, "cards":players[username], "special":card["special"]});
 				}
-
-				// send to your opponent about old card
-				socket.broadcast.emit("opponent used", {"lastCard":lastCard, "special":card["special"]})
-				// send the old card id and new deck to yourself
-				socket.emit("card used", {"id":id, "cards":players[username], "special":card["special"]});
 			}
 		})
 
@@ -151,9 +151,20 @@ module.exports = function (app, io) {
 					let card = util.drawCard(deck);
 					players[username].push(card);
 				}
-				socket.emit("card drawn", {cards: players[username], number: number});
-				// send to your opponent but not you
-				socket.broadcast.emit("opponent drawn", number)
+				// if more than ten cards, I lost
+				if(players[username].length >= 10){
+					let opponent = Object.entries(players).filter(([key, value]) => key !== username)
+					let opponentName = opponent[0][0]
+					console.log(opponent)
+					var result  = {}
+					result[username] = "lose"
+					result[opponentName] = "win"
+					util.endGame(result, io)
+				}else{
+					socket.emit("card drawn", {cards: players[username], number: number});
+					// send to your opponent but not you
+					socket.broadcast.emit("opponent drawn", number)
+				}
 			}
 		})
 
