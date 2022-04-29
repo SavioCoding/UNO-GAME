@@ -64,7 +64,7 @@ const SelectColorScreen = (function () {
 	let yellowHandler = null;
 	const initialize = function () {
 		selectColorScreen = $("#select-color-screen");
-		selectColorScreen.hide()
+		selectColorScreen.hide();
 		redHandler = $("#red").on("click", () => {
 			Socket.changeColor("red");
 		});
@@ -81,12 +81,11 @@ const SelectColorScreen = (function () {
 
 	const hide = function () {
 		// TODO: add countdown
-		selectColorScreen .fadeOut(500);
+		selectColorScreen.fadeOut(500);
 	};
 
 	const show = function () {
 		selectColorScreen.fadeIn(500);
-		
 	};
 
 	return { hide, initialize, show };
@@ -116,9 +115,6 @@ const GameScreen = (function () {
 		gameScreen.fadeIn(500);
 	};
 
-
-
-
 	return { initialize, hide, show };
 })();
 
@@ -130,9 +126,31 @@ const GameoverScreen = (function () {
 
 		$("#quit-button").on("click", () => {
 			hide();
+			$("#leaderboard-overlay").css("display", "none");
 			WaitingScreen.show();
 			leaderboard.empty();
 		});
+
+		$("#next-button").on("click", () => {
+			$("#game-stat-container").slideUp();
+			$("#leaderboard-container").slideDown();
+		});
+	};
+
+	const displayStats = function (result, stat) {
+		// result: 'win or lose'
+		// stat: {"special card played": 1, "time used": 1, score: 1}
+		let statArr = [
+			result["special card played"],
+			result["time used"],
+			result.score,
+		];
+
+		for (let i = 0; i < $("#game-stat tbody td").length; ++i) {
+			$("#game-stat tbody td")[i].innerHTML = toString(statArr[i]);
+		}
+
+		$("#game-stat-container").show();
 	};
 
 	const generateScreen = function (result, playerData) {
@@ -168,7 +186,13 @@ const GameoverScreen = (function () {
 })();
 
 const UI = (function () {
-	const components = [LogInForm, WaitingScreen, GameScreen, GameoverScreen, SelectColorScreen];
+	const components = [
+		LogInForm,
+		WaitingScreen,
+		GameScreen,
+		GameoverScreen,
+		SelectColorScreen,
+	];
 
 	const initialize = function () {
 		for (const component of components) {

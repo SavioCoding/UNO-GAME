@@ -3,6 +3,10 @@
 	background-color: rgba(0, 0, 0, 0.75);
 }
 
+#leaderboard-container {
+	display: none;
+}
+
 #leaderboard {
 	border-collapse: collapse;
 	margin: 25px 0;
@@ -40,7 +44,21 @@
 }
 
 /* Make active row look different */
-#leaderboard tbody tr:hover {
+tbody tr:hover {
 	font-weight: bold;
 	color: #009879;
+}
+
+#game-stat tbody th {
+	background-color: #009879;
+	color: #ffffff;
+	text-align: left;
+}
+
+#game-stat td {
+	background-color: #dddddd;
+}
+
+#game-stat tbody tr:nth-of-type(even) {
+	background-color: #f3f3f3;
 }

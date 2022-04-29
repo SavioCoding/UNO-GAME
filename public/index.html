@@ -36,8 +36,7 @@
 			<button id="match-button">Play</button>
 		</div>
 		<div id="gameover-overlay" class="overlay row">
-			<div>
-				<div id="result-textbox"><!--Put "You WIN!" or "You LOSE" here--></div>
+			<div id="leaderboard-container">
 				<table id="leaderboard">
 					<caption>High Scores</caption>
 					<thead>
@@ -50,6 +49,27 @@
 					<tbody id="leaderboard-body"></tbody>		
 				</table>
 				<button id="quit-button">Back To Lobby</button>
+			</div>
+			<div id="game-stat-container">
+				<div id="result-textbox"><!--Put "You WIN!" or "You LOSE" here--></div>
+				<table id="game-stat">
+					<caption>Your stats for this game</caption>
+					<tbody>
+						<tr>
+							<th>Special Cards Played</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Time used</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Score</th>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<button id="next-button">Next</button>
 			</div>
 		</div>
 		<div id="login-overlay" class="overlay row">
