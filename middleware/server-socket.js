@@ -74,14 +74,19 @@ module.exports = function (app, io) {
 				let valid = false
 				let currentCard = util.getCardById(players[username], id);
 				console.log(currentCard, lastCard)
-				// if current card is +4 or change color, can always use
-				if(currentCard['special'] && currentCard['color']===null){
+				// if 1st turn, lastCard is +4 or change color, can always use any card
+				if(lastCard['special'] && lastCard['color']===null){
 					valid = true
 					console.log("1st")
 				}
+				// if current card is +4 or change color, can always use
+				else if(currentCard['special'] && currentCard['color']===null){
+					valid = true
+					console.log("2nd")
+				}
 				// last Card is normal card
 				else if(lastCard['special']===null){
-					console.log("2nd")
+					console.log("3rd")
 					// other cards with same color
 					if(currentCard['color'] === lastCard['color']){
 						valid = true
@@ -98,7 +103,7 @@ module.exports = function (app, io) {
 				}
 				// if last card is special, only valid if the color matches, or both have same special
 				else{
-					console.log("3rd")
+					console.log("4th")
 					if(lastCard['color'] === currentCard['color']){
 						valid = true
 					}

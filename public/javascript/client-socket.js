@@ -20,10 +20,10 @@ const Socket = (function () {
 			Game.renderOpponentCard(myOpponentLength);
 			console.log(myOpponentLength);
 			// normal draw
-			if (number === 1) {
+			if (number == 1) {
 				changeToMyTurn();
 				// cases with +2 or +4
-			} else {
+			} else if (number == 2) {
 				changeToOpponentTurn();
 			}
 		});
@@ -47,9 +47,10 @@ const Socket = (function () {
 			if (res.number == 1) {
 				changeToOpponentTurn();
 				// +2 or +4
-			} else {
+			} else if (res.number == 2){
 				changeToMyTurn();
 			}
+			$("#changeColor").hide();
 		});
 
 		socket.on("InitiateTurns", (res) => {
@@ -88,12 +89,13 @@ const Socket = (function () {
 			Game.useCardAndPut(res["id"], res["cards"]);
 			if (res["special"] === "Ban" || res["special"] === "Swap") {
 				changeToMyTurn();
-			} else if (res["special"] === "Change color") {
+			} else if (res["special"] === "Change color" || res["special"] === "Add 4") {
 				GameScreen.hide();
 				SelectColorScreen.show();
-			} else {
+			} else if (res["special"] === null) {
 				changeToOpponentTurn();
 			}
+			$("#changeColor").hide();
 		});
 
 		// opponent use the card
@@ -104,9 +106,12 @@ const Socket = (function () {
 			if (res["special"] === "Add two") {
 				socket.emit("Add cards", 2);
 			}
-			if (res["special"] === "Ban" || res["special"] === "Swap") {
+			else if(res["special"]==="Add 4"){
+				socket.emit("Add cards", 4)
+			}
+			else if (res["special"] === "Ban" || res["special"] === "Swap") {
 				changeToOpponentTurn();
-			} else {
+			} else if(res["special"] !== null) {
 				changeToMyTurn();
 			}
 		});
@@ -117,6 +122,7 @@ const Socket = (function () {
 				"Your opponent changed the color to " + color
 			);
 			$("#changeColor").show();
+			changeToMyTurn();
 		});
 	};
 
