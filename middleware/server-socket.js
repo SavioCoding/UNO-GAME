@@ -172,5 +172,18 @@ module.exports = function (app, io) {
 			lastCard.color = color
 			socket.broadcast.emit("opponent changed color", color)
 		})
+
+		socket.on("times up", () => {
+			if(socket.request.session.user){
+				const {username} = socket.request.session.user;
+				let opponent = Object.entries(players).filter(([key, value]) => key !== username)
+				let opponentName = opponent[0][0]
+				console.log(opponent)
+				var result  = {}
+				result[username] = "lose"
+				result[opponentName] = "win"
+				util.endGame(result, io)
+			}
+		})
 	});
 };

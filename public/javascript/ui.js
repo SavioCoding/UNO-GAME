@@ -91,6 +91,8 @@ const SelectColorScreen = (function () {
 	return { hide, initialize, show };
 })();
 
+
+
 const GameScreen = (function () {
 	let cv = null;
 	let context = null;

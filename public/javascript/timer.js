@@ -1,6 +1,6 @@
 const Timer = (function () {
 
-    let timeRemaining = 60;
+    let timeRemaining = 20;
     let stop = false
     let timeout = null;
 
@@ -11,6 +11,9 @@ const Timer = (function () {
             console.log(timeRemaining)
             if (timeRemaining > 0)
                 timeout = setTimeout(countDown, 1000);
+            else{
+                Socket.timesUp()
+            }
         }
     }
 
