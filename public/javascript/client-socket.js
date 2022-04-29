@@ -62,6 +62,7 @@ const Socket = (function () {
 				$("#yourTurn").show();
 				$("#waiting").hide();
 				Game.changeTurn(true);
+				Timer.startTimer();
 			}
 			// opponent
 			else {
@@ -72,6 +73,7 @@ const Socket = (function () {
 				$("#waiting").show();
 			}
 			Game.PutCard(res.lastCard);
+			$("#timer").show();
 		});
 		socket.on("cardChecked", (res) => {
 			if (res["valid"]) {
@@ -177,6 +179,7 @@ const Socket = (function () {
 		$("#test-button").show();
 		Game.changeTurn(true);
 		Game.changeCheckedCard(null);
+		Timer.startTimer();
 	};
 
 	const changeToOpponentTurn = function () {
@@ -187,6 +190,7 @@ const Socket = (function () {
 		$("#invalidCard").hide();
 		Game.changeTurn(false);
 		Game.changeCheckedCard(null);
+		Timer.stopTimer();
 	};
 
 	// for case with change color or +4

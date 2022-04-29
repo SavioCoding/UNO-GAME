@@ -29,6 +29,10 @@
 	display: none;
 }
 
+#timer{
+	display: none;
+}
+
 .btn-group button {
 	border: 1px solid green; /* Green border */
 	color: white; /* White text */
