@@ -125,6 +125,17 @@ module.exports = function (app, io) {
 				let newCards = util.filterById(players[username], id)
 				players[username] = newCards
 
+				// used all card, game over, you win
+				if(players[username].length === 0){
+					let opponent = Object.entries(players).filter(([key, value]) => key !== username)
+					let opponentName = opponent[0][0]
+					console.log(opponent)
+					var result  = {}
+					result[username] = "win"
+					result[opponentName] = "lose"
+					util.endGame(result, io)
+				}
+
 				// send to your opponent about old card
 				socket.broadcast.emit("opponent used", {"lastCard":lastCard, "special":card["special"]})
 				// send the old card id and new deck to yourself
