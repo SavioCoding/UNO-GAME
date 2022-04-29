@@ -1,6 +1,6 @@
 const Timer = (function () {
 
-    let timeRemaining = 20;
+    let timeRemaining = 180;
     let stop = false
     let timeout = null;
 
