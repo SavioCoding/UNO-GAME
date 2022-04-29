@@ -141,9 +141,9 @@ const GameoverScreen = (function () {
 		// result: 'win or lose'
 		// stat: {"special card played": 1, "time used": 1, score: 1}
 		let statArr = [
-			result["special card played"],
-			result["time used"],
-			result.score,
+			stat["special card played"],
+			stat["time used"],
+			stat.score,
 		];
 
 		for (let i = 0; i < $("#game-stat tbody td").length; ++i) {
@@ -153,10 +153,8 @@ const GameoverScreen = (function () {
 		$("#game-stat-container").show();
 	};
 
-	const generateScreen = function (result, playerData) {
+	const generateScreen = function (playerData) {
 		// result: 'win or lose', players: list of {gamertag, high score}
-		$("#result-textbox").text("You " + result);
-
 		for (let i = 0; i < playerData.length; ++i) {
 			let tag = playerData[i].gamertag;
 			let score = playerData[i].score;
@@ -182,7 +180,7 @@ const GameoverScreen = (function () {
 		$("#gameover-overlay").fadeOut(500);
 	};
 
-	return { initialize, generateScreen };
+	return { initialize, generateScreen, displayStats };
 })();
 
 const UI = (function () {

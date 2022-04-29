@@ -21,11 +21,12 @@ const gameSession = session({
 });
 app.use(gameSession);
 
-// Global Variables 
+// Global Variables
 onlineUsers = {}; // logged in users
 players = {}; // players in game, can use to store the cards they have
 deck = {};
 lastCard = null;
+matchStat = {}; // to return to client when match is ended e.g. {tony: {"special card played": 1, "time used": 1:23, "score" 10}}
 
 io.use((socket, next) => {
 	gameSession(socket.request, {}, next);
