@@ -32,6 +32,7 @@ const endGame = (result, io) => {
 	// call this when game is ended
 	// result = result: {tony:'win', may:'lose'}
 	// gives this to client: {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
+	const fs = require("fs");
 	const jsonData = fs.readFileSync("./data/users.json");
 	const playersObj = JSON.parse(jsonData);
 	let playersArr = [];
@@ -46,6 +47,7 @@ const endGame = (result, io) => {
 	playersArr.sort((a, b) => b.highscore - a.highscore);
 	// get stat from global variable matchStat
 	const returnObj = { result, players: playersArr, stat: matchStat };
+	console.log(returnObj);
 	io.emit("gameover", JSON.stringify(returnObj));
 	matchStat = {}; // reset matchStat object for next match
 };

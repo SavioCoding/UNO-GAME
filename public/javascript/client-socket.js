@@ -141,13 +141,14 @@ const Socket = (function () {
 			// TODO: other listeners such as draw cards etc.
 
 			// gameOutcome = {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
+			GameScreen.hide();
 			gameOutcome = JSON.parse(gameOutcome);
 			console.log(gameOutcome);
 			const result =
 				gameOutcome.result[Authentication.getUser().username]; //win or lose
-			const stat = gameOutcome.stat[Authentication.getUser().username];
+			// const stat = gameOutcome.stat[Authentication.getUser().username];
 			console.log("Gameover " + result);
-			GameoverScreen.displayStats(result, stat);
+			// GameoverScreen.displayStats(result, stat);
 			GameoverScreen.generateScreen(gameOutcome.players);
 		});
 	};
