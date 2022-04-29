@@ -33,6 +33,17 @@
 	display: none;
 }
 
+/* #uno-button{
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: none;
+  font-size: 16px;
+} */
+
 .btn-group button {
 	border: 1px solid green; /* Green border */
 	color: white; /* White text */

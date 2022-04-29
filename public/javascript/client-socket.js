@@ -141,7 +141,6 @@ const Socket = (function () {
 			// remove game related listeners
 			socket.off("start game");
 			// TODO: other listeners such as draw cards etc.
-
 			// gameOutcome = {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
 			GameScreen.hide();
 			gameOutcome = JSON.parse(gameOutcome);
@@ -201,6 +200,10 @@ const Socket = (function () {
 		changeToOpponentTurn();
 	};
 
+	const timesUp = () => {
+		socket.emit("times up")
+	}
+
 	return {
 		getSocket,
 		connect,
@@ -209,5 +212,6 @@ const Socket = (function () {
 		checkCard,
 		useCard,
 		changeColor,
+		timesUp
 	};
 })();
