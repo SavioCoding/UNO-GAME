@@ -8,7 +8,6 @@ const Timer = (function () {
         if(stop==false){
             timeRemaining = timeRemaining - 1;
             $("#timer").text("Time left: "+timeRemaining+" seconds");
-            console.log(timeRemaining)
             if (timeRemaining > 0)
                 timeout = setTimeout(countDown, 1000);
             else{

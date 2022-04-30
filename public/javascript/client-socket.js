@@ -74,6 +74,7 @@ const Socket = (function () {
 				$("#invalidCard").hide();
 				$("#validCard").show();
 			} else {
+				Game.changeCheckedCard(null);
 				$("#validCard").hide();
 				$("#invalidCard").show();
 			}
@@ -86,7 +87,7 @@ const Socket = (function () {
 		when changing color)
 		*/
 		socket.on("card drawn", (res) => {
-			Game.initialize(res["cards"]);
+			Game.loadCards(res["cards"]);
 			// normal draw
 			if (res.number == 1) {
 				changeToOpponentTurn();
@@ -188,7 +189,9 @@ const Socket = (function () {
 			socket.off("start game");
 			// TODO: other listeners such as draw cards etc.
 			// gameOutcome = {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
+			// hide game screen and selectColor screen if gameover
 			GameScreen.hide();
+			SelectColorScreen.hide();
 			gameOutcome = JSON.parse(gameOutcome);
 			console.log(gameOutcome);
 			const result =
