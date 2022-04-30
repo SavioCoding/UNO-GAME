@@ -28,7 +28,7 @@ module.exports = function (app, io) {
 			}
 		});
 
-		//draw for first time
+		//a user draw for the first time, draw three cards, and emit the cards drawn to the user 
 		socket.on("firstDraw",()=>{
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
@@ -42,20 +42,8 @@ module.exports = function (app, io) {
 			}
 		})
 
-		// draw after first time
-		socket.on("draw",()=>{
-			if(socket.request.session.user){
-				const {username} = socket.request.session.user;
-				console.log(username+" is drawing card");
-				let card = util.drawCard(deck);
-				players[username].push(card);
-				socket.emit("card drawn", {cards: players[username], number: 1});
-				// send to your opponent but not you
-				socket.broadcast.emit("opponent drawn", 1)
-			}
-		})
-
-		// Finished drawing five cards, draw one card and put the card into the middle
+		// If both user finish their first draw, draw a random card and put it in the middle to start
+		// Also, select a random user and make it his turn
 		socket.on("Both drawn",()=>{
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
@@ -67,26 +55,50 @@ module.exports = function (app, io) {
 			}
 		})
 
+		// User can draw one card after first turn are initialised
+		socket.on("draw",()=>{
+			if(socket.request.session.user){
+				const {username} = socket.request.session.user;
+				console.log(username+" is drawing card");
+				let card = util.drawCard(deck);
+				players[username].push(card);
+				// if more than ten cards, I lost
+				if(players[username].length > 10){
+					let opponent = Object.entries(players).filter(([key, value]) => key !== username)
+					let opponentName = opponent[0][0]
+					console.log(opponent)
+					var result  = {}
+					result[username] = "lose"
+					result[opponentName] = "win"
+					util.endGame(result, io)
+				}else{
+					socket.emit("card drawn", {cards: players[username], number: 1});
+					// send to your opponent but not you
+					socket.broadcast.emit("opponent drawn", 1)
+				}
+			}
+		})
+
+
 		// Check if the card is valid
+		// by getting back lastCard (the one in the middle of the game field), and comparing with the current card selected
+		// One thing to note, in the case where the lastCard is +4 or change color, the lastCard['color'] is the color that the user want to change
+		// Therefore, is lastCard['color'] is null, it means it is the first card that being placed in the middle, you can use any card in that case.
 		socket.on("checkCard", (id) => {
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
 				let valid = false
 				let currentCard = util.getCardById(players[username], id);
-				console.log(currentCard, lastCard)
-				// if 1st turn, lastCard is +4 or change color, can always use any card
+				// If the first card in the middle is lastCard is +4 or change color, can always use any card
 				if(lastCard['special'] && lastCard['color']===null){
 					valid = true
-					console.log("1st")
 				}
 				// if current card is +4 or change color, can always use
 				else if(currentCard['special'] && currentCard['color']===null){
 					valid = true
-					console.log("2nd")
 				}
 				// last Card is normal card
 				else if(lastCard['special']===null){
-					console.log("3rd")
 					// other cards with same color
 					if(currentCard['color'] === lastCard['color']){
 						valid = true
@@ -103,7 +115,6 @@ module.exports = function (app, io) {
 				}
 				// if last card is special, only valid if the color matches, or both have same special
 				else{
-					console.log("4th")
 					if(lastCard['color'] === currentCard['color']){
 						valid = true
 					}
@@ -115,13 +126,18 @@ module.exports = function (app, io) {
 				socket.emit("cardChecked",{"valid":valid, "id":id});
 			}
 		})
+
+
+		// use the card if the card is valid
 		socket.on("useCard", (id) => {
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
 				
+				// get the card I used
 				let card = util.getCardById(players[username],id)
 				lastCard = card
 
+				// get the cards filtered the used card
 				let newCards = util.filterById(players[username], id)
 				players[username] = newCards
 
@@ -143,6 +159,7 @@ module.exports = function (app, io) {
 			}
 		})
 
+		// for cases +2/+4, add with the corresponding number
 		socket.on("Add cards", (number)=> {
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
@@ -152,7 +169,7 @@ module.exports = function (app, io) {
 					players[username].push(card);
 				}
 				// if more than ten cards, I lost
-				if(players[username].length >= 10){
+				if(players[username].length > 10){
 					let opponent = Object.entries(players).filter(([key, value]) => key !== username)
 					let opponentName = opponent[0][0]
 					console.log(opponent)
@@ -168,11 +185,14 @@ module.exports = function (app, io) {
 			}
 		})
 
+		// set lastCard(+4/change Color) 's color to the color the user want to change
 		socket.on("selected color", (color)=>{
 			lastCard.color = color
+			// send to opponent but not you, such that opponent knows what is the color you changed
 			socket.broadcast.emit("opponent changed color", color)
 		})
 
+		// if time is up, I lose, end the game
 		socket.on("times up", () => {
 			if(socket.request.session.user){
 				const {username} = socket.request.session.user;
