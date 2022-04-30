@@ -9,27 +9,31 @@
 	display: block;
 } */
 
-#waiting{
+#waiting {
 	display: none;
 }
-#yourTurn{
+#yourTurn {
 	display: none;
 }
-#selectCard{
+#selectCard {
 	display: none;
 }
-#validCard{
+#validCard {
 	display: none;
 }
-#invalidCard{
-	display: none;
-}
-
-#changeColor{
+#invalidCard {
 	display: none;
 }
 
-#timer{
+#changeColor {
+	display: none;
+}
+
+#timer {
+	display: none;
+}
+
+#select-color-screen {
 	display: none;
 }
 
@@ -39,36 +43,36 @@
 	padding: 10px 24px; /* Some padding */
 	cursor: pointer; /* Pointer/hand icon */
 	float: left; /* Float the buttons side by side */
-  }
-  
-  .btn-group button:not(:last-child) {
+}
+
+.btn-group button:not(:last-child) {
 	border-right: none; /* Prevent double borders */
-  }
-  
-  /* Clear floats (clearfix hack) */
-  .btn-group:after {
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
 	content: "";
 	clear: both;
 	display: table;
-  }
-  
-  /* Add a background color on hover */
-  .btn-group button:hover {
-	background-color: #3e8e41;
-  }
+}
 
-#red{
+/* Add a background color on hover */
+.btn-group button:hover {
+	background-color: #3e8e41;
+}
+
+#red {
 	background-color: red; /* Green background */
 }
 
-#green{
+#green {
 	background-color: green; /* Green background */
 }
 
-#blue{
+#blue {
 	background-color: blue; /* Green background */
 }
 
-#yellow{
+#yellow {
 	background-color: yellow; /* Green background */
 }

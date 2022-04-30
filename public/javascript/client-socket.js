@@ -11,12 +11,18 @@ const Socket = (function () {
 		return socket;
 	};
 
-
 	const connect = function () {
 		socket = io();
 
 		socket.on("connect", () => {
 			console.log("Connected");
+		});
+
+		socket.on("game state", (gameState) => {
+			console.log("game state");
+			gameState = JSON.parse(gameState);
+			Game.renderState(gameState);
+			WaitingScreen.hide();
 		});
 
 		/*
@@ -92,7 +98,7 @@ const Socket = (function () {
 			if (res.number == 1) {
 				changeToOpponentTurn();
 				// +2 or +4
-			} else if (res.number == 2){
+			} else if (res.number == 2) {
 				changeToMyTurn();
 			}
 			$("#changeColor").hide();
@@ -129,7 +135,10 @@ const Socket = (function () {
 			Game.useCardAndPut(res["id"], res["cards"]);
 			if (res["special"] === "Ban" || res["special"] === "Swap") {
 				changeToMyTurn();
-			} else if (res["special"] === "Change color" || res["special"] === "Add 4") {
+			} else if (
+				res["special"] === "Change color" ||
+				res["special"] === "Add 4"
+			) {
 				GameScreen.hide();
 				SelectColorScreen.show();
 			} else if (res["special"] === null) {
@@ -151,13 +160,11 @@ const Socket = (function () {
 			Game.renderOpponentCard(myOpponentLength);
 			if (res["special"] === "Add two") {
 				socket.emit("Add cards", 2);
-			}
-			else if(res["special"]==="Add 4"){
-				socket.emit("Add cards", 4)
-			}
-			else if (res["special"] === "Ban" || res["special"] === "Swap") {
+			} else if (res["special"] === "Add 4") {
+				socket.emit("Add cards", 4);
+			} else if (res["special"] === "Ban" || res["special"] === "Swap") {
 				changeToOpponentTurn();
-			} else if(res["special"] === null) {
+			} else if (res["special"] === null) {
 				changeToMyTurn();
 			}
 		});
@@ -185,96 +192,26 @@ const Socket = (function () {
 		});
 
 		socket.on("gameover", (gameOutcome) => {
+			console.log("gameover");
 			// remove game related listeners
 			socket.off("start game");
 			// TODO: other listeners such as draw cards etc.
+
 			// gameOutcome = {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
-			// hide game screen and selectColor screen if gameover
-			GameScreen.hide();
-			SelectColorScreen.hide();
-			gameOutcome = JSON.parse(gameOutcome);
+			let { result, players, stat } = JSON.parse(gameOutcome);
 			console.log(gameOutcome);
-			const result =
-				gameOutcome.result[Authentication.getUser().username]; //win or lose
+			result = result[Authentication.getUser().username]; //win or lose or tie
+			stat = stat[Authentication.getUser().username];
 			// const stat = gameOutcome.stat[Authentication.getUser().username];
 			console.log("Gameover " + result);
-			// GameoverScreen.displayStats(result, stat);
-			GameoverScreen.generateScreen(gameOutcome.players);
+			GameoverScreen.displayStats(result, stat);
+			GameoverScreen.generateScreen(players);
 		});
 	};
-
-	/* the draw card button call this function, 
-	use variable firstDraw to determine whether this is actually the first time to draw */
-	const draw_card = function () {
-		if (firstDraw == true) {
-			socket.emit("firstDraw");
-			$("#test-button").hide();
-			firstDraw = false;
-		} else {
-			socket.emit("draw");
-		}
-	};
-
-	/* If it is the first time to press the card, emit the checkCard event to the server */
-	const checkCard = function (id) {
-		socket.emit("checkCard", id);
-	};
-
-	/* Use the card if the card is valid */
-	const useCard = function (id) {
-		socket.emit("useCard", id);
-	};
-
-	/* The opponent finished his turn and 
-	it is my turn now */
-	// By changing button and displaying message
-	const changeToMyTurn = function () {
-		$("#yourTurn").show();
-		$("#waiting").hide();
-		$("#test-button").show();
-		Game.changeTurn(true);
-		Game.changeCheckedCard(null);
-		Timer.startTimer();
-	};
-
-	/* I finished my turn and it is opponent's turn */
-	// By changing button and displaying message
-	const changeToOpponentTurn = function () {
-		$("#yourTurn").hide();
-		$("#waiting").show();
-		$("#test-button").hide();
-		$("#validCard").hide();
-		$("#invalidCard").hide();
-		Game.changeTurn(false);
-		Game.changeCheckedCard(null);
-		Timer.stopTimer();
-	};
-
-	/* the red/green/blue/yellow buttons called it (For +4/change color),
-	such and this function notify the server which color
-	the current user want to change, then change to opponent's turn 
-	after selecting the color
-	*/
-	const changeColor = (color) => {
-		SelectColorScreen.hide();
-		GameScreen.show();
-		socket.emit("selected color", color);
-		changeToOpponentTurn();
-	};
-
-	/* called from timer.js to inform the server that time is up and game is over */
-	const timesUp = () => {
-		socket.emit("times up")
-	}
 
 	return {
 		getSocket,
 		connect,
 		queue,
-		draw_card,
-		checkCard,
-		useCard,
-		changeColor,
-		timesUp
 	};
 })();

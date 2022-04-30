@@ -56,43 +56,6 @@ const WaitingScreen = (function () {
 	return { hide, initialize, show };
 })();
 
-const SelectColorScreen = (function () {
-	let selectColorScreen = null;
-	let redHandler = null;
-	let greenHandler = null;
-	let blueHandler = null;
-	let yellowHandler = null;
-	const initialize = function () {
-		selectColorScreen = $("#select-color-screen");
-		selectColorScreen.hide();
-		redHandler = $("#red").on("click", () => {
-			Socket.changeColor("red");
-		});
-		greenHandler = $("#green").on("click", () => {
-			Socket.changeColor("green");
-		});
-		blueHandler = $("#blue").on("click", () => {
-			Socket.changeColor("blue");
-		});
-		yellowHandler = $("#yellow").on("click", () => {
-			Socket.changeColor("yellow");
-		});
-	};
-
-	const hide = function () {
-		// TODO: add countdown
-		selectColorScreen.fadeOut(500);
-	};
-
-	const show = function () {
-		selectColorScreen.fadeIn(500);
-	};
-
-	return { hide, initialize, show };
-})();
-
-
-
 const GameScreen = (function () {
 	let cv = null;
 	let context = null;
@@ -103,9 +66,6 @@ const GameScreen = (function () {
 		cv = $("canvas").get(0);
 		context = cv.getContext("2d");
 		context.imageSmoothingEnabled = false;
-		$("#test-button").on("click", () => {
-			Socket.draw_card();
-		});
 	};
 
 	const hide = function () {
@@ -142,16 +102,23 @@ const GameoverScreen = (function () {
 	const displayStats = function (result, stat) {
 		// result: 'win or lose'
 		// stat: {"special card played": 1, "time used": 1, score: 1}
-		let statArr = [
-			stat["special card played"],
-			stat["time used"],
-			stat.score,
-		];
+		let statArr = [stat["numSpecialCards"], stat["time"], stat["score"]];
 
 		for (let i = 0; i < $("#game-stat tbody td").length; ++i) {
 			$("#game-stat tbody td")[i].innerHTML = toString(statArr[i]);
 		}
 
+		if (result === "win") {
+			$("#result-textbox").text("You Win!");
+			// TODO: play victory sounds
+		} else if (result === "lose") {
+			$("#result-textbox").text("You Lose :(");
+			// TODO: play sad music
+		}
+		// tie
+		else {
+			$("#result-textbox").text("It's a Tie");
+		}
 		$("#game-stat-container").show();
 	};
 
@@ -159,12 +126,11 @@ const GameoverScreen = (function () {
 		// result: 'win or lose', players: list of {gamertag, high score}
 		for (let i = 0; i < playerData.length; ++i) {
 			let tag = playerData[i].gamertag;
-			let score = playerData[i].score;
-			console.log("hi");
+			let score = playerData[i].highscore;
 			leaderboard.append(
 				$(
 					"<tr><td>" +
-						i +
+						(i + 1) +
 						"</td>" +
 						"<td>" +
 						tag +
@@ -186,18 +152,13 @@ const GameoverScreen = (function () {
 })();
 
 const UI = (function () {
-	const components = [
-		LogInForm,
-		WaitingScreen,
-		GameScreen,
-		GameoverScreen,
-		SelectColorScreen,
-	];
+	const components = [LogInForm, WaitingScreen, GameScreen, GameoverScreen];
 
 	const initialize = function () {
 		for (const component of components) {
 			component.initialize();
 		}
+		Game.initialize();
 	};
 
 	return { initialize };

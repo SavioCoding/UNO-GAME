@@ -1,12 +1,12 @@
 {
-	"tony": {
-		"gamertag": "NoobMaster69",
-		"password": "",
-		"highscore": 10
-	},
-	"may": {
-		"gamertag": "IamMay2022",
-		"password": "",
-		"highscore": 8
-	}
+  "tony": {
+    "gamertag": "NoobMaster69",
+    "password": "",
+    "highscore": 10
+  },
+  "may": {
+    "gamertag": "IamMay2022",
+    "password": "",
+    "highscore": 8
+  }
 }
