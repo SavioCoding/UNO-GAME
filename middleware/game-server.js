@@ -32,7 +32,6 @@ const startGame = function (gameState) {
 	}
 };
 
-<<<<<<< HEAD
 const playCard = function (gameState, username, obj) {
 	gameState[username].splice(obj.index, 1);
 	gameState.top = obj.card;
@@ -54,30 +53,10 @@ const playCard = function (gameState, username, obj) {
 	}
 };
 
-=======
->>>>>>> c298bc1 (draw card)
 const drawCard = function (gameState, username) {
 	gameState[username].push(randomCard());
 };
 
-const switchTurn = function (gameState) {
-<<<<<<< HEAD
-	let current = gameState["turn"];
-	for (player of players) {
-		if (player != current) {
-			gameState["turn"] = player;
-=======
-	let current = gameState.turn;
-	for (player of players) {
-		if (player != current) {
-			gameState.turn = player;
->>>>>>> c298bc1 (draw card)
-			break;
-		}
-	}
-};
-
-<<<<<<< HEAD
 const isGameEnd = function (gameState) {
 	for (const player of players) {
 		if (gameState[player].length == 0) {
@@ -162,6 +141,3 @@ module.exports = {
 	isGameEnd,
 	endGame,
 };
-=======
-module.exports = { startGame, drawCard, switchTurn };
->>>>>>> c298bc1 (draw card)
