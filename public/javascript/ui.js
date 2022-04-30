@@ -127,10 +127,6 @@ const GameoverScreen = (function () {
 		for (let i = 0; i < playerData.length; ++i) {
 			let tag = playerData[i].gamertag;
 			let score = playerData[i].highscore;
-<<<<<<< HEAD
-=======
-			console.log("hi");
->>>>>>> c45c2dd (end game when one player plays all cards)
 			leaderboard.append(
 				$(
 					"<tr><td>" +
