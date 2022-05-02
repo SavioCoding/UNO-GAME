@@ -57,27 +57,18 @@ const WaitingScreen = (function () {
 })();
 
 const GameScreen = (function () {
-	let cv = null;
-	let context = null;
-	let card = null;
-	let gameScreen = null;
-	const initialize = function () {
-		gameScreen = $("#game-container");
-		cv = $("canvas").get(0);
-		context = cv.getContext("2d");
-		context.imageSmoothingEnabled = false;
+	// input: time remaining in seconds
+	// this function will transform seconds into mm:ss
+	const updateTimer = function (timeLeft) {
+		let min = Math.floor(timeLeft / 60);
+		let sec = timeLeft % 60;
+		sec = sec.toString();
+		sec = sec.length == 2 ? sec : "0" + sec;
+		console.log("0" + min + ":" + sec);
+		$("#timer").text("0" + min + ":" + sec);
 	};
 
-	const hide = function () {
-		// TODO: add countdown
-		gameScreen.fadeOut(500);
-	};
-
-	const show = function () {
-		gameScreen.fadeIn(500);
-	};
-
-	return { initialize, hide, show };
+	return { updateTimer };
 })();
 
 const GameoverScreen = (function () {
@@ -154,7 +145,7 @@ const GameoverScreen = (function () {
 })();
 
 const UI = (function () {
-	const components = [LogInForm, WaitingScreen, GameScreen, GameoverScreen];
+	const components = [LogInForm, WaitingScreen, GameoverScreen];
 
 	const initialize = function () {
 		for (const component of components) {

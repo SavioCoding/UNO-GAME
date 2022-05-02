@@ -30,7 +30,7 @@ const Timer = (function () {
 				clearInterval(timer);
 				console.log("end");
 			}
-			console.log(timeRemaining);
+			GameScreen.updateTimer(timeRemaining);
 			timeRemaining--;
 		}, 1000);
 	}
