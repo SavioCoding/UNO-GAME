@@ -45,5 +45,13 @@ module.exports = function (io) {
 				}
 			}
 		});
+
+		socket.on("time", () => {
+			if (socket.request.session.user) {
+				const { username } = socket.request.session.user;
+				const resultObj = Game.endGame(gameState, "time", username);
+				io.emit("gameover", JSON.stringify(resultObj));
+			}
+		});
 	});
 };

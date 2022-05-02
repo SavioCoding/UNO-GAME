@@ -1,12 +1,6 @@
 const Socket = (function () {
 	let socket = null;
 
-	// a gate for determining 1st draw or later draws
-	let firstDraw = true;
-
-	// number of cards remaining in the opponent's deck
-	let myOpponentLength = 0;
-
 	const getSocket = function () {
 		return socket;
 	};
@@ -42,9 +36,14 @@ const Socket = (function () {
 		});
 	};
 
+	const timesUp = function () {
+		socket.emit("time");
+	};
+
 	return {
 		getSocket,
 		connect,
 		queue,
+		timesUp,
 	};
 })();

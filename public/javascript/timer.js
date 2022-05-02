@@ -1,12 +1,8 @@
 const Timer = (function () {
 	let timer = null;
-	let timeRemaining = 20;
+	let timeRemaining = 90;
 	let stop = false;
 	let timeout = null;
-
-	const getTime = function () {
-		return timeRemaining;
-	};
 
 	function countDown() {
 		if (stop == false) {
@@ -28,7 +24,7 @@ const Timer = (function () {
 		timer = setInterval(() => {
 			if (timeRemaining == 0) {
 				clearInterval(timer);
-				console.log("end");
+				Socket.timesUp();
 			}
 			GameScreen.updateTimer(timeRemaining);
 			timeRemaining--;
