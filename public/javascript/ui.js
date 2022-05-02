@@ -102,10 +102,12 @@ const GameoverScreen = (function () {
 	const displayStats = function (result, stat) {
 		// result: 'win or lose'
 		// stat: {"special card played": 1, "time used": 1, score: 1}
+		console.log(stat);
 		let statArr = [stat["numSpecialCards"], stat["time"], stat["score"]];
+		console.log(statArr);
 
 		for (let i = 0; i < $("#game-stat tbody td").length; ++i) {
-			$("#game-stat tbody td")[i].innerHTML = toString(statArr[i]);
+			$("#game-stat tbody td")[i].innerHTML = statArr[i];
 		}
 
 		if (result === "win") {

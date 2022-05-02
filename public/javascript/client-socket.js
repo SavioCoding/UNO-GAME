@@ -14,12 +14,9 @@ const Socket = (function () {
 	const connect = function () {
 		socket = io();
 
-		socket.on("connect", () => {
-			console.log("Connected");
-		});
+		socket.on("connect", () => {});
 
 		socket.on("game state", (gameState) => {
-			console.log("game state");
 			gameState = JSON.parse(gameState);
 			Game.renderState(gameState);
 			WaitingScreen.hide();
@@ -114,7 +111,6 @@ const Socket = (function () {
 		socket.on("opponent drawn", (number) => {
 			myOpponentLength += number;
 			Game.renderOpponentCard(myOpponentLength);
-			console.log(myOpponentLength);
 			// normal draw
 			if (number == 1) {
 				changeToMyTurn();
@@ -188,22 +184,18 @@ const Socket = (function () {
 		socket.on("start game", () => {
 			// TODO: client-side start game things
 			WaitingScreen.hide();
-			console.log("game started");
 		});
 
 		socket.on("gameover", (gameOutcome) => {
-			console.log("gameover");
 			// remove game related listeners
 			socket.off("start game");
 			// TODO: other listeners such as draw cards etc.
 
 			// gameOutcome = {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
 			let { result, players, stat } = JSON.parse(gameOutcome);
-			console.log(gameOutcome);
 			result = result[Authentication.getUser().username]; //win or lose or tie
 			stat = stat[Authentication.getUser().username];
 			// const stat = gameOutcome.stat[Authentication.getUser().username];
-			console.log("Gameover " + result);
 			GameoverScreen.displayStats(result, stat);
 			GameoverScreen.generateScreen(players);
 		});
