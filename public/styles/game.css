@@ -9,9 +9,27 @@
 	display: block;
 } */
 
-@import url(https://fonts.googleapis.com/css2?family=Press+Start+2P);
+#waiting {
+	display: none;
+}
+#yourTurn {
+	display: none;
+}
+#selectCard {
+	display: none;
+}
+#validCard {
+	display: none;
+}
+#invalidCard {
+	display: none;
+}
 
 #changeColor {
+	display: none;
+}
+
+#timer {
 	display: none;
 }
 
@@ -57,15 +75,4 @@
 
 #yellow {
 	background-color: yellow; /* Green background */
-}
-
-#counter {
-	position: absolute;
-	left: 150px;
-	top: 35px;
-	font-family: "Press Start 2P", sans-serif;
-	font-size: 130%;
-	fill: white;
-	stroke: black;
-	stroke-width: 1px;
 }

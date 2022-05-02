@@ -12,12 +12,16 @@
 		</style>
 	</head>
 	<body>
+        <h1>UNO Game</h1>
 		<div id="game-container">
+			<h1>This is where the game is played</h1>
+			<h1 id="timer">Time left: 180 seconds</h1>
+			<h1 id="waiting">Please wait the other player</h1>
+			<h1 id="yourTurn">Please draw a card or select a valid card</h1>
+			<h1 id="validCard">This card is valid, click once more if you want to use it</h1>
+			<h1 id="invalidCard">This card is invalid, Pick another one</h1>
+			<h1 id="changeColor">Your opponent changed color</h1>
 			<canvas width="1000px" height="600px"></canvas>
-			<div id="counter">
-				TIME:<tspan id="timer">01:30</tspan>
-			</div>
-			</svg>
 			<button id="draw-card-button">Draw Card</button>
 		</div>
 		<div id="select-color-screen" class="overlay row">

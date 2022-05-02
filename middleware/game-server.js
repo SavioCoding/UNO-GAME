@@ -35,11 +35,9 @@ const startGame = function (gameState) {
 const playCard = function (gameState, username, obj) {
 	gameState[username].splice(obj.index, 1);
 	gameState.top = obj.card;
-	if (obj.card.special !== null) {
-		matchStat[username].numSpecialCards += 1;
-	}
 	// Draw 4 or 2
 	if (obj.card.special === "Add 4" || obj.card.special === "Add two") {
+		matchStat[username].numSpecialCards += 1;
 		const numAdd = obj.card.special === "Add 4" ? 4 : 2;
 		for (const player of players) {
 			if (player !== username) {
@@ -59,6 +57,16 @@ const drawCard = function (gameState, username) {
 	gameState[username].push(randomCard());
 };
 
+const switchTurn = function (gameState) {
+	let current = gameState["turn"];
+	for (player of players) {
+		if (player != current) {
+			gameState["turn"] = player;
+			break;
+		}
+	}
+};
+
 const isGameEnd = function (gameState) {
 	for (const player of players) {
 		if (gameState[player].length == 0) {
@@ -68,7 +76,7 @@ const isGameEnd = function (gameState) {
 	return false;
 };
 
-const endGame = (gameState, reason, loser = null) => {
+const endGame = (gameState, reason) => {
 	// call this when game is ended
 	// result = result: {tony:'win', may:'lose'}
 	// gives this to client: {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
@@ -76,18 +84,16 @@ const endGame = (gameState, reason, loser = null) => {
 	// update high score
 	const jsonData = fs.readFileSync("./data/users.json");
 	const playersObj = JSON.parse(jsonData);
-	for (player1 of players) {
-		if (player1 == loser) continue;
-		for (player2 of players) {
-			if (player2 != player1) {
-				const score = gameState[player2].length;
-				playersObj[player1].highscore =
-					score > playersObj[player1].highscore
-						? score
-						: playersObj[player1].highscore;
-			}
-		}
-	}
+	const score1 = gameState[players[1]].length;
+	const score2 = gameState[players[0]].length;
+	playersObj[players[0]].highscore =
+		score1 > playersObj[players[0]].highscore
+			? score1
+			: playersObj[players[0]].highscore;
+	playersObj[players[1]].highscore =
+		score1 > playersObj[players[1]].highscore
+			? score2
+			: playersObj[players[1]].highscore;
 
 	// result
 	const result = {};
@@ -103,12 +109,17 @@ const endGame = (gameState, reason, loser = null) => {
 	}
 	// time ended
 	else {
-		for (const player of players) {
-			if (player == loser) {
-				result[player] = "lose";
-			} else {
-				result[player] = "win";
-			}
+		if (gameState[players[0]].length < gameState[players[1]].length) {
+			result[players[0]] = "win";
+			result[players[1]] = "lose";
+		} else if (
+			gameState[players[0]].length > gameState[players[1]].length
+		) {
+			result[players[1]] = "win";
+			result[players[0]] = "lose";
+		} else {
+			result[players[1]] = "tie";
+			result[players[0]] = "tie";
 		}
 	}
 
@@ -129,10 +140,6 @@ const endGame = (gameState, reason, loser = null) => {
 	matchStat = {}; // reset matchStat object for next match
 	//write back updated highscore
 	fs.writeFileSync("data/users.json", JSON.stringify(playersObj, null, "  "));
-
-	// final clean up
-	players = [];
-	gameState = {};
 	return returnObj;
 };
 
