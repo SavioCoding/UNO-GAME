@@ -148,13 +148,6 @@ const Game = (function () {
 			alert("Please wait for your turn");
 			return;
 		}
-
-		const card = myHand[index];
-		if (card.special === "Change color" || card.special === "Add 4") {
-			$("#select-color-screen").show();
-			selectedIndex = index;
-			return;
-		}
 		if (
 			(card.color !== null &&
 				card.color !== top.color &&
@@ -167,11 +160,19 @@ const Game = (function () {
 			alert("Invalid Card!");
 			return;
 		}
+
+		Timer.startPauseTimer();
+		const card = myHand[index];
+		if (card.special === "Change color" || card.special === "Add 4") {
+			$("#select-color-screen").show();
+			selectedIndex = index;
+			return;
+		}
+
 		console.log("play");
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
 		// pause play clock
-		Timer.startPauseTimer();
 	};
 
 	const changeColor = function (index, newColor) {

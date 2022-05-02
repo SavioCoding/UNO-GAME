@@ -59,6 +59,16 @@ const drawCard = function (gameState, username) {
 	gameState[username].push(randomCard());
 };
 
+const switchTurn = function (gameState) {
+	let current = gameState["turn"];
+	for (player of players) {
+		if (player != current) {
+			gameState["turn"] = player;
+			break;
+		}
+	}
+};
+
 const isGameEnd = function (gameState) {
 	for (const player of players) {
 		if (gameState[player].length == 0) {
