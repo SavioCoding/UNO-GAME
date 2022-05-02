@@ -56,16 +56,24 @@ const WaitingScreen = (function () {
 	return { hide, initialize, show };
 })();
 
+// input: time in seconds
+// output: formated string of time in mm:ss
+function formatTime(time) {
+	let min = Math.floor(time / 60);
+	min = min.toString();
+	min = min.length == 2 ? min : "0" + min;
+
+	let sec = time % 60;
+	sec = sec.toString();
+	sec = sec.length == 2 ? sec : "0" + sec;
+	return min + ":" + sec;
+}
+
 const GameScreen = (function () {
 	// input: time remaining in seconds
 	// this function will transform seconds into mm:ss
 	const updateTimer = function (timeLeft) {
-		let min = Math.floor(timeLeft / 60);
-		let sec = timeLeft % 60;
-		sec = sec.toString();
-		sec = sec.length == 2 ? sec : "0" + sec;
-		console.log("0" + min + ":" + sec);
-		$("#timer").text("0" + min + ":" + sec);
+		$("#timer").text(formatTime(timeLeft));
 	};
 
 	return { updateTimer };
@@ -93,9 +101,12 @@ const GameoverScreen = (function () {
 	const displayStats = function (result, stat) {
 		// result: 'win or lose'
 		// stat: {"special card played": 1, "time used": 1, score: 1}
-		console.log(stat);
-		let statArr = [stat["numSpecialCards"], stat["time"], stat["score"]];
-		console.log(statArr);
+		const timeUsed = Timer.getTimeUsed();
+		let statArr = [
+			stat["numSpecialCards"],
+			formatTime(timeUsed),
+			stat["score"],
+		];
 
 		for (let i = 0; i < $("#game-stat tbody td").length; ++i) {
 			$("#game-stat tbody td")[i].innerHTML = statArr[i];

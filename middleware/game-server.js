@@ -35,9 +35,11 @@ const startGame = function (gameState) {
 const playCard = function (gameState, username, obj) {
 	gameState[username].splice(obj.index, 1);
 	gameState.top = obj.card;
+	if (obj.card.special !== null) {
+		matchStat[username].numSpecialCards += 1;
+	}
 	// Draw 4 or 2
 	if (obj.card.special === "Add 4" || obj.card.special === "Add two") {
-		matchStat[username].numSpecialCards += 1;
 		const numAdd = obj.card.special === "Add 4" ? 4 : 2;
 		for (const player of players) {
 			if (player !== username) {

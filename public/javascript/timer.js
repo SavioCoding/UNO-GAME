@@ -1,8 +1,12 @@
 const Timer = (function () {
+	const START_TIME = 90;
 	let timer = null;
-	let timeRemaining = 90;
-	let stop = false;
-	let timeout = null;
+	let timeRemaining = START_TIME;
+	let interval = 1000;
+
+	function getTimeUsed() {
+		return START_TIME - timeRemaining;
+	}
 
 	function countDown() {
 		if (stop == false) {
@@ -21,15 +25,17 @@ const Timer = (function () {
 	};
 
 	function startTimer() {
+		let stop = false;
 		timer = setInterval(() => {
 			if (timeRemaining == 0) {
-				clearInterval(timer);
+				stop = true;
 				Socket.timesUp();
 			}
 			GameScreen.updateTimer(timeRemaining);
 			timeRemaining--;
-		}, 1000);
+		}, interval);
+		if (stop) clearInterval(timer);
 	}
 
-	return { countDown, startTimer, pauseTimer };
+	return { countDown, startTimer, pauseTimer, getTimeUsed };
 })();
