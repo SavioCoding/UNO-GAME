@@ -57,7 +57,9 @@ const Game = (function () {
 			else if (a == "turn") {
 				turn = gameState[a];
 				if (gameState.turn == Authentication.getUser().username) {
+					// my turn
 					$("#draw-card-button").show();
+					Timer.startPauseTimer();
 				} else {
 					$("#draw-card-button").hide();
 				}
@@ -86,7 +88,12 @@ const Game = (function () {
 		const x = event.clientX - rect.left;
 		const y = event.clientY - rect.top;
 		console.log("x: " + x + " y: " + y);
-		if (y >= selfCardY && y <= selfCardY + Card.cardRenderHeight) {
+		if (
+			y >= selfCardY &&
+			y <= selfCardY + Card.cardRenderHeight &&
+			x >= selfCardXstart &&
+			x <= myHand.length * Card.cardRenderWidth + selfCardXstart
+		) {
 			const index = Math.floor(
 				(x - selfCardXstart) / Card.cardRenderWidth
 			);
@@ -132,18 +139,13 @@ const Game = (function () {
 
 	const drawCard = function () {
 		Socket.getSocket().emit("draw card");
+		// pause timer
+		Timer.startPauseTimer();
 	};
 
 	const playCard = function (index) {
 		if (turn !== Authentication.getUser().username) {
 			alert("Please wait for your turn");
-			return;
-		}
-
-		const card = myHand[index];
-		if (card.special === "Change color" || card.special === "Add 4") {
-			$("#select-color-screen").show();
-			selectedIndex = index;
 			return;
 		}
 		if (
@@ -158,9 +160,19 @@ const Game = (function () {
 			alert("Invalid Card!");
 			return;
 		}
+
+		Timer.startPauseTimer();
+		const card = myHand[index];
+		if (card.special === "Change color" || card.special === "Add 4") {
+			$("#select-color-screen").show();
+			selectedIndex = index;
+			return;
+		}
+
 		console.log("play");
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
+		// pause play clock
 	};
 
 	const changeColor = function (index, newColor) {
