@@ -8,34 +8,27 @@ const Timer = (function () {
 		return START_TIME - timeRemaining;
 	}
 
-	function countDown() {
-		if (stop == false) {
-			timeRemaining = timeRemaining - 1;
-			$("#timer").text("Time left: " + timeRemaining + " seconds");
-			if (timeRemaining > 0) timeout = setTimeout(countDown, 1000);
-			else {
-				Socket.timesUp();
-			}
+	// if the timer is paused, this function will start the timer
+	// if the timer has started, this function will pause the timer
+	function startPauseTimer() {
+		if (timer === null) {
+			// if paused, then start
+			clearInterval(timer);
+			timer = setInterval(() => {
+				if (timeRemaining == 1) {
+					clearInterval(timer);
+					Socket.timesUp();
+				}
+				timeRemaining--;
+				GameScreen.updateTimer(timeRemaining);
+			}, interval);
+		}
+		// if paused
+		else {
+			clearInterval(timer);
+			timer = null;
 		}
 	}
 
-	const pauseTimer = function () {
-		console.log("Paused: " + timeRemaining + " remaining");
-		clearInterval(timer);
-	};
-
-	function startTimer() {
-		let stop = false;
-		timer = setInterval(() => {
-			if (timeRemaining == 0) {
-				stop = true;
-				Socket.timesUp();
-			}
-			GameScreen.updateTimer(timeRemaining);
-			timeRemaining--;
-		}, interval);
-		if (stop) clearInterval(timer);
-	}
-
-	return { countDown, startTimer, pauseTimer, getTimeUsed };
+	return { startPauseTimer, getTimeUsed };
 })();
