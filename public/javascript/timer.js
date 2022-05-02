@@ -1,31 +1,39 @@
 const Timer = (function () {
+	let timer = null;
+	let timeRemaining = 20;
+	let stop = false;
+	let timeout = null;
 
-    let timeRemaining = 180;
-    let stop = false
-    let timeout = null;
+	const getTime = function () {
+		return timeRemaining;
+	};
 
 	function countDown() {
-        if(stop==false){
-            timeRemaining = timeRemaining - 1;
-            $("#timer").text("Time left: "+timeRemaining+" seconds");
-            if (timeRemaining > 0)
-                timeout = setTimeout(countDown, 1000);
-            else{
-                Socket.timesUp()
-            }
-        }
-    }
+		if (stop == false) {
+			timeRemaining = timeRemaining - 1;
+			$("#timer").text("Time left: " + timeRemaining + " seconds");
+			if (timeRemaining > 0) timeout = setTimeout(countDown, 1000);
+			else {
+				Socket.timesUp();
+			}
+		}
+	}
 
-    function stopTimer() {
-        stop = true
-        clearTimeout(timeout)
-    }
+	const pauseTimer = function () {
+		console.log("Paused: " + timeRemaining + " remaining");
+		clearInterval(timer);
+	};
 
-    function startTimer() {
-        stop = false
-        timeout = setTimeout(countDown, 1000);
-    }
+	function startTimer() {
+		timer = setInterval(() => {
+			if (timeRemaining == 0) {
+				clearInterval(timer);
+				console.log("end");
+			}
+			console.log(timeRemaining);
+			timeRemaining--;
+		}, 1000);
+	}
 
-
-	return { countDown, stopTimer, startTimer };
+	return { countDown, startTimer, pauseTimer };
 })();
