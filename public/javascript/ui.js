@@ -23,9 +23,7 @@ const LogInForm = (function () {
 					Socket.queue();
 					// TODO: client side show the waiting screen
 					$("#match-button").hide();
-					$("#wait-screen").append(
-						"<h1>Waiting for another player to join...</h1>"
-					);
+					$("#wait-message").show();
 				},
 				(error) => {
 					// TODO: client side display error message
