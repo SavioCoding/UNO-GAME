@@ -23,7 +23,8 @@ app.use(gameSession);
 
 // Global Variables
 onlineUsers = {}; // logged in users
-players = {}; // players in game, can use to store the cards they have
+players = []; // players in game, can use to store the cards they have
+gameState = {};
 deck = {};
 lastCard = null;
 matchStat = {}; // to return to client when match is ended e.g. {tony: {"special card played": 1, "time used": 1:23, "score" 10}}
@@ -33,7 +34,7 @@ io.use((socket, next) => {
 });
 
 require("./middleware/server-ajax")(app); // add post/get methods to add
-require("./middleware/server-socket")(app, io); // add listeners to io
+require("./middleware/server-socket")(io); // add listeners to io
 
 httpServer.listen(8000, () => {
 	console.log("Game server starting...");

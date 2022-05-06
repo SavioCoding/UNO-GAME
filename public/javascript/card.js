@@ -18,8 +18,7 @@ class Card {
 		"Add 4": 5,
 	};
 
-	constructor(id, number, color, special) {
-		this.id = id;
+	constructor(number, color, special) {
 		this.number = number;
 		this.color = color;
 		this.special = special;
@@ -30,9 +29,28 @@ class Card {
 		let sRow;
 		let sCol;
 		if (!this.number && !this.color && !this.special) {
+			// backside of the card
 			sRow = 4;
 			sCol = 10;
-		} else {
+		}
+		// for changed color
+		else if (this.special === "Change color" && this.color !== null) {
+			sRow = 4;
+			if (this.color === "red") sCol = 1;
+			else if (this.color === "blue") sCol = 2;
+			else if (this.color === "yellow") sCol = 3;
+			else sCol = 4;
+		}
+		// for draw 4
+		else if (this.special === "Add 4" && this.color !== null) {
+			sRow = 4;
+			if (this.color === "red") sCol = 6;
+			else if (this.color === "blue") sCol = 7;
+			else if (this.color === "yellow") sCol = 8;
+			else sCol = 9;
+		}
+		// other cards
+		else {
 			sRow = this.color ? Card.row[this.color] : 4;
 			sCol = this.special ? Card.col[this.special] : this.number;
 		}

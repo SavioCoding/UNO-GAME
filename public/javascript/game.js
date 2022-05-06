@@ -3,15 +3,15 @@ const Game = (function () {
 	let deck = null;
 
 	// check if cards are initialized for first time
-	let first = true
-	
+	let first = true;
+
 	// js object (coordinates to id)
-	let XYToid = {}
+	let XYToid = {};
 
 	// store card id if the card is valid and clicked once
 	let checkedCard = null;
 
-	// check if you are in current turn
+	// check if you are in current turn, such that you are not allowed to use the card if it is not your turn
 	let yourTurn = false;
 
 	// last Card
@@ -20,127 +20,170 @@ const Game = (function () {
 	// changedColor (+4 or change color)
 	let changedColor = null;
 
-	const changeTurn = (turn) => {
-		yourTurn = turn
-	}
+	let socket = null;
 
-	const changeCheckedCard = (id) => {
-		checkedCard = id
-	}
+	const selfCardXstart = 0;
+	const selfCardY = 400;
+	const opCardX = 500;
+	const opCardY = 50;
+	const topCardY = 200;
+	const topCardX = 300;
 
-	const parseCards = function (cards) {
-		// cards is a list of card object from server
-		// returns the sorted list of Card
-		let d = [];
-		for (let i = 0; i < cards.length; ++i) {
-			d.push(new Card(cards[i].id, cards[i].number, cards[i].color, cards[i].special));
-		}
-		return d;
-	};
+	let myHand = null;
+	let turn = null;
+	let top = null;
+	let selectedIndex = null;
 
-	const renderSelfDeck = function (selfDeck) {
-		for (let i = 0; i < selfDeck.length; ++i) {
-			let x = i * Card.cardRenderWidth;
-			let y = 400;
-			let cardId = selfDeck[i].id;
-			coordinates = x.toString() + "," + y.toString()
-			XYToid[coordinates] = cardId;
-			selfDeck[i].draw(context, x, y);
-		}
-	};
-
-	const renderOpponentCard = function (numCards) {
-		context.clearRect(0, 100, 1000, Card.cardRenderHeight);
-		for (let i = numCards - 1; i >= 0; --i) {
-			let x = 800 - i * Card.cardRenderWidth;
-			let y = 100;
-			let card = new Card(null, null, null, null);
-			card.draw(context, x, y);
-		}
-	};
-
-	// when you use a card and put it in the middle of the field
-	const useCardAndPut = function (id, cards) {
-		for (let i = 0; i < deck.length; ++i) {
-			let x = i * Card.cardRenderWidth;
-			let y = 400;
-			let cardId = deck[i].id;
-			if(cardId === id){
-				context.clearRect(0, y, 1000, Card.cardRenderHeight);
-				lastCard = deck[i]
-				lastCard.draw(context, 400, 250);
-				deck = parseCards(cards);
-				renderSelfDeck(deck);
-				break;
+	const renderState = function (gameState) {
+		const canvas = $("canvas").get(0);
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		for (const a in gameState) {
+			if (a == "top") {
+				top = gameState[a];
+				let card = parseCard(top);
+				card.draw(context, topCardX, topCardY);
 			}
-		}
-	}
-
-	const PutCard = function (card) {
-		lastCard = new Card(card.id, card.number, card.color, card.special);
-		lastCard.draw(context, 400, 250);
-	}
-
-	
-	// return the id of the card
-	// return -1 if not clicking on a card
-	const withinRect = (x, y) => {
-		for (key in XYToid){
-			let coordinates = key.split(",");
-			let cardX = parseInt(coordinates[0])
-			let cardY = parseInt(coordinates[1])
-			if(x>=cardX && x<=cardX+Card.cardRenderWidth && y>=cardY && y<=cardY+Card.cardRenderHeight){
-				return XYToid[key]
-			}
-		}
-		return -1;
-	}
-
-	const initialize = function (cards) {
-		// assume the cards are sorted
-		// cards is a list of {"id":102,"number":8,"special":null,"color":"blue"}
-		context = $("canvas").get(0).getContext("2d");
-		context.imageSmoothingEnabled = false;
-
-		// *Global var
-		deck = parseCards(cards);
-		renderSelfDeck(deck);
-
-		// Add clicking to canvas and check the card
-		if(first){
-			function getCursorPosition(canvas, event) {
-				const rect = canvas.getBoundingClientRect()
-				const x = event.clientX - rect.left
-				const y = event.clientY - rect.top
-				let id = withinRect(x, y)
-				if(yourTurn === true){
-					if(id !== -1){
-						// use already click the card once before
-						if(checkedCard!==null && checkedCard===id){
-							Socket.useCard(id)
-							$("#validCard").hide();
-						}
-						else{
-							Socket.checkCard(id);
-						}
-					}else{
-						checkedCard = null;
-						$("#inValidCard").hide()
-						$("#validCard").hide()
-						$("#selectCard").show()
-					}
+			// my hand
+			else if (a == Authentication.getUser().username) {
+				myHand = gameState[a];
+				let cardX = selfCardXstart;
+				for (const c of myHand) {
+					let card = parseCard(c);
+					card.draw(context, cardX, selfCardY);
+					cardX += Card.cardRenderWidth;
 				}
 			}
-
-			const canvas = document.querySelector('canvas')
-			canvas.addEventListener("click", function(e) {
-				e.stopPropagation();
-				e.preventDefault();
-				getCursorPosition(canvas, e)
-			})
-			first = false
+			// whose turn is this
+			else if (a == "turn") {
+				turn = gameState[a];
+				if (gameState.turn == Authentication.getUser().username) {
+					// my turn
+					$("#draw-card-button").show();
+					Timer.startPauseTimer();
+				} else {
+					$("#draw-card-button").hide();
+				}
+			}
+			// opponent's hand
+			else {
+				let opDeck = gameState[a];
+				let cardX = opCardX;
+				for (const c of opDeck) {
+					let card = new Card(null, null, null);
+					card.draw(context, cardX, opCardY);
+					cardX += Card.cardRenderWidth;
+				}
+			}
 		}
 	};
 
-	return { initialize: initialize, renderOpponentCard: renderOpponentCard, changeTurn, changeCheckedCard, useCardAndPut, PutCard};
+	const parseCard = function (card) {
+		return new Card(card.number, card.color, card.special);
+	};
+
+	// Add clicking to canvas and check the card, such that this event Handler won't be called again
+	// called when use start clicking, pass the position to withinRect and check whether use is clicking on card
+	function getCursorPosition(canvas, event) {
+		const rect = canvas.getBoundingClientRect();
+		const x = event.clientX - rect.left;
+		const y = event.clientY - rect.top;
+		console.log("x: " + x + " y: " + y);
+		if (
+			y >= selfCardY &&
+			y <= selfCardY + Card.cardRenderHeight &&
+			x >= selfCardXstart &&
+			x <= myHand.length * Card.cardRenderWidth + selfCardXstart
+		) {
+			const index = Math.floor(
+				(x - selfCardXstart) / Card.cardRenderWidth
+			);
+			playCard(index);
+		}
+	}
+
+	const initialize = function () {
+		context = $("canvas").get(0).getContext("2d");
+		context.imageSmoothingEnabled = false;
+		// for drawing cards
+		$("#draw-card-button").on("click", () => {
+			console.log("draw");
+			drawCard();
+		});
+		// for changing color
+		{
+			$("#select-color-screen #red").on("click", () => {
+				changeColor(selectedIndex, "red");
+				$("#select-color-screen").hide();
+			});
+			$("#select-color-screen #green").on("click", () => {
+				changeColor(selectedIndex, "green");
+				$("#select-color-screen").hide();
+			});
+			$("#select-color-screen #blue").on("click", () => {
+				changeColor(selectedIndex, "blue");
+				$("#select-color-screen").hide();
+			});
+			$("#select-color-screen #yellow").on("click", () => {
+				changeColor(selectedIndex, "yellow");
+				$("#select-color-screen").hide();
+			});
+		}
+		// for playing cards
+		const canvas = document.querySelector("canvas");
+		$("canvas").on("click", (e) => {
+			e.stopPropagation();
+			e.preventDefault();
+			getCursorPosition(canvas, e);
+		});
+	};
+
+	const drawCard = function () {
+		Socket.getSocket().emit("draw card");
+		// pause timer
+		Timer.startPauseTimer();
+	};
+
+	const playCard = function (index) {
+		if (turn !== Authentication.getUser().username) {
+			alert("Please wait for your turn");
+			return;
+		}
+		if (
+			(card.color !== null &&
+				card.color !== top.color &&
+				card.number !== top.number) ||
+			(card.color !== null &&
+				card.number === null &&
+				card.color !== top.color &&
+				card.special !== top.special)
+		) {
+			alert("Invalid Card!");
+			return;
+		}
+
+		Timer.startPauseTimer();
+		const card = myHand[index];
+		if (card.special === "Change color" || card.special === "Add 4") {
+			$("#select-color-screen").show();
+			selectedIndex = index;
+			return;
+		}
+
+		console.log("play");
+		const returnObj = { index, card };
+		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
+		// pause play clock
+	};
+
+	const changeColor = function (index, newColor) {
+		const card = myHand[index];
+		card.color = newColor;
+		const returnObj = { index, card };
+		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
+	};
+
+	return {
+		initialize: initialize,
+		renderState,
+	};
 })();

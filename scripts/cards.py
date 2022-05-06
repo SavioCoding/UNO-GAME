@@ -16,7 +16,6 @@ for i in range(8):
         if j==0 and i>3:
             continue
         card = {}
-        card['id'] = id
         if j<10:
             card['number'] = j
             card['special'] = None
