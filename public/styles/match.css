@@ -2,10 +2,21 @@
 	background-color: rgb(69, 156, 228);
 }
 
+#wait-message {
+	display: none;
+}
+
 #match-button {
 	display: none;
 	font-weight: bold;
+	font-family: 'Hubballi', cursive;
+	font-size: medium;
+	border: 1px solid white;
 	height: 40px;
-	background-color: red;
+	color: black;
+	background: #FBE5C8;
+	padding: 0 20px;
+	transition: 1s background;
 	cursor: pointer;
+	border-radius: 5px;
 }

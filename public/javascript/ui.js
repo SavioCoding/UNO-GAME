@@ -23,9 +23,7 @@ const LogInForm = (function () {
 					Socket.queue();
 					// TODO: client side show the waiting screen
 					$("#match-button").hide();
-					$("#wait-screen").append(
-						"<h1>Waiting for another player to join...</h1>"
-					);
+					$("#wait-message").show();
 				},
 				(error) => {
 					// TODO: client side display error message
@@ -134,14 +132,14 @@ const GameoverScreen = (function () {
 			leaderboard.append(
 				$(
 					"<tr><td>" +
-						(i + 1) +
-						"</td>" +
-						"<td>" +
-						tag +
-						"</td>" +
-						"<td>" +
-						score +
-						"</td></tr>"
+					(i + 1) +
+					"</td>" +
+					"<td>" +
+					tag +
+					"</td>" +
+					"<td>" +
+					score +
+					"</td></tr>"
 				)
 			);
 		}
