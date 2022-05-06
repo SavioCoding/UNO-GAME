@@ -16,6 +16,7 @@
 	justify-content: center;
 	padding: 20px;
 	gap: 20px;
+
 }
 
 .overlay .caption {
@@ -66,9 +67,17 @@
 }
 
 #title {
-	font-family: 'Hubballi', cursive;
 	font-family: 'Abril Fatface', cursive;
 	font-size: 300%;
+	text-transform: uppercase;
+	color: black;
+	user-select: none;
+}
+
+#subtitle {
+	font-weight: bold;
+	font-family: 'Abril Fatface', cursive;
+	font-size: 200%;
 	text-transform: uppercase;
 	color: black;
 	user-select: none;
