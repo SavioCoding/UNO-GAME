@@ -148,6 +148,7 @@ const Game = (function () {
 			alert("Please wait for your turn");
 			return;
 		}
+		const card = myHand[index];
 		if (
 			(card.color !== null &&
 				card.color !== top.color &&
@@ -162,7 +163,6 @@ const Game = (function () {
 		}
 
 		Timer.startPauseTimer();
-		const card = myHand[index];
 		if (card.special === "Change color" || card.special === "Add 4") {
 			$("#select-color-screen").show();
 			selectedIndex = index;
