@@ -1,83 +1,74 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<title>COMP4021 Project: UNO Game</title>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link href="https://fonts.googleapis.com/css2?family=Hubballi&family=League+Gothic&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="./styles/style.css">
-	<style>
-		/* canvas {
+	<head>
+		<title>COMP4021 Project: UNO Game</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Noto+Sans" rel="stylesheet">
+		<link rel="stylesheet" href="./styles/style.css">
+		<style>
+			/* canvas {
 				background-image: "./img/game-background.png";
 			} */
-	</style>
-</head>
-
-<body>
-	<h1>UNO Game</h1>
-	<div id="game-container">
-		<h1>This is where the game is played</h1>
-		<h1 id="timer">Time left: 20 seconds</h1>
-		<h1 id="waiting">Please wait the other player</h1>
-		<h1 id="yourTurn">Please draw a card or select a valid card</h1>
-		<h1 id="validCard">This card is valid, click once more if you want to use it</h1>
-		<h1 id="invalidCard">This card is invalid, Pick another one</h1>
-		<h1 id="changeColor">Your opponent changed color</h1>
-		<!-- <button id="uno-button">UNO</button> -->
-		<canvas width="1000px" height="600px"></canvas>
-		<button id="test-button">Draw Card</button>
-	</div>
-	<div id="select-color-screen" class="overlay row">
-		<h1>Please select a color</h1>
-		<div class="btn-group">
-			<button id="red">Red</button>
-			<button id="green">Green</button>
-			<button id="blue">Blue</button>
-			<button id="yellow">Yellow</button>
+		</style>
+	</head>
+	<body>
+		<div id="game-container">
+			<canvas width="1000px" height="600px"></canvas>
+			<div id="counter">
+				TIME:<tspan id="timer">01:30</tspan>
+			</div>
+			</svg>
+			<button id="draw-card-button">Draw Card</button>
 		</div>
-	</div>
-
-	<div id="wait-screen" class="overlay row">
-		<div id="header" class="overlay row">
-			<div id="title">The UNO Game -- Game Instruction </div>
-
-		</div>
-		<div class="content shadow row">
-			<div class="container">
-				<div class="row">
-
-					<div class="col">
-						<div id="subtitle">How to Play? </div>
-						<ul>
-							<li class="caption">You should match the card in the DISCARD pile.</li>
-							<li class="caption">You can match the card with same color, number, or symbols.</li>
-							<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
-							<li class="caption">If you cannot play a card, draw 1 card.</li>
-							<li class="caption">You can only play 1 card at a time.</li>
-							<li class="caption">When a player plays their last card, the game is over.</li>
-						</ul>
-					</div>
-					<div class="col">
-						<div id="subtitle">Set Up </div>
-						<ul>
-							<li class="caption">You should match the card in the DISCARD pile.</li>
-							<li class="caption">You can match the card with same color, number, or symbols.</li>
-							<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
-							<li class="caption">If you cannot play a card, draw 1 card.</li>
-							<li class="caption">You can only play 1 card at a time.</li>
-							<li class="caption">When a player plays their last card, the game is over.</li>
-						</ul>
-					</div>
-					<div class="col">
-						<h2 class="caption">Column3</h2>
-					</div>
-
-				</div>
-				<button id="match-button">Play</button>
-				<div id="wait-message">Waiting for another player to join..</div>
+		<div id="select-color-screen" class="overlay row">
+			<h1>Please select a color</h1>
+			<div class="btn-group">
+				<button id="red">Red</button>
+				<button id="green">Green</button>
+				<button id="blue">Blue</button>
+				<button id="yellow">Yellow</button>
 			</div>
 		</div>
 
+		<div id="wait-screen" class="overlay row">
+			<div id="header" class="overlay row">
+				<div id="title">The UNO Game -- Game Instruction </div>
+			</div>
+			<div class="content shadow col">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div id="subtitle">How to Play? </div>
+							<ul>
+								<li class="caption">You should match the card in the DISCARD pile.</li>
+								<li class="caption">You can match the card with same color, number, or symbols.</li>
+								<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
+								<li class="caption">If you cannot play a card, draw 1 card.</li>
+								<li class="caption">You can only play 1 card at a time.</li>
+								<li class="caption">When a player plays their last card, the game is over.</li>
+							</ul>
+						</div>
+						<div class="col">
+							<div id="subtitle">Set Up </div>
+							<ul>
+								<li class="caption">You should match the card in the DISCARD pile.</li>
+								<li class="caption">You can match the card with same color, number, or symbols.</li>
+								<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
+								<li class="caption">If you cannot play a card, draw 1 card.</li>
+								<li class="caption">You can only play 1 card at a time.</li>
+								<li class="caption">When a player plays their last card, the game is over.</li>
+							</ul>
+						</div>
+						<div class="col">
+							<h2 class="caption">Column3</h2>
+						</div>
+					</div>
+				</div>
+				<button id="match-button">Play</button>
+				<div id="wait-message">Waiting for another player to join...</div>
+			</div>
+		</div>
+		
 		<div id="gameover-overlay" class="overlay row">
 			<div id="leaderboard-container">
 				<table id="leaderboard">
@@ -89,14 +80,12 @@
 							<th>High score</th>
 						</tr>
 					</thead>
-					<tbody id="leaderboard-body"></tbody>
+					<tbody id="leaderboard-body"></tbody>		
 				</table>
 				<button id="quit-button">Back To Lobby</button>
 			</div>
 			<div id="game-stat-container">
-				<div id="result-textbox">
-					<!--Put "You WIN!" or "You LOSE" here-->
-				</div>
+				<div id="result-textbox"><!--Put "You WIN!" or "You LOSE" here--></div>
 				<table id="game-stat">
 					<caption>Your stats for this game</caption>
 					<tbody>
@@ -117,13 +106,12 @@
 				<button id="next-button">Next</button>
 			</div>
 		</div>
-
 		<div id="login-overlay" class="overlay row">
 			<div id="header" class="overlay row">
 				<div id="title">The UNO Game </div>
 			</div>
-			<div class="content shadow row">
 
+			<div class="content shadow row">
 				<form id="login-form" class="col">
 					<img src="./img/uno-logo.svg" alt="UNO logo" width="100">
 					<div class="caption">YOU CAN LOGIN</div>
@@ -138,7 +126,6 @@
 					<div class="caption">REGISTER IF YOU DO NOT HAVE ONE</div>
 					<div class="spacer-0"></div>
 					<input id="register-username" maxlength="10" placeholder="Enter your username"></input>
-
 					<input id="register-name" maxlength="16" placeholder="Enter your name"></input>
 					<input id="register-password" type="password" placeholder="Enter your password"></input>
 					<input id="register-confirm" type="password" placeholder="Enter your password again"></input>
@@ -153,11 +140,10 @@
 		<script src="./javascript/matching.js"></script>
 		<script src="./javascript/card.js"></script>
 		<script src="./javascript/game.js"></script>
-		<script src="./javascript/ui.js"></script>
+        <script src="./javascript/ui.js"></script>
 		<script src="./javascript/timer.js"></script>
 		<script>
 			$(document).ready(UI.initialize());
 		</script>
-</body>
-
+	</body>
 </html>
