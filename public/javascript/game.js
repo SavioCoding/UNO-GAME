@@ -171,7 +171,8 @@ const Game = (function () {
 
 		if (myHand.length == 2) {
 			// playing second to last card
-			GameScreen.showUnoButton();
+			GameScreen.showAffirmUnoButton();
+			Socket.getSocket().emit("last card");
 		}
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
@@ -180,7 +181,8 @@ const Game = (function () {
 	const changeColor = function (index, newColor) {
 		if (myHand.length == 2) {
 			//playing second to last card
-			GameScreen.showUnoButton();
+			GameScreen.showAffirmUnoButton();
+			Socket.getSocket().emit("last card");
 		}
 		const card = myHand[index];
 		card.color = newColor;

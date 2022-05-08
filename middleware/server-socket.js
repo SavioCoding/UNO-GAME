@@ -46,6 +46,13 @@ module.exports = function (io) {
 			}
 		});
 
+		socket.on("last card", () => {
+			if (socket.request.session.user) {
+				const { username } = socket.request.session.user;
+				io.emit("show uno", username);
+			}
+		});
+
 		socket.on("time", () => {
 			if (socket.request.session.user) {
 				const { username } = socket.request.session.user;

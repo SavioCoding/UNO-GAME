@@ -74,11 +74,15 @@ const GameScreen = (function () {
 		$("#timer").text(formatTime(timeLeft));
 	};
 
-	const showUnoButton = function () {
+	const showAffirmUnoButton = function () {
 		$("#affirm-uno-button").css("visibility", "visible");
 	};
 
-	return { updateTimer, showUnoButton };
+	const showDenyUnoButton = function () {
+		$("#deny-uno-button").css("visibility", "visible");
+	};
+
+	return { updateTimer, showAffirmUnoButton, showDenyUnoButton };
 })();
 
 const GameoverScreen = (function () {
