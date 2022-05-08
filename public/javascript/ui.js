@@ -74,7 +74,11 @@ const GameScreen = (function () {
 		$("#timer").text(formatTime(timeLeft));
 	};
 
-	return { updateTimer };
+	const showUnoButton = function () {
+		$("#affirm-uno-button").css("visibility", "visible");
+	};
+
+	return { updateTimer, showUnoButton };
 })();
 
 const GameoverScreen = (function () {

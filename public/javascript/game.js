@@ -161,21 +161,27 @@ const Game = (function () {
 			alert("Invalid Card!");
 			return;
 		}
-
-		Timer.startPauseTimer();
+		// Valid:
+		Timer.startPauseTimer(); // pause timer
 		if (card.special === "Change color" || card.special === "Add 4") {
 			$("#select-color-screen").show();
 			selectedIndex = index;
 			return;
 		}
 
-		console.log("play");
+		if (myHand.length == 2) {
+			// playing second to last card
+			GameScreen.showUnoButton();
+		}
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
-		// pause play clock
 	};
 
 	const changeColor = function (index, newColor) {
+		if (myHand.length == 2) {
+			//playing second to last card
+			GameScreen.showUnoButton();
+		}
 		const card = myHand[index];
 		card.color = newColor;
 		const returnObj = { index, card };
