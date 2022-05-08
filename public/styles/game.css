@@ -9,7 +9,8 @@
 	display: block;
 } */
 
-@import url(https://fonts.googleapis.com/css2?family=Press+Start+2P);
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P");
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
 
 #changeColor {
 	display: none;
@@ -68,4 +69,36 @@
 	fill: white;
 	stroke: black;
 	stroke-width: 1px;
+}
+
+#uno-button-container {
+	visibility: hidden;
+	position: absolute;
+	left: 75px;
+	top: 200px;
+}
+
+.uno-button {
+	transform: rotate(-30deg);
+}
+
+.uno-button text {
+	font-size: 60px;
+	font-family: "Bungee Shade", cursive;
+}
+
+#affirm-uno-button {
+	fill: red;
+}
+
+#deny-uno-button {
+	fill: black;
+}
+
+#affirm-uno-button text {
+	fill: yellow;
+}
+
+#deny-uno-button text {
+	fill: white;
 }
