@@ -75,14 +75,17 @@ const GameScreen = (function () {
 	};
 
 	const showAffirmUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "visible");
 		$("#affirm-uno-button").css("visibility", "visible");
 	};
 
 	const showDenyUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "visible");
 		$("#deny-uno-button").css("visibility", "visible");
 	};
 
 	const hideUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "hidden");
 		$("#affirm-uno-button").css("visibility", "hidden");
 		$("#deny-uno-button").css("visibility", "hidden");
 	};

@@ -19,17 +19,19 @@
 			</div>
 			</svg>
 			<button id="draw-card-button">Draw Card</button>
-			<div id="uno-button-container">
-				<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">
-					<g id="affirm-uno-button" class="uno-button" y="100" onclick="Game.affirmUno()">
-						<ellipse cx="55" cy="130" rx="120" ry="70"></ellipse>
-						<text y="145" x="-10">UNO</text>
-					</g>
-					<g id="deny-uno-button" class="uno-button" onclick="Game.denyUno()">
-						<ellipse cx="355" cy="310" rx="120" ry="70"></ellipse>
-						<text y="320" x="250">U,NO!</text>
-					</g>
-				</svg>
+			<div id="uno-button-overlay" class="overlay">
+				<div id="uno-button-container">
+					<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">
+						<g id="affirm-uno-button" class="uno-button" y="100" onclick="Game.affirmUno()">
+							<ellipse cx="55" cy="130" rx="120" ry="70"></ellipse>
+							<text y="145" x="-10">UNO</text>
+						</g>
+						<g id="deny-uno-button" class="uno-button" onclick="Game.denyUno()">
+							<ellipse cx="355" cy="310" rx="120" ry="70"></ellipse>
+							<text y="320" x="250">U,NO!</text>
+						</g>
+					</svg>
+				</div>
 			</div>
 		</div>
 		<div id="select-color-screen" class="overlay row">

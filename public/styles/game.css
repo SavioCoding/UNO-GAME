@@ -71,8 +71,12 @@
 	stroke-width: 1px;
 }
 
-#uno-button-container {
+#uno-button-overlay {
+	background: #000000cc;
 	visibility: hidden;
+}
+
+#uno-button-container {
 	position: absolute;
 	left: 75px;
 	top: 200px;
