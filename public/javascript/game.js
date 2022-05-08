@@ -129,8 +129,8 @@ const Game = (function () {
 			});
 		}
 		// for playing cards
-		const canvas = document.querySelector("canvas");
 		$("canvas").on("click", (e) => {
+			const canvas = document.querySelector("canvas");
 			e.stopPropagation();
 			e.preventDefault();
 			getCursorPosition(canvas, e);
@@ -162,17 +162,15 @@ const Game = (function () {
 			return;
 		}
 
-		Timer.startPauseTimer();
+		// Valid:
+		Timer.startPauseTimer(); // pause timer
 		if (card.special === "Change color" || card.special === "Add 4") {
 			$("#select-color-screen").show();
 			selectedIndex = index;
 			return;
 		}
-
-		console.log("play");
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
-		// pause play clock
 	};
 
 	const changeColor = function (index, newColor) {
@@ -182,8 +180,18 @@ const Game = (function () {
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
 	};
 
+	const affirmUno = function () {
+		Socket.getSocket().emit("affirm uno");
+	};
+
+	const denyUno = function () {
+		Socket.getSocket().emit("deny uno");
+	};
+
 	return {
 		initialize: initialize,
 		renderState,
+		affirmUno,
+		denyUno,
 	};
 })();

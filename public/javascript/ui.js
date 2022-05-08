@@ -74,7 +74,28 @@ const GameScreen = (function () {
 		$("#timer").text(formatTime(timeLeft));
 	};
 
-	return { updateTimer };
+	const showAffirmUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "visible");
+		$("#affirm-uno-button").css("visibility", "visible");
+	};
+
+	const showDenyUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "visible");
+		$("#deny-uno-button").css("visibility", "visible");
+	};
+
+	const hideUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "hidden");
+		$("#affirm-uno-button").css("visibility", "hidden");
+		$("#deny-uno-button").css("visibility", "hidden");
+	};
+
+	return {
+		updateTimer,
+		showAffirmUnoButton,
+		showDenyUnoButton,
+		hideUnoButton,
+	};
 })();
 
 const GameoverScreen = (function () {

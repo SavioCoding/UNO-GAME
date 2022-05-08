@@ -34,6 +34,18 @@ const Socket = (function () {
 			GameoverScreen.displayStats(result, stat);
 			GameoverScreen.generateScreen(players);
 		});
+
+		socket.on("show uno", (username) => {
+			if (username == Authentication.getUser().username) {
+				GameScreen.showAffirmUnoButton();
+			} else {
+				GameScreen.showDenyUnoButton();
+			}
+		});
+
+		socket.on("hide uno", () => {
+			GameScreen.hideUnoButton();
+		});
 	};
 
 	const timesUp = function () {
