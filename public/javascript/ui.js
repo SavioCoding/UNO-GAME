@@ -82,7 +82,17 @@ const GameScreen = (function () {
 		$("#deny-uno-button").css("visibility", "visible");
 	};
 
-	return { updateTimer, showAffirmUnoButton, showDenyUnoButton };
+	const hideUnoButton = function () {
+		$("#affirm-uno-button").css("visibility", "hidden");
+		$("#deny-uno-button").css("visibility", "hidden");
+	};
+
+	return {
+		updateTimer,
+		showAffirmUnoButton,
+		showDenyUnoButton,
+		hideUnoButton,
+	};
 })();
 
 const GameoverScreen = (function () {

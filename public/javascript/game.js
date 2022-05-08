@@ -135,12 +135,6 @@ const Game = (function () {
 			e.preventDefault();
 			getCursorPosition(canvas, e);
 		});
-
-		// for UNO button
-		$("affirm-uno-button").on("click", (e) => {
-			console.log("UNO");
-			Socket.getSocket().emit("affirm uno");
-		});
 	};
 
 	const drawCard = function () {
@@ -185,8 +179,18 @@ const Game = (function () {
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
 	};
 
+	const affirmUno = function () {
+		Socket.getSocket().emit("affirm uno");
+	};
+
+	const denyUno = function () {
+		Socket.getSocket().emit("deny uno");
+	};
+
 	return {
 		initialize: initialize,
 		renderState,
+		affirmUno,
+		denyUno,
 	};
 })();

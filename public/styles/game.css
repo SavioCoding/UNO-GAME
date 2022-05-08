@@ -79,6 +79,7 @@
 }
 
 .uno-button {
+	visibility: hidden;
 	transform: rotate(-30deg);
 	cursor: pointer;
 }

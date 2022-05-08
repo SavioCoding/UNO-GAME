@@ -42,6 +42,10 @@ const Socket = (function () {
 				GameScreen.showDenyUnoButton();
 			}
 		});
+
+		socket.on("hide uno", () => {
+			GameScreen.hideUnoButton();
+		});
 	};
 
 	const timesUp = function () {
