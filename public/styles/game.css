@@ -80,6 +80,7 @@
 
 .uno-button {
 	transform: rotate(-30deg);
+	cursor: pointer;
 }
 
 .uno-button text {

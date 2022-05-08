@@ -41,15 +41,11 @@ module.exports = function (io) {
 					const resultObj = Game.endGame(gameState, "card");
 					io.emit("gameover", JSON.stringify(resultObj));
 				} else {
+					if (gameState[username].length == 1) {
+						io.emit("show uno", username);
+					}
 					io.emit("game state", JSON.stringify(gameState));
 				}
-			}
-		});
-
-		socket.on("last card", () => {
-			if (socket.request.session.user) {
-				const { username } = socket.request.session.user;
-				io.emit("show uno", username);
 			}
 		});
 

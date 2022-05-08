@@ -129,11 +129,17 @@ const Game = (function () {
 			});
 		}
 		// for playing cards
-		const canvas = document.querySelector("canvas");
 		$("canvas").on("click", (e) => {
+			const canvas = document.querySelector("canvas");
 			e.stopPropagation();
 			e.preventDefault();
 			getCursorPosition(canvas, e);
+		});
+
+		// for UNO button
+		$("affirm-uno-button").on("click", (e) => {
+			console.log("UNO");
+			Socket.getSocket().emit("affirm uno");
 		});
 	};
 
@@ -168,22 +174,11 @@ const Game = (function () {
 			selectedIndex = index;
 			return;
 		}
-
-		if (myHand.length == 2) {
-			// playing second to last card
-			GameScreen.showAffirmUnoButton();
-			Socket.getSocket().emit("last card");
-		}
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
 	};
 
 	const changeColor = function (index, newColor) {
-		if (myHand.length == 2) {
-			//playing second to last card
-			GameScreen.showAffirmUnoButton();
-			Socket.getSocket().emit("last card");
-		}
 		const card = myHand[index];
 		card.color = newColor;
 		const returnObj = { index, card };
