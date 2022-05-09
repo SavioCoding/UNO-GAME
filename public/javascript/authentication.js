@@ -8,12 +8,13 @@ const Authentication = (function () {
 	// send signin request to server
 	const login = function (username, onSuccess, onError) {
 		// prepare user data
-		const jsonData = JSON.stringify({ username });
+		const user1 = {username}
+
 		// send AJAX request to server
 		fetch("/login", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: jsonData,
+			body: JSON.stringify(user1),
 		})
 			.then((res) => res.json())
 			.then((json) => {
