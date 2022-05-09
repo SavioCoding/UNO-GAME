@@ -12,12 +12,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P");
 @import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
 
-#changeColor {
-	display: none;
+canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
-#select-color-screen {
-	display: none;
+#draw-card-button {
+	position: absolute;
+	top: 700px;
+	left: 50%;
 }
 
 .btn-group button {
@@ -72,14 +76,14 @@
 }
 
 #uno-button-overlay {
-	background: #000000cc;
+	background: #000000e6;
 	visibility: hidden;
 }
 
 #uno-button-container {
 	position: absolute;
-	left: 75px;
-	top: 200px;
+	left: 17%;
+	top: 240px;
 }
 
 .uno-button {
@@ -110,7 +114,7 @@
 }
 
 #select-color-overlay {
-	background: #000000cc;
+	background: #000000e6;
 	display: none;
 }
 

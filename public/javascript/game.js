@@ -22,12 +22,12 @@ const Game = (function () {
 
 	let socket = null;
 
-	const selfCardXstart = 0;
-	const selfCardY = 400;
-	const opCardX = 500;
-	const opCardY = 50;
-	const topCardY = 200;
-	const topCardX = 300;
+	const selfCardXstart = 50;
+	const selfCardY = 500;
+	const opCardX = 850;
+	const opCardY = 100;
+	const topCardY = 275;
+	const topCardX = 420;
 
 	let myHand = null;
 	let turn = null;
@@ -72,7 +72,7 @@ const Game = (function () {
 				for (const c of opDeck) {
 					let card = new Card(null, null, null);
 					card.draw(context, cardX, opCardY);
-					cardX += Card.cardRenderWidth;
+					cardX -= Card.cardRenderWidth;
 				}
 			}
 		}
