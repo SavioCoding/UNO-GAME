@@ -6,9 +6,9 @@ const Authentication = (function () {
 	};
 
 	// send signin request to server
-	const login = function (username, onSuccess, onError) {
+	const login = function (username, password, onSuccess, onError) {
 		// prepare user data
-		const user1 = {username}
+		const user1 = {username, password}
 
 		// send AJAX request to server
 		fetch("/login", {
@@ -22,8 +22,8 @@ const Authentication = (function () {
 					console.log("login successful");
 					user = json.user;
 					onSuccess();
-				} else if (onError) {
-					onError(json.onError);
+				} if(json.status=='error'){
+					onError(json.error)
 				}
 			})
 			.catch((error) => {

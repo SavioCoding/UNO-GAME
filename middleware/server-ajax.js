@@ -3,27 +3,26 @@ const bcrypt = require("bcrypt");
 
 module.exports = function (app) {
 	app.post("/login", (req, res) => {
-		const { username } = req.body;
+		const { username, password } = req.body;
 		const jsonData = fs.readFileSync("./data/users.json");
 		const users = JSON.parse(jsonData);
 
-		if (!(String(username) in users)) {
+		if(!(username in users)){
+			res.json({ status: "error", error: "User not found" })
+		}else{
+		   hash = users[username].password
+		   if(!bcrypt.compareSync(password, hash)){
+				res.json({ status: "error", error: "Password not the same"})
+		   }else{
+			req.session.user = {
+				username,
+			};
 			res.json({
-				status: "error",
-				error: "User does not exist",
+				status: "success",
+				user: req.session.user,
 			});
-			return;
+		   }
 		}
-
-		// successful login
-		console.log("someone logged in");
-		req.session.user = {
-			username,
-		};
-		res.json({
-			status: "success",
-			user: req.session.user,
-		});
 	});
 
 	app.post("/match", (req, res) => {

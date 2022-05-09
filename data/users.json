@@ -1,22 +1,22 @@
 {
- "tony": {
-  "gamertag": "NoobMaster69",
-  "password": "",
-  "highscore": 13
- },
- "may": {
-  "gamertag": "IamMay2022",
-  "password": "",
-  "highscore": 9
- },
- "peter": {
-  "gamertag": "petergod",
-  "password": "$2b$10$S0tyMgUZPCk6Dzhvg87WLu6TW4Yohmhlkl.X9VS7zovX8ANk2E9DC",
-  "highscore": 0
- },
  "lily": {
   "gamertag": "lilylily",
   "password": "$2b$10$yr/h2gQQqR4f.vcH85bOZubFlbZj7LeX8oMQCr002Dl.pZhIX4GnK",
+  "highscore": 0
+ },
+ "peter": {
+  "gamertag": "petergod",
+  "password": "$2b$10$LNEgwgf4Z2mmqrDz4iy0ROncaQzhh.sQlOfdLDmCSbFOlQUZHptuW",
+  "highscore": 0
+ },
+ "tony": {
+  "gamertag": "TonyIsKing",
+  "password": "$2b$10$KbqLijl25.Ef/XnZEZFy6uD69dLRWT1cyJeOphE28NZRR83vj9m1S",
+  "highscore": 0
+ },
+ "may": {
+  "gamertag": "MayIsQueen",
+  "password": "$2b$10$W4XmNnXSL0bso1dQ1VMN5O5dq39fqpt6M768fxDnJOZxzW4cmsXSG",
   "highscore": 0
  }
 }
