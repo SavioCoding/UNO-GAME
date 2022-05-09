@@ -58,9 +58,10 @@ const Game = (function () {
 				turn = gameState[a];
 				if (gameState.turn == Authentication.getUser().username) {
 					// my turn
+					Timer.startTimer();
 					$("#draw-card-button").show();
-					Timer.startPauseTimer();
 				} else {
+					Timer.pauseTimer();
 					$("#draw-card-button").hide();
 				}
 			}
@@ -126,8 +127,6 @@ const Game = (function () {
 
 	const drawCard = function () {
 		Socket.getSocket().emit("draw card");
-		// pause timer
-		Timer.startPauseTimer();
 	};
 
 	const playCard = function (index) {
@@ -149,8 +148,8 @@ const Game = (function () {
 			return;
 		}
 		// Valid:
-		Timer.startPauseTimer(); // pause timer
 		if (card.special === "Change color" || card.special === "Add 4") {
+			Timer.pauseTimer();
 			$("#select-color-overlay").show();
 			selectedIndex = index;
 			return;
