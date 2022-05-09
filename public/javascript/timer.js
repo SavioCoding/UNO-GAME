@@ -28,8 +28,7 @@ const Timer = (function () {
 	function reduceInterval() {
 		interval *= 0.5;
 		// pause and restart the timer
-		startPauseTimer();
-		startPauseTimer();
+		if (timer !== null) startTimer();
 	}
 
 	return { startTimer, pauseTimer, getTimeUsed, reduceInterval };
