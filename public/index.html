@@ -14,7 +14,7 @@
 </head>
 
 <body>
-	<div id="game-container">
+	<div id="game-container" class="overlay">
 		<canvas width="1000px" height="600px"></canvas>
 		<div id="counter">
 			TIME:<tspan id="timer">01:30</tspan>
@@ -39,18 +39,22 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<div id="subtitle">How to Play? </div>
+						<div id="subtitle">Set Up </div>
 						<ul>
-							<li class="caption">You should match the card in the DISCARD pile.</li>
-							<li class="caption">You can match the card with same color, number, or symbols.</li>
-							<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
-							<li class="caption">If you cannot play a card, draw 1 card.</li>
-							<li class="caption">You can only play 1 card at a time.</li>
-							<li class="caption">When a player plays their last card, the game is over.</li>
+							<li class="caption">The game is for 2 players.</li>
+							<li class="caption">Every player starts with seven cards, and they are dealt face down.</li>
+							<li class="caption">The rest of the cards are placed in the Draw Pile.</li>
+							<li class="caption">There should be a Discard Pile Next to the Draw pile for the players to
+								play cards.</li>
+							<li class="caption">The top card should be placed in the Discard Pile, and the game begins!
+							</li>
+							<li class="caption">You Can Now Play the UNO GAME!!
+							</li>
+
 						</ul>
 					</div>
 					<div class="col">
-						<div id="subtitle">Set Up </div>
+						<div id="subtitle">How to Play? </div>
 						<ul>
 							<li class="caption">You should match the card in the DISCARD pile.</li>
 							<li class="caption">You can match the card with same color, number, or symbols.</li>
@@ -63,50 +67,59 @@
 				</div>
 			</div>
 			<button id="match-button">Play</button>
-			<div id="wait-message">Waiting for another player to join...</div>
+			<div id="wait-message" class="caption">Waiting for another player to join...</div>
 		</div>
 	</div>
 
 	<div id="gameover-overlay" class="overlay row">
-		<div id="leaderboard-container">
-			<table id="leaderboard">
-				<caption>High Scores</caption>
-				<thead>
-					<tr>
-						<th>Rank</th>
-						<th>Game Tag</th>
-						<th>High score</th>
-					</tr>
-				</thead>
-				<tbody id="leaderboard-body"></tbody>
-			</table>
-			<button id="quit-button">Back To Lobby</button>
+		<div id="header" class="overlay row">
+			<div id="title">The UNO Game -- Game Statistics </div>
 		</div>
-
-		<div id="game-stat-container">
-			<div id="result-textbox">
-				<!--Put "You WIN!" or "You LOSE" here-->
+		<div class="content shadow row">
+			<div id="leaderboard-container">
+				<table id="leaderboard">
+					<h2 class="caption"> Score Board</h2>
+					<thead>
+						<tr>
+							<th class="caption">Rank</th>
+							<th class="caption">Game Tag</th>
+							<th class="caption">High score</th>
+						</tr>
+					</thead>
+					<tbody id="leaderboard-body"></tbody>
+				</table>
+				<button id="quit-button">Back To Lobby</button>
 			</div>
-			<table id="game-stat">
-				<caption>Your stats for this game</caption>
-				<tbody>
-					<tr>
-						<th>Special Cards Played</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>Time used</th>
-						<td></td>
-					</tr>
-					<tr>
-						<th>Score</th>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
-			<button id="next-button">Next</button>
+
+
+			<div id="game-stat-container">
+				<div id="result-textbox" class="caption">
+					<!--Put "You WIN!" or "You LOSE" here-->
+				</div>
+				<table id="game-stat">
+					<h2 class="caption">Your stats for this game</h2>
+					<tbody>
+						<tr>
+							<th>Special Cards Played</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Time used</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Score</th>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="spacer-0"></div>
+
+				<button id="next-button">Next</button>
+			</div>
 		</div>
 	</div>
+
 	<div id="login-overlay" class="overlay row">
 		<div id="header" class="overlay row">
 			<div id="title">The UNO Game </div>
