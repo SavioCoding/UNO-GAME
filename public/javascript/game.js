@@ -104,11 +104,6 @@ const Game = (function () {
 	const initialize = function () {
 		context = $("canvas").get(0).getContext("2d");
 		context.imageSmoothingEnabled = false;
-		// for drawing cards
-		$("#draw-card-button").on("click", () => {
-			drawCard();
-		});
-
 		// for playing cards
 		$("canvas").on("click", (e) => {
 			const canvas = document.querySelector("canvas");
@@ -177,6 +172,7 @@ const Game = (function () {
 	return {
 		initialize: initialize,
 		renderState,
+		drawCard,
 		selectColor,
 		affirmUno,
 		denyUno,
