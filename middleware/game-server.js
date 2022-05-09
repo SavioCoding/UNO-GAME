@@ -16,7 +16,6 @@ const startGame = function (gameState) {
 		matchStat[player] = {
 			numSpecialCards: 0,
 			numCheats: 0,
-			time: 0,
 			score: 0,
 		};
 	}
@@ -87,10 +86,11 @@ const endGame = (gameState, reason, loser = null) => {
 	const jsonData = fs.readFileSync("./data/users.json");
 	const playersObj = JSON.parse(jsonData);
 	for (player1 of players) {
-		if (player1 == loser) continue;
+		if (player1 == loser) continue; // no score for the loser
 		for (player2 of players) {
 			if (player2 != player1) {
 				const score = gameState[player2].length;
+				matchStat[player1].score = score;
 				playersObj[player1].highscore =
 					score > playersObj[player1].highscore
 						? score

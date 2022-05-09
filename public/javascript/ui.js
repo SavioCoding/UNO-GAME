@@ -1,6 +1,5 @@
 const LogInForm = (function () {
 	const initialize = function () {
-
 		$("#login-form").on("submit", (e) => {
 			e.preventDefault();
 			const username = $("#login-username").val().trim();
@@ -13,7 +12,9 @@ const LogInForm = (function () {
 					$("#match-button").show();
 					$("#login-overlay").hide();
 				},
-				(error) => { $("#login-message").text(error); }
+				(error) => {
+					$("#login-message").text(error);
+				}
 			);
 		});
 
@@ -34,30 +35,35 @@ const LogInForm = (function () {
 		});
 
 		$("#register-form").on("submit", (e) => {
-            // Do not submit the form
-            e.preventDefault();
+			// Do not submit the form
+			e.preventDefault();
 
-            // Get the input fields
-            const username = $("#register-username").val().trim();
-            const name     = $("#register-name").val().trim();
-            const password = $("#register-password").val().trim();
-            const confirmPassword = $("#register-confirm").val().trim();
+			// Get the input fields
+			const username = $("#register-username").val().trim();
+			const name = $("#register-name").val().trim();
+			const password = $("#register-password").val().trim();
+			const confirmPassword = $("#register-confirm").val().trim();
 
-            // Password and confirmation does not match
-            if (password != confirmPassword) {
-                $("#register-message").text("Passwords do not match.");
-                return;
-            }
+			// Password and confirmation does not match
+			if (password != confirmPassword) {
+				$("#register-message").text("Passwords do not match.");
+				return;
+			}
 
-            // Send a register request
-            Registration.register(username, name, password,
-                () => {
-                    $("#register-form").get(0).reset();
-                    $("#register-message").text("You can sign in now.");
-                },
-                (error) => { $("#register-message").text(error); }
-            );
-        });
+			// Send a register request
+			Registration.register(
+				username,
+				name,
+				password,
+				() => {
+					$("#register-form").get(0).reset();
+					$("#register-message").text("You can sign in now.");
+				},
+				(error) => {
+					$("#register-message").text(error);
+				}
+			);
+		});
 	};
 	return { initialize };
 })();
@@ -151,6 +157,7 @@ const GameoverScreen = (function () {
 		let statArr = [
 			stat["numSpecialCards"],
 			formatTime(timeUsed),
+			stat["numCheats"],
 			stat["score"],
 		];
 
