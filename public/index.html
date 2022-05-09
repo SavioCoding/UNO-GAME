@@ -14,12 +14,29 @@
 
 <body>
 	<div id="game-container">
-		<canvas width="1000px" height="600px"></canvas>
-		<div id="counter">
-			TIME:<tspan id="timer">01:30</tspan>
-		</div>
+		<svg xmlns="http://www.w3.org/2000/svg" width="960" height="800">
+    		<defs> 
+    		    <radialGradient id="gradient">
+    		        <stop offset="0" stop-color="white" /> 
+    		        <stop offset="1" stop-color="#fa7e02" />
+    		    </radialGradient> 
+    		</defs>
+    		<rect fill="url(#gradient)" width="960" height="800" />
 		</svg>
-		<button id="draw-card-button">Draw Card</button>
+		<canvas width="960px" height="800px"></canvas>
+		<svg xmlns="http://www.w3.org/2000/svg" id="counter">
+            <text x="10" y="35">
+                TIME:<tspan id="timer">01:30</tspan>
+            </text>
+        </svg>
+		<div id="draw-card-button-container">
+			<svg xmlns="http://www.w3.org/2000/svg">
+				<g id="draw-card-button" onclick="Game.drawCard()">
+        	    	<rect width="200" height="80" rx="40" style="fill: #c41e1e"/>
+					<text x="10" y="50">Draw Card</text>
+				</g>
+        	</svg>
+		</div>
 		<div id="uno-button-overlay" class="overlay in-game-overlay">
 			<div id="uno-button-container">
 				<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">

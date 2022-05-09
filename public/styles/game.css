@@ -12,52 +12,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P");
 @import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
 
-#changeColor {
+canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#draw-card-button-container {
+	position: absolute;
+	top: 700px;
+	left: 50%;
+}
+
+#draw-card-button {
 	display: none;
+	cursor: pointer;
 }
 
-#select-color-screen {
-	display: none;
-}
-
-.btn-group button {
-	border: 1px solid green; /* Green border */
-	color: white; /* White text */
-	padding: 10px 24px; /* Some padding */
-	cursor: pointer; /* Pointer/hand icon */
-	float: left; /* Float the buttons side by side */
-}
-
-.btn-group button:not(:last-child) {
-	border-right: none; /* Prevent double borders */
-}
-
-/* Clear floats (clearfix hack) */
-.btn-group:after {
-	content: "";
-	clear: both;
-	display: table;
-}
-
-/* Add a background color on hover */
-.btn-group button:hover {
-	background-color: #3e8e41;
-}
-
-#red {
-	background-color: red; /* Green background */
-}
-
-#green {
-	background-color: green; /* Green background */
-}
-
-#blue {
-	background-color: blue; /* Green background */
-}
-
-#yellow {
-	background-color: yellow; /* Green background */
+#draw-card-button text {
+	font-family: "Press Start 2P", sans-serif;
+	fill: #fcb414;
+	stroke: black;
+	font-weight: bolder;
+	stroke-width: 1px;
+	font-size: 20px;
 }
 
 #counter {
@@ -65,21 +43,21 @@
 	left: 150px;
 	top: 35px;
 	font-family: "Press Start 2P", sans-serif;
-	font-size: 130%;
+	font-size: 150%;
 	fill: white;
 	stroke: black;
-	stroke-width: 1px;
+	stroke-width: 2px;
 }
 
 #uno-button-overlay {
-	background: #000000cc;
+	background: #000000e6;
 	visibility: hidden;
 }
 
 #uno-button-container {
 	position: absolute;
-	left: 75px;
-	top: 200px;
+	left: 17%;
+	top: 240px;
 }
 
 .uno-button {
@@ -110,7 +88,7 @@
 }
 
 #select-color-overlay {
-	background: #000000cc;
+	background: #000000e6;
 	display: none;
 }
 
