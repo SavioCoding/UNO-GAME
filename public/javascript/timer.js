@@ -32,7 +32,9 @@ const Timer = (function () {
 
 	function reduceInterval() {
 		interval *= 0.5;
-		console.log(interval);
+		// pause and restart the timer
+		startPauseTimer();
+		startPauseTimer();
 	}
 
 	return { startPauseTimer, getTimeUsed, reduceInterval };
