@@ -9,7 +9,8 @@
 	display: block;
 } */
 
-@import url(https://fonts.googleapis.com/css2?family=Press+Start+2P);
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P");
+@import url("https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap");
 
 #changeColor {
 	display: none;
@@ -68,4 +69,57 @@
 	fill: white;
 	stroke: black;
 	stroke-width: 1px;
+}
+
+#uno-button-overlay {
+	background: #000000cc;
+	visibility: hidden;
+}
+
+#uno-button-container {
+	position: absolute;
+	left: 75px;
+	top: 200px;
+}
+
+.uno-button {
+	visibility: hidden;
+	transform: rotate(-30deg);
+	cursor: pointer;
+}
+
+.uno-button text {
+	font-size: 60px;
+	font-family: "Bungee Shade", cursive;
+}
+
+#affirm-uno-button {
+	fill: red;
+}
+
+#deny-uno-button {
+	fill: black;
+}
+
+#affirm-uno-button text {
+	fill: yellow;
+}
+
+#deny-uno-button text {
+	fill: white;
+}
+
+#select-color-overlay {
+	background: #000000cc;
+	display: none;
+}
+
+#color-button-container {
+	position: absolute;
+	left: 75px;
+	top: 200px;
+}
+
+.select-color-button {
+	cursor: pointer;
 }

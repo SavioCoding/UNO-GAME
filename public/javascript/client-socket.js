@@ -20,6 +20,12 @@ const Socket = (function () {
 			WaitingScreen.hide();
 		});
 
+		socket.on("cheated", (cheatingPlayer) => {
+			if (Authentication.getUser().username != cheatingPlayer) {
+				Timer.reduceInterval();
+			}
+		});
+
 		socket.on("gameover", (gameOutcome) => {
 			// remove game related listeners
 			socket.off("game state");
@@ -33,6 +39,18 @@ const Socket = (function () {
 			// const stat = gameOutcome.stat[Authentication.getUser().username];
 			GameoverScreen.displayStats(result, stat);
 			GameoverScreen.generateScreen(players);
+		});
+
+		socket.on("show uno", (username) => {
+			if (username == Authentication.getUser().username) {
+				GameScreen.showAffirmUnoButton();
+			} else {
+				GameScreen.showDenyUnoButton();
+			}
+		});
+
+		socket.on("hide uno", () => {
+			GameScreen.hideUnoButton();
 		});
 	};
 

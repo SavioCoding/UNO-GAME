@@ -1,34 +1,48 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<title>COMP4021 Project: UNO Game</title>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link href="https://fonts.googleapis.com/icon?family=Noto+Sans" rel="stylesheet">
-	<link rel="stylesheet" href="./styles/style.css">
-	<style>
-		/* canvas {
+	<head>
+		<title>COMP4021 Project: UNO Game</title>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link href="https://fonts.googleapis.com/icon?family=Noto+Sans" rel="stylesheet">
+		<link rel="stylesheet" href="./styles/style.css">
+		<style>
+			/* canvas {
 				background-image: "./img/game-background.png";
 			} */
 	</style>
 </head>
 
 <body>
-	<div id="game-container" class="overlay">
+	<div id="game-container">
 		<canvas width="1000px" height="600px"></canvas>
 		<div id="counter">
 			TIME:<tspan id="timer">01:30</tspan>
 		</div>
 		</svg>
 		<button id="draw-card-button">Draw Card</button>
-	</div>
-	<div id="select-color-screen" class="overlay row">
-		<h1>Please select a color</h1>
-		<div class="btn-group">
-			<button id="red">Red</button>
-			<button id="green">Green</button>
-			<button id="blue">Blue</button>
-			<button id="yellow">Yellow</button>
+		<div id="uno-button-overlay" class="overlay in-game-overlay">
+			<div id="uno-button-container">
+				<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">
+					<g id="affirm-uno-button" class="uno-button" y="100" onclick="Game.affirmUno()">
+						<ellipse cx="55" cy="130" rx="120" ry="70"></ellipse>
+						<text y="145" x="-10">UNO</text>
+					</g>
+					<g id="deny-uno-button" class="uno-button" onclick="Game.denyUno()">
+						<ellipse cx="355" cy="310" rx="120" ry="70"></ellipse>
+						<text y="320" x="250">U,NO!</text>
+					</g>
+				</svg>
+			</div>
+		</div>
+		<div id="select-color-overlay" class="overlay in-game-overlay">
+			<div id="color-button-container">
+				<svg xmlns="http://www.w3.org/2000/svg" width="700" height="510">
+					<polygon points="325,0   525,0   450,250 250,250" class="select-color-button" style="fill: #c41e1e;" onclick="Game.selectColor('red')"></polygon>
+					<polygon points="75,125  275,125 200,375 0,375"   class="select-color-button" style="fill: #1e53c4;" onclick="Game.selectColor('blue')"></polygon>
+					<polygon points="245,260 445,260 370,510 170,510" class="select-color-button" style="fill: #3cbc14;" onclick="Game.selectColor('green')"></polygon>
+					<polygon points="500,125 700,125 625,375 425,375" class="select-color-button" style="fill: #fcb414;" onclick="Game.selectColor('yellow')"></polygon>
+				</svg>
+			</div>
 		</div>
 	</div>
 	<div id="wait-screen" class="overlay row">
@@ -125,40 +139,127 @@
 			<div id="title">The UNO Game </div>
 		</div>
 
-		<div class="content shadow row">
-			<form id="login-form" class="col">
-				<img src="./img/uno-logo.svg" alt="UNO logo" width="100">
-				<div class="caption">YOU CAN LOGIN</div>
-				<input id="login-username" placeholder="Your Username"></input>
-				<input id="login-password" type="password" placeholder="Your password"></input>
-				<button type="submit">LOGIN</button>
-			</form>
-
-			<div class="spacer-0"></div>
-
-			<form id="register-form" class="col">
-				<div class="caption">REGISTER IF YOU DO NOT HAVE ONE</div>
-				<div class="spacer-0"></div>
-				<input id="register-username" maxlength="10" placeholder="Enter your username"></input>
-				<input id="register-name" maxlength="16" placeholder="Enter your name"></input>
-				<input id="register-password" type="password" placeholder="Enter your password"></input>
-				<input id="register-confirm" type="password" placeholder="Enter your password again"></input>
-				<button type="submit">REGISTER</button>
-			</form>
+		<div id="wait-screen" class="overlay row">
+			<div id="header" class="overlay row">
+				<div id="title">The UNO Game -- Game Instruction </div>
+			</div>
+			<div class="content shadow col">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div id="subtitle">How to Play? </div>
+							<ul>
+								<li class="caption">You should match the card in the DISCARD pile.</li>
+								<li class="caption">You can match the card with same color, number, or symbols.</li>
+								<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
+								<li class="caption">If you cannot play a card, draw 1 card.</li>
+								<li class="caption">You can only play 1 card at a time.</li>
+								<li class="caption">When a player plays their last card, the game is over.</li>
+							</ul>
+						</div>
+						<div class="col">
+							<div id="subtitle">Set Up </div>
+							<ul>
+								<li class="caption">You should match the card in the DISCARD pile.</li>
+								<li class="caption">You can match the card with same color, number, or symbols.</li>
+								<li class="caption">You can play the Wild Card and Wild Draw Four Card on any color</li>
+								<li class="caption">If you cannot play a card, draw 1 card.</li>
+								<li class="caption">You can only play 1 card at a time.</li>
+								<li class="caption">When a player plays their last card, the game is over.</li>
+							</ul>
+						</div>
+						<div class="col">
+							<h2 class="caption">Column3</h2>
+						</div>
+					</div>
+				</div>
+				<button id="match-button">Play</button>
+				<div id="wait-message">Waiting for another player to join...</div>
+			</div>
 		</div>
-	</div>
+		
+		<div id="gameover-overlay" class="overlay row">
+			<div id="leaderboard-container">
+				<table id="leaderboard">
+					<caption>High Scores</caption>
+					<thead>
+						<tr>
+							<th>Rank</th>
+							<th>Game Tag</th>
+							<th>High score</th>
+						</tr>
+					</thead>
+					<tbody id="leaderboard-body"></tbody>		
+				</table>
+				<button id="quit-button">Back To Lobby</button>
+			</div>
+			<div id="game-stat-container">
+				<div id="result-textbox"><!--Put "You WIN!" or "You LOSE" here--></div>
+				<table id="game-stat">
+					<caption>Your stats for this game</caption>
+					<tbody>
+						<tr>
+							<th>Special Cards Played</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Time used</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Number of times cheated</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>Score</th>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<button id="next-button">Next</button>
+			</div>
+		</div>
+		<div id="login-overlay" class="overlay row">
+			<div id="header" class="overlay row">
+				<div id="title">The UNO Game </div>
+			</div>
 
-	<script src="/socket.io/socket.io.min.js"></script>
-	<script src="./javascript/client-socket.js"></script>
-	<script src="./javascript/authentication.js"></script>
-	<script src="./javascript/matching.js"></script>
-	<script src="./javascript/card.js"></script>
-	<script src="./javascript/game.js"></script>
-	<script src="./javascript/ui.js"></script>
-	<script src="./javascript/timer.js"></script>
-	<script>
-		$(document).ready(UI.initialize());
-	</script>
-</body>
+			<div class="content shadow row">
+				<form id="login-form" class="col">
+					<img src="./img/uno-logo.svg" alt="UNO logo" width="100">
+					<div class="caption">YOU CAN LOGIN</div>
+					<input id="login-username" placeholder="Your Username"></input>
+					<input id="login-password" type="password" placeholder="Your password"></input>
+					<button type="submit">LOGIN</button>
+					<div id="login-message" class="center"></div>
+				</form>
 
+				<div class="spacer-0"></div>
+
+				<form id="register-form" class="col">
+					<div class="caption">REGISTER IF YOU DO NOT HAVE ONE</div>
+					<div class="spacer-0"></div>
+					<input id="register-username" maxlength="10" placeholder="Enter your username"></input>
+					<input id="register-name" maxlength="16" placeholder="Enter your name"></input>
+					<input id="register-password" type="password" placeholder="Enter your password"></input>
+					<input id="register-confirm" type="password" placeholder="Enter your password again"></input>
+					<button type="submit">REGISTER</button>
+					<div id="register-message" class="center"></div>
+				</form>
+			</div>
+		</div>
+
+		<script src="/socket.io/socket.io.min.js"></script>
+		<script src="./javascript/client-socket.js"></script>
+		<script src="./javascript/authentication.js"></script>
+		<script src="./javascript/matching.js"></script>
+		<script src="./javascript/card.js"></script>
+		<script src="./javascript/game.js"></script>
+        <script src="./javascript/ui.js"></script>
+		<script src="./javascript/timer.js"></script>
+		<script src="./javascript/registration.js"></script>
+		<script>
+			$(document).ready(UI.initialize());
+		</script>
+	</body>
 </html>

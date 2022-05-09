@@ -30,5 +30,12 @@ const Timer = (function () {
 		}
 	}
 
-	return { startPauseTimer, getTimeUsed };
+	function reduceInterval() {
+		interval *= 0.5;
+		// pause and restart the timer
+		startPauseTimer();
+		startPauseTimer();
+	}
+
+	return { startPauseTimer, getTimeUsed, reduceInterval };
 })();

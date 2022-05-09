@@ -3,15 +3,17 @@ const LogInForm = (function () {
 		$("#login-form").on("submit", (e) => {
 			e.preventDefault();
 			const username = $("#login-username").val().trim();
+			const password = $("#login-password").val().trim();
 			Authentication.login(
 				username,
+				password,
 				() => {
 					Socket.connect();
 					$("#match-button").show();
 					$("#login-overlay").hide();
 				},
 				(error) => {
-					console.log(error);
+					$("#login-message").text(error);
 				}
 			);
 		});
@@ -28,6 +30,37 @@ const LogInForm = (function () {
 				(error) => {
 					// TODO: client side display error message
 					console.log("matching error: " + error);
+				}
+			);
+		});
+
+		$("#register-form").on("submit", (e) => {
+			// Do not submit the form
+			e.preventDefault();
+
+			// Get the input fields
+			const username = $("#register-username").val().trim();
+			const name = $("#register-name").val().trim();
+			const password = $("#register-password").val().trim();
+			const confirmPassword = $("#register-confirm").val().trim();
+
+			// Password and confirmation does not match
+			if (password != confirmPassword) {
+				$("#register-message").text("Passwords do not match.");
+				return;
+			}
+
+			// Send a register request
+			Registration.register(
+				username,
+				name,
+				password,
+				() => {
+					$("#register-form").get(0).reset();
+					$("#register-message").text("You can sign in now.");
+				},
+				(error) => {
+					$("#register-message").text(error);
 				}
 			);
 		});
@@ -74,7 +107,28 @@ const GameScreen = (function () {
 		$("#timer").text(formatTime(timeLeft));
 	};
 
-	return { updateTimer };
+	const showAffirmUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "visible");
+		$("#affirm-uno-button").css("visibility", "visible");
+	};
+
+	const showDenyUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "visible");
+		$("#deny-uno-button").css("visibility", "visible");
+	};
+
+	const hideUnoButton = function () {
+		$("#uno-button-overlay").css("visibility", "hidden");
+		$("#affirm-uno-button").css("visibility", "hidden");
+		$("#deny-uno-button").css("visibility", "hidden");
+	};
+
+	return {
+		updateTimer,
+		showAffirmUnoButton,
+		showDenyUnoButton,
+		hideUnoButton,
+	};
 })();
 
 const GameoverScreen = (function () {
@@ -103,6 +157,7 @@ const GameoverScreen = (function () {
 		let statArr = [
 			stat["numSpecialCards"],
 			formatTime(timeUsed),
+			stat["numCheats"],
 			stat["score"],
 		];
 

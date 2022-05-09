@@ -87,7 +87,6 @@ const Game = (function () {
 		const rect = canvas.getBoundingClientRect();
 		const x = event.clientX - rect.left;
 		const y = event.clientY - rect.top;
-		console.log("x: " + x + " y: " + y);
 		if (
 			y >= selfCardY &&
 			y <= selfCardY + Card.cardRenderHeight &&
@@ -106,34 +105,22 @@ const Game = (function () {
 		context.imageSmoothingEnabled = false;
 		// for drawing cards
 		$("#draw-card-button").on("click", () => {
-			console.log("draw");
 			drawCard();
 		});
-		// for changing color
-		{
-			$("#select-color-screen #red").on("click", () => {
-				changeColor(selectedIndex, "red");
-				$("#select-color-screen").hide();
-			});
-			$("#select-color-screen #green").on("click", () => {
-				changeColor(selectedIndex, "green");
-				$("#select-color-screen").hide();
-			});
-			$("#select-color-screen #blue").on("click", () => {
-				changeColor(selectedIndex, "blue");
-				$("#select-color-screen").hide();
-			});
-			$("#select-color-screen #yellow").on("click", () => {
-				changeColor(selectedIndex, "yellow");
-				$("#select-color-screen").hide();
-			});
-		}
+
 		// for playing cards
-		const canvas = document.querySelector("canvas");
 		$("canvas").on("click", (e) => {
+			const canvas = document.querySelector("canvas");
 			e.stopPropagation();
 			e.preventDefault();
 			getCursorPosition(canvas, e);
+		});
+
+		// for cheat button
+		$(document).on("keydown", (e) => {
+			if (e.keyCode == 32) {
+				Socket.getSocket().emit("request cheat");
+			}
 		});
 	};
 
@@ -161,29 +148,38 @@ const Game = (function () {
 			alert("Invalid Card!");
 			return;
 		}
-
-		Timer.startPauseTimer();
+		// Valid:
+		Timer.startPauseTimer(); // pause timer
 		if (card.special === "Change color" || card.special === "Add 4") {
-			$("#select-color-screen").show();
+			$("#select-color-overlay").show();
 			selectedIndex = index;
 			return;
 		}
-
-		console.log("play");
 		const returnObj = { index, card };
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
-		// pause play clock
 	};
 
-	const changeColor = function (index, newColor) {
-		const card = myHand[index];
+	const selectColor = function (newColor) {
+		const card = myHand[selectedIndex];
 		card.color = newColor;
-		const returnObj = { index, card };
+		const returnObj = { index: selectedIndex, card };
+		$("#select-color-overlay").hide();
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
+	};
+
+	const affirmUno = function () {
+		Socket.getSocket().emit("affirm uno");
+	};
+
+	const denyUno = function () {
+		Socket.getSocket().emit("deny uno");
 	};
 
 	return {
 		initialize: initialize,
 		renderState,
+		selectColor,
+		affirmUno,
+		denyUno,
 	};
 })();
