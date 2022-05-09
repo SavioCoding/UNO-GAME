@@ -23,7 +23,6 @@ module.exports = function (io) {
 		});
 
 		socket.on("draw card", () => {
-			console.log("draw");
 			if (socket.request.session.user) {
 				const { username } = socket.request.session.user;
 				Game.drawCard(gameState, username);

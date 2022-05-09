@@ -111,11 +111,15 @@
 
 #select-color-overlay {
 	background: #000000cc;
-	visibility: visible;
+	display: none;
 }
 
 #color-button-container {
 	position: absolute;
 	left: 75px;
 	top: 200px;
+}
+
+.select-color-button {
+	cursor: pointer;
 }

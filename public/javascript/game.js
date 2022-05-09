@@ -87,7 +87,6 @@ const Game = (function () {
 		const rect = canvas.getBoundingClientRect();
 		const x = event.clientX - rect.left;
 		const y = event.clientY - rect.top;
-		console.log("x: " + x + " y: " + y);
 		if (
 			y >= selfCardY &&
 			y <= selfCardY + Card.cardRenderHeight &&
@@ -106,28 +105,9 @@ const Game = (function () {
 		context.imageSmoothingEnabled = false;
 		// for drawing cards
 		$("#draw-card-button").on("click", () => {
-			console.log("draw");
 			drawCard();
 		});
-		// for changing color
-		{
-			$("#select-color-screen #red").on("click", () => {
-				changeColor(selectedIndex, "red");
-				$("#select-color-screen").hide();
-			});
-			$("#select-color-screen #green").on("click", () => {
-				changeColor(selectedIndex, "green");
-				$("#select-color-screen").hide();
-			});
-			$("#select-color-screen #blue").on("click", () => {
-				changeColor(selectedIndex, "blue");
-				$("#select-color-screen").hide();
-			});
-			$("#select-color-screen #yellow").on("click", () => {
-				changeColor(selectedIndex, "yellow");
-				$("#select-color-screen").hide();
-			});
-		}
+
 		// for playing cards
 		$("canvas").on("click", (e) => {
 			const canvas = document.querySelector("canvas");
@@ -171,7 +151,7 @@ const Game = (function () {
 		// Valid:
 		Timer.startPauseTimer(); // pause timer
 		if (card.special === "Change color" || card.special === "Add 4") {
-			$("#select-color-screen").show();
+			$("#select-color-overlay").show();
 			selectedIndex = index;
 			return;
 		}
@@ -179,10 +159,11 @@ const Game = (function () {
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
 	};
 
-	const changeColor = function (index, newColor) {
-		const card = myHand[index];
+	const selectColor = function (newColor) {
+		const card = myHand[selectedIndex];
 		card.color = newColor;
-		const returnObj = { index, card };
+		const returnObj = { index: selectedIndex, card };
+		$("#select-color-overlay").hide();
 		Socket.getSocket().emit("play card", JSON.stringify(returnObj));
 	};
 
@@ -197,6 +178,7 @@ const Game = (function () {
 	return {
 		initialize: initialize,
 		renderState,
+		selectColor,
 		affirmUno,
 		denyUno,
 	};

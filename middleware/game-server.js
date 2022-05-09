@@ -135,7 +135,6 @@ const endGame = (gameState, reason, loser = null) => {
 	playersArr.sort((a, b) => b.highscore - a.highscore);
 	// get stat from global variable matchStat
 	const returnObj = { result, players: playersArr, stat: matchStat };
-	console.log(returnObj);
 	matchStat = {}; // reset matchStat object for next match
 	//write back updated highscore
 	fs.writeFileSync("data/users.json", JSON.stringify(playersObj, null, "  "));
