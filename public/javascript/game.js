@@ -148,6 +148,7 @@ const Game = (function () {
 			return;
 		}
 		// Valid:
+		sounds.use.play();
 		if (card.special === "Change color" || card.special === "Add 4") {
 			Timer.pauseTimer();
 			$("#select-color-overlay").show();

@@ -25,11 +25,11 @@
 				<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">
 					<g id="affirm-uno-button" class="uno-button" y="100" onclick="Game.affirmUno()">
 						<ellipse cx="55" cy="130" rx="120" ry="70"></ellipse>
-						<text y="145" x="-10">UNO</text>
+						<text y="145" x="-10">UNO!</text>
 					</g>
 					<g id="deny-uno-button" class="uno-button" onclick="Game.denyUno()">
 						<ellipse cx="355" cy="310" rx="120" ry="70"></ellipse>
-						<text y="320" x="250">U,NO!</text>
+						<text y="320" x="250">UNO!</text>
 					</g>
 				</svg>
 			</div>
@@ -264,6 +264,19 @@
 		<script src="./javascript/registration.js"></script>
 		<script>
 			$(document).ready(UI.initialize());
+			const sounds = {
+				game: new Audio("./sounds/game.mp3"),
+				won: new Audio("./sounds/won.mp3"),
+				lost: new Audio("./sounds/lost.mp3"),
+				button: new Audio("./sounds/button.mp3"),
+				use: new Audio("./sounds/use_card.mp3")
+			}
+			sounds.game.volume = 0.2
+			sounds.won.volume = 0.5
+			sounds.lost.volume = 0.2
+			$("button").click(()=>{
+				sounds.button.play()
+			})
 		</script>
 	</body>
 </html>
