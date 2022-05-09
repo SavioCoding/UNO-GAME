@@ -6,14 +6,15 @@ const Authentication = (function () {
 	};
 
 	// send signin request to server
-	const login = function (username, onSuccess, onError) {
+	const login = function (username, password, onSuccess, onError) {
 		// prepare user data
-		const jsonData = JSON.stringify({ username });
+		const user1 = {username, password}
+
 		// send AJAX request to server
 		fetch("/login", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: jsonData,
+			body: JSON.stringify(user1),
 		})
 			.then((res) => res.json())
 			.then((json) => {
@@ -21,8 +22,8 @@ const Authentication = (function () {
 					console.log("login successful");
 					user = json.user;
 					onSuccess();
-				} else if (onError) {
-					onError(json.onError);
+				} if(json.status=='error'){
+					onError(json.error)
 				}
 			})
 			.catch((error) => {
