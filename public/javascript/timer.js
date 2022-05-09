@@ -1,5 +1,5 @@
 const Timer = (function () {
-	const START_TIME = 90;
+	const START_TIME = 9000000;
 	let timer = null;
 	let timeRemaining = START_TIME;
 	let interval = 1000;

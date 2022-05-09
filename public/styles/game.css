@@ -108,3 +108,14 @@
 #deny-uno-button text {
 	fill: white;
 }
+
+#select-color-overlay {
+	background: #000000cc;
+	visibility: visible;
+}
+
+#color-button-container {
+	position: absolute;
+	left: 75px;
+	top: 200px;
+}
