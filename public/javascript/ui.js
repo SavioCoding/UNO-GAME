@@ -4,17 +4,16 @@ const LogInForm = (function () {
 		$("#login-form").on("submit", (e) => {
 			e.preventDefault();
 			const username = $("#login-username").val().trim();
-
+			const password = $("#login-password").val().trim();
 			Authentication.login(
 				username,
+				password,
 				() => {
 					Socket.connect();
 					$("#match-button").show();
 					$("#login-overlay").hide();
 				},
-				(error) => {
-					console.log(error);
-				}
+				(error) => { $("#login-message").text(error); }
 			);
 		});
 
