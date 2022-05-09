@@ -42,6 +42,7 @@ const Socket = (function () {
 		});
 
 		socket.on("show uno", (username) => {
+			Timer.pauseTimer();
 			if (username == Authentication.getUser().username) {
 				GameScreen.showAffirmUnoButton();
 			} else {

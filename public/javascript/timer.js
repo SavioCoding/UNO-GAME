@@ -8,26 +8,21 @@ const Timer = (function () {
 		return START_TIME - timeRemaining;
 	}
 
-	// if the timer is paused, this function will start the timer
-	// if the timer has started, this function will pause the timer
-	function startPauseTimer() {
-		if (timer === null) {
-			// if paused, then start
-			clearInterval(timer);
-			timer = setInterval(() => {
-				if (timeRemaining == 1) {
-					clearInterval(timer);
-					Socket.timesUp();
-				}
-				timeRemaining--;
-				GameScreen.updateTimer(timeRemaining);
-			}, interval);
-		}
-		// if paused
-		else {
-			clearInterval(timer);
-			timer = null;
-		}
+	function startTimer() {
+		clearInterval(timer);
+		timer = setInterval(() => {
+			if (timeRemaining == 1) {
+				clearInterval(timer);
+				Socket.timesUp();
+			}
+			timeRemaining--;
+			GameScreen.updateTimer(timeRemaining);
+		}, interval);
+	}
+
+	function pauseTimer() {
+		clearInterval(timer);
+		timer = null;
 	}
 
 	function reduceInterval() {
@@ -37,5 +32,5 @@ const Timer = (function () {
 		startPauseTimer();
 	}
 
-	return { startPauseTimer, getTimeUsed, reduceInterval };
+	return { startTimer, pauseTimer, getTimeUsed, reduceInterval };
 })();

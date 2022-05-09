@@ -39,12 +39,10 @@ module.exports = function (io) {
 					// end game
 					const resultObj = Game.endGame(gameState, "card");
 					io.emit("gameover", JSON.stringify(resultObj));
-				} else {
-					if (gameState[username].length == 1) {
-						io.emit("show uno", username);
-					}
-					io.emit("game state", JSON.stringify(gameState));
-				}
+				} else if (gameState[username].length == 1) {
+					io.emit("show uno", username);
+					return;
+				} else io.emit("game state", JSON.stringify(gameState));
 			}
 		});
 
@@ -60,6 +58,7 @@ module.exports = function (io) {
 		socket.on("affirm uno", () => {
 			// if player with one card left press uno first, do nothing
 			io.emit("hide uno");
+			io.emit("game state", JSON.stringify(gameState));
 		});
 
 		socket.on("deny uno", () => {

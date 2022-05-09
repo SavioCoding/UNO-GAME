@@ -12,7 +12,11 @@
   "tony": {
     "gamertag": "TonyIsKing",
     "password": "$2b$10$KbqLijl25.Ef/XnZEZFy6uD69dLRWT1cyJeOphE28NZRR83vj9m1S",
+<<<<<<< HEAD
     "highscore": 5
+=======
+    "highscore": 8
+>>>>>>> main
   },
   "may": {
     "gamertag": "MayIsQueen",
