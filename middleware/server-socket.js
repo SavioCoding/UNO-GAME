@@ -49,6 +49,15 @@ module.exports = function (io) {
 			}
 		});
 
+		socket.on("request cheat", () => {
+			if (socket.request.session.user) {
+				const { username } = socket.request.session.user;
+				console.log(username + " cheated");
+				matchStat[username].numCheats++;
+				io.emit("cheated", username);
+			}
+		});
+
 		socket.on("affirm uno", () => {
 			// if player with one card left press uno first, do nothing
 			io.emit("hide uno");

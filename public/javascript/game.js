@@ -135,6 +135,13 @@ const Game = (function () {
 			e.preventDefault();
 			getCursorPosition(canvas, e);
 		});
+
+		// for cheat button
+		$(document).on("keydown", (e) => {
+			if (e.keyCode == 32) {
+				Socket.getSocket().emit("request cheat");
+			}
+		});
 	};
 
 	const drawCard = function () {
