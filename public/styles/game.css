@@ -68,11 +68,11 @@ canvas {
 
 .uno-button text {
 	font-size: 60px;
-	font-family: "Bungee Shade", cursive;
+	font-family: "Press Start 2P", sans-serif;
 }
 
 #affirm-uno-button {
-	fill: red;
+	fill: #c41e1e;
 }
 
 #deny-uno-button {
@@ -80,10 +80,13 @@ canvas {
 }
 
 #affirm-uno-button text {
-	fill: yellow;
+	stroke-width: 2px;
+	stroke: black;
+	fill: #fcb414
 }
 
 #deny-uno-button text {
+	font-size: 50px;
 	fill: white;
 }
 
