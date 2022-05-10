@@ -18,6 +18,30 @@ canvas {
 	left: 0;
 }
 
+.coin {
+	position: absolute;
+	left: 350px;
+	top: 310px;
+	height: 58px;
+	width: 58px;
+	background: url("../img/coin-sprite.png");
+	background-size: 680%;
+	animation: sprite 1s steps(6) infinite;
+}
+
+#coin2 {
+	left: 526px;
+}
+
+@keyframes sprite {
+	from {
+		background-position: 0px;
+	}
+	to {
+		background-position: 1184px;
+	}
+}
+
 #draw-card-button-container {
 	position: absolute;
 	top: 700px;
@@ -82,7 +106,7 @@ canvas {
 #affirm-uno-button text {
 	stroke-width: 2px;
 	stroke: black;
-	fill: #fcb414
+	fill: #fcb414;
 }
 
 #deny-uno-button text {
