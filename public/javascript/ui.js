@@ -145,12 +145,8 @@ const GameoverScreen = (function () {
 
 		$("#quit-button").on("click", () => {
 			hide();
-			$("#leaderboard-overlay").css("display", "none");
 			WaitingScreen.reset();
 			WaitingScreen.show();
-			$("#game-stat-container").hide();
-			$("#eaderboard-container").hide();
-			leaderboard.empty();
 		});
 
 		$("#next-button").on("click", () => {
@@ -221,6 +217,9 @@ const GameoverScreen = (function () {
 		sounds.lost.pause();
 		sounds.won.currentTime = 0;
 		sounds.lost.currentTime = 0;
+		$("#game-stat-container").hide();
+		$("#leaderboard-container").hide();
+		leaderboard.empty();
 		$("#gameover-overlay").fadeOut(500);
 	};
 
