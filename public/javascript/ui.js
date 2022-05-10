@@ -78,6 +78,7 @@ const WaitingScreen = (function () {
 	const hide = function () {
 		// TODO: add countdown
 		waitingScreen.fadeOut(500);
+		sounds.game.play();
 	};
 
 	const show = function () {
@@ -167,9 +168,15 @@ const GameoverScreen = (function () {
 
 		if (result === "win") {
 			$("#result-textbox").text("You Win!");
+			sounds.game.pause();
+			sounds.game.currentTime = 0;
+			sounds.won.play();
 			// TODO: play victory sounds
 		} else if (result === "lose") {
 			$("#result-textbox").text("You Lose :(");
+			sounds.game.pause();
+			sounds.game.currentTime = 0;
+			sounds.lost.play();
 			// TODO: play sad music
 		}
 		// tie
@@ -202,6 +209,10 @@ const GameoverScreen = (function () {
 	};
 
 	const hide = function () {
+		sounds.won.pause();
+		sounds.lost.pause();
+		sounds.won.currentTime = 0;
+		sounds.lost.currentTime = 0;
 		$("#gameover-overlay").fadeOut(500);
 	};
 
