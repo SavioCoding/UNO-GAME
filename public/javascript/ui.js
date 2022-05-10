@@ -18,22 +18,6 @@ const LogInForm = (function () {
 			);
 		});
 
-		$("#match-button").on("click", () => {
-			Matching.startMatch(
-				Authentication.getUser().username,
-				() => {
-					Socket.queue();
-					// TODO: client side show the waiting screen
-					$("#match-button").hide();
-					$("#wait-message").show();
-				},
-				(error) => {
-					// TODO: client side display error message
-					console.log("matching error: " + error);
-				}
-			);
-		});
-
 		$("#register-form").on("submit", (e) => {
 			// Do not submit the form
 			e.preventDefault();
@@ -73,6 +57,22 @@ const WaitingScreen = (function () {
 
 	const initialize = function () {
 		waitingScreen = $("#wait-screen");
+
+		$("#match-button").on("click", () => {
+			Matching.startMatch(
+				Authentication.getUser().username,
+				() => {
+					Socket.queue();
+					// TODO: client side show the waiting screen
+					$("#match-button").hide();
+					$("#wait-message").show();
+				},
+				(error) => {
+					// TODO: client side display error message
+					console.log("matching error: " + error);
+				}
+			);
+		});
 	};
 
 	const hide = function () {
@@ -85,7 +85,12 @@ const WaitingScreen = (function () {
 		waitingScreen.fadeIn(500);
 	};
 
-	return { hide, initialize, show };
+	const reset = function () {
+		$("#match-button").show();
+		$("#wait-message").hide();
+	};
+
+	return { hide, initialize, show, reset };
 })();
 
 // input: time in seconds
@@ -140,9 +145,8 @@ const GameoverScreen = (function () {
 
 		$("#quit-button").on("click", () => {
 			hide();
-			$("#leaderboard-overlay").css("display", "none");
+			WaitingScreen.reset();
 			WaitingScreen.show();
-			leaderboard.empty();
 		});
 
 		$("#next-button").on("click", () => {
@@ -213,6 +217,9 @@ const GameoverScreen = (function () {
 		sounds.lost.pause();
 		sounds.won.currentTime = 0;
 		sounds.lost.currentTime = 0;
+		$("#game-stat-container").hide();
+		$("#leaderboard-container").hide();
+		leaderboard.empty();
 		$("#gameover-overlay").fadeOut(500);
 	};
 
