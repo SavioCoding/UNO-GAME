@@ -2,6 +2,13 @@
 	background-color: rgb(69, 156, 228);
 }
 
+#wait-screen ul {
+	font-size: 1vw;
+	font-weight: bold;
+	font-family: "Hubballi", cursive;
+	color: black;
+}
+
 #wait-message {
 	display: none;
 }
@@ -9,14 +16,15 @@
 #match-button {
 	display: none;
 	font-weight: bold;
-	font-family: 'Hubballi', cursive;
+	font-family: "Hubballi", cursive;
 	font-size: medium;
 	border: 1px solid white;
-	height: 40px;
+	height: 4vw;
+	width: 10vw;
 	color: black;
-	background: #FBE5C8;
-	padding: 0 20px;
+	background: #fbe5c8;
+	padding: 0 0;
 	transition: 1s background;
 	cursor: pointer;
-	border-radius: 5px;
+	border-radius: 5vw;
 }
