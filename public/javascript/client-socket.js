@@ -27,20 +27,21 @@ const Socket = (function () {
 		});
 
 		socket.on("gameover", (gameOutcome) => {
-			// remove game related listeners
-			socket.off("game state");
-			socket.off("gameover");
-			socket.off("cheated");
-			socket.off("show uno");
-			socket.off("hide uno");
-			// TODO: other listeners such as draw cards etc.
-
 			// gameOutcome = {result: {tony:'win', may:'lose'}, players: [{gamertag, highscore}], stat:{tony: {"special card played": ...}}}
 			let { result, players, stat } = JSON.parse(gameOutcome);
 			result = result[Authentication.getUser().username]; //win or lose or tie
 			stat = stat[Authentication.getUser().username];
 			GameoverScreen.displayStats(result, stat);
 			GameoverScreen.generateScreen(players);
+
+			// remove game related listeners
+			socket.off("game state");
+			socket.off("gameover");
+			socket.off("cheated");
+			socket.off("show uno");
+			socket.off("hide uno");
+			Timer.reset();
+			Game.reset();
 		});
 
 		socket.on("show uno", (username) => {

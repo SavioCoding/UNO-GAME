@@ -1,8 +1,9 @@
 const Timer = (function () {
 	const START_TIME = 90;
+	const NORMAL_INTERVAL = 1000;
 	let timer = null;
 	let timeRemaining = START_TIME;
-	let interval = 1000;
+	let interval = NORMAL_INTERVAL;
 
 	function getTimeUsed() {
 		return START_TIME - timeRemaining;
@@ -31,5 +32,11 @@ const Timer = (function () {
 		if (timer !== null) startTimer();
 	}
 
-	return { startTimer, pauseTimer, getTimeUsed, reduceInterval };
+	function reset() {
+		timeRemaining = START_TIME;
+		interval = NORMAL_INTERVAL;
+		$("#timer").text("01:30");
+	}
+
+	return { startTimer, pauseTimer, getTimeUsed, reduceInterval, reset };
 })();

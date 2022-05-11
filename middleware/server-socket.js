@@ -5,8 +5,6 @@ module.exports = function (io) {
 	io.on("connection", (socket) => {
 		if (socket.request.session.user) {
 			const { username } = socket.request.session.user;
-			console.log("Socket: " + username + " connected");
-
 			onlineUsers[username] = "some other properties";
 		}
 		socket.on("queue", () => {
@@ -49,7 +47,6 @@ module.exports = function (io) {
 		socket.on("request cheat", () => {
 			if (socket.request.session.user) {
 				const { username } = socket.request.session.user;
-				console.log(username + " cheated");
 				matchStat[username].numCheats++;
 				io.emit("cheated", username);
 			}
