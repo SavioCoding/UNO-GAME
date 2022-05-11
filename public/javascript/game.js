@@ -1,26 +1,5 @@
 const Game = (function () {
 	let context = null;
-	let deck = null;
-
-	// check if cards are initialized for first time
-	let first = true;
-
-	// js object (coordinates to id)
-	let XYToid = {};
-
-	// store card id if the card is valid and clicked once
-	let checkedCard = null;
-
-	// check if you are in current turn, such that you are not allowed to use the card if it is not your turn
-	let yourTurn = false;
-
-	// last Card
-	let lastCard = null;
-
-	// changedColor (+4 or change color)
-	let changedColor = null;
-
-	let socket = null;
 
 	const selfCardXstart = 50;
 	const selfCardY = 500;
@@ -29,12 +8,14 @@ const Game = (function () {
 	const topCardY = 275;
 	const topCardX = 420;
 
+	let gameStarted = false;
 	let myHand = null;
 	let turn = null;
 	let top = null;
 	let selectedIndex = null;
 
 	const renderState = function (gameState) {
+		gameStarted = true;
 		const canvas = $("canvas").get(0);
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		for (const a in gameState) {
@@ -104,6 +85,7 @@ const Game = (function () {
 	const initialize = function () {
 		context = $("canvas").get(0).getContext("2d");
 		context.imageSmoothingEnabled = false;
+
 		// for playing cards
 		$("canvas").on("click", (e) => {
 			const canvas = document.querySelector("canvas");
@@ -114,7 +96,7 @@ const Game = (function () {
 
 		// for cheat button
 		$(document).on("keydown", (e) => {
-			if (e.keyCode == 32) {
+			if (e.keyCode == 32 && gameStarted) {
 				Socket.getSocket().emit("request cheat");
 			}
 		});
@@ -170,6 +152,10 @@ const Game = (function () {
 		Socket.getSocket().emit("deny uno");
 	};
 
+	const reset = function () {
+		gameStarted = false;
+	};
+
 	return {
 		initialize: initialize,
 		renderState,
@@ -177,5 +163,6 @@ const Game = (function () {
 		selectColor,
 		affirmUno,
 		denyUno,
+		reset,
 	};
 })();

@@ -7,58 +7,51 @@
 	display: none;
 }
 
-#leaderboard {
+table {
 	border-collapse: collapse;
 	margin: 25px 0;
 	font-size: 0.9em;
 	font-family: sans-serif;
-	min-width: 400px;
+	width: 30vw;
 	box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
 /* add space between table cells */
-#leaderboard thead tr {
-	background-color: #009879;
+#leaderboard thead tr,
+#game-stat th {
+	background-color: #19bdd3;
 	color: #ffffff;
 	text-align: left;
 }
 
-#leaderboard th,
-#leaderboard td {
-	padding: 12px 15px;
+#game-stat tr:nth-of-type(even) th {
+	background-color: #059baf;
+}
+
+th,
+td {
+	padding: 1vh 15px;
 }
 
 /* 	Add bottom border to each rom for separation
 	Add lighter background every second row
 	Add dark border to last row */
-#leaderboard tbody tr {
+#leaderboard tbody tr,
+#game-stat td {
 	background-color: #dddddd;
 }
 
-#leaderboard tbody tr:nth-of-type(even) {
+#leaderboard tbody tr:nth-of-type(even),
+#game-stat tr:nth-of-type(even) td {
 	background-color: #f3f3f3;
 }
 
-#leaderboard tbody tr:last-of-type {
-	border-bottom: 2px solid #009879;
+tr:last-of-type {
+	border-bottom: 2px solid #012c41;
 }
 
 /* Make active row look different */
 tbody tr:hover {
 	font-weight: bold;
-	color: #009879;
-}
-
-#game-stat tbody th {
-	background-color: #009879;
-	color: #ffffff;
-	text-align: left;
-}
-
-#game-stat td {
-	background-color: #dddddd;
-}
-
-#game-stat tbody tr:nth-of-type(even) {
-	background-color: #f3f3f3;
+	color: #eb7633;
 }

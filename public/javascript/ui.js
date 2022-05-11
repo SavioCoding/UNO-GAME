@@ -66,6 +66,7 @@ const WaitingScreen = (function () {
 					// TODO: client side show the waiting screen
 					$("#match-button").hide();
 					$("#wait-message").show();
+					sounds.wait.play();
 				},
 				(error) => {
 					// TODO: client side display error message
