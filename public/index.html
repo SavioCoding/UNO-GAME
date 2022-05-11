@@ -277,11 +277,13 @@
 				won: new Audio("./sounds/won.mp3"),
 				lost: new Audio("./sounds/lost.mp3"),
 				button: new Audio("./sounds/button.mp3"),
-				use: new Audio("./sounds/use_card.mp3")
+				use: new Audio("./sounds/use_card.mp3"),
+				wait: new Audio("./sounds/waiting-music.mp3")
 			}
 			sounds.game.volume = 0.2
 			sounds.won.volume = 0.5
-			sounds.lost.volume = 0.2
+			sounds.lost.volume = 0.1
+			sounds.wait.volume = 0.3
 			$("button").click(()=>{
 				sounds.button.play()
 			})

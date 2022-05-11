@@ -15,6 +15,8 @@ const Socket = (function () {
 		socket.emit("queue");
 
 		socket.on("game state", (gameState) => {
+			sounds.wait.pause();
+			sounds.wait.currentTime = 0;
 			gameState = JSON.parse(gameState);
 			Game.renderState(gameState);
 			WaitingScreen.hide();
