@@ -18,5 +18,10 @@
     "gamertag": "MayIsQueen",
     "password": "$2b$10$W4XmNnXSL0bso1dQ1VMN5O5dq39fqpt6M768fxDnJOZxzW4cmsXSG",
     "highscore": 9
+  },
+  "tonny": {
+    "gamertag": "tonny",
+    "password": "$2b$10$Ky.Ve80NbxUo0ddGxfo.resgqj/wK0fB6j.wuNaNL2dj6gOmvV83S",
+    "highscore": 3
   }
 }
