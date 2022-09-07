@@ -1,6 +1,6 @@
 ## UNO GAME
 
-run node app on directory uno-game and call localhost:3000 if running on local
+run `node app` on directory uno-game and type localhost:3000 on web browsers if running on local
 ### Game instructions
 1. Your goal is to get rid of all your cards as soon as possible<br>
 2. You can only play cards that have the same color or number as the top card in the discard pile, unless you want to play a black card. Then, you can play it any time you like<br>
